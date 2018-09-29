@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        android:id="@+id/titleBar"
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="true"
+        app:start_color="@color/red"
+        app:end_color="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        app:start_color="@color/red"
+        app:end_color="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        app:start_color="@color/red_circle_color"
+        app:end_color="@color/red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        app:start_color="@color/blue"
+        app:end_color="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        app:start_color="@color/black"
+        app:end_color="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        app:start_color="@color/black"
+        app:end_color="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        app:start_color="@color/blue"
+        app:end_color="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        app:start_color="@color/red_circle_color"
+        app:end_color="@color/red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="false"
+        app:start_color="@color/red"
+        app:end_color="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.supcon.mes.mbap.view.CustomHorizontalSearchTitleBar
+        android:id="@+id/titleBar"
+        app:title_background_color="@color/red"
+        app:title_text="welecome WSZ"
+        app:title_length="80dp"
+        app:title_right_btn_need="true"
+        app:start_color="@color/red"
+        app:end_color="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"/>
+</LinearLayout>

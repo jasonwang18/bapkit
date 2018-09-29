@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <com.supcon.mes.mbap.view.CustomListWidget
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:id="@+id/listWidget"
+        android:visibility="visible"
+        app:widget_name="迁移线"
+        app:total="2335"
+        app:widget_num="2"
+        app:is_addable="true"
+        app:text_size="15"
+        />
+
+</LinearLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    >
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:id="@+id/customText"
+        style="@style/DetailText"
+        android:visibility="visible"
+        android:gravity="right|center_vertical"
+        android:paddingRight="10dp"
+        android:layout_marginLeft="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/customValue"
+        style="@style/DetailText"
+        android:layout_toRightOf="@+id/customText"
+        android:textColor="@color/textColorlightblack"
+        android:visibility="visible"
+        android:gravity="left|center_vertical"
+        android:paddingRight="20dp"
+        android:maxLines="2"
+        android:maxWidth="150dp"
+        android:layout_marginLeft="20dp"
+        />
+    <EditText
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:id="@+id/customInput"
+        style="@style/CustomEditText"
+        android:layout_toRightOf="@+id/customText"
+        android:visibility="gone"
+        android:gravity="top|left"
+        android:maxLength="20"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint=""
+        />
+
+    <TextView
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:id="@+id/customSpinner"
+        android:drawableRight="@drawable/ic_choose"
+        android:layout_toRightOf="@+id/customText"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="20dp"
+        android:drawablePadding="20dp"
+        android:textColor="@color/textColorlightblack"
+        />
+
+
+</RelativeLayout>

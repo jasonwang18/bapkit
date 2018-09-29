@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/titlebar_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlRootView"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/bapThemeBlue">
+    <com.supcon.mes.mbap.view.CustomSearchView
+        android:id="@+id/customSearchView"
+        android:tag="customSearchView"
+        android:layout_width="match_parent"
+        android:paddingLeft="180dp"
+        android:layout_marginRight="5dp"
+        android:background="@null"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/rightBtn"
+        />
+    <RelativeLayout
+        android:id="@+id/rlLeft"
+        android:tag="rlLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+
+        <com.supcon.mes.mbap.view.CustomImageButton
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:paddingTop="@dimen/dp_15"
+            android:paddingBottom="@dimen/dp_15"
+            android:paddingRight="20dp"
+            android:id="@+id/leftBtn"
+            android:tag="leftBtn"
+            android:src="@drawable/ic_back"
+            android:background="@null"
+            android:scaleType="centerInside"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="50dp"
+            android:id="@+id/titleText"
+            android:tag="titleText"
+            android:gravity="center_vertical|left"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:text="标题"
+            android:textColor="@color/white"
+            />
+
+    </RelativeLayout>
+
+    <com.supcon.mes.mbap.view.CustomImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/rightBtn"
+        android:tag="rightBtn"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@null"
+        app:text_color="@color/white"
+        app:text_size_float="14dp"
+        app:text="右键" />
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/cancelBtn"
+        android:tag="cancelBtn"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        android:background="@null"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:text="取消" />
+</RelativeLayout>

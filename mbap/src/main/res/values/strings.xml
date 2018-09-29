@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">mbap</string>
+
+    <string name="barcode_name">Barcode Scan</string>
+    <string name="but_start">Single Scan</string>
+    <string name="but_stop">Stop Scan</string>
+    <string name="but_close">Close</string>
+    <string name="but_repeat">Repeat Scan</string>
+    <string name="but_clear">Clear</string>
+    <string name="dialog_title">Content</string>
+    <string name="spinner">Scan key choose</string>
+
+    <string name="DEV_OPEN_ERR">Device open failed！Software will quit！</string>
+    <string name="DIA_ALERT">Warning！</string>
+    <string name="DIA_CHECK">Confirm</string>
+
+    <string name="but_test">Test</string>
+    <!-- exit -->
+    <string name="key_test_back_title">提示</string>
+    <string name="action_exit_title">退出</string>
+    <string name="action_exit_content">Whether out of the current application</string>
+    <string name="action_exit_sure">确定</string>
+    <string name="action_exit_cancel">取消</string>
+    <string name="action_dialog_setting_config">请检查“设置-无障碍-上报扫描键值-使能上报扫描键值”项勾选</string>
+    <string name="action_dialog_setting_config_sure_go">去设置</string>
+</resources>

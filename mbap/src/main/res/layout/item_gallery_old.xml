@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    >
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/itemGalleryIv"
+        android:scaleType="fitXY"
+        android:background="@drawable/sh_transparent"
+        />
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/itemGalleryDelete"
+        android:src="@drawable/ic_clear_holo_light"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:scaleType="center"
+        />
+</RelativeLayout>
+

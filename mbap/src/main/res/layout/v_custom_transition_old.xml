@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+     android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:id="@+id/transitionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/transitionMore"
+        android:orientation="horizontal"
+        />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:id="@+id/transitionMore"
+        android:visibility="gone"
+        android:background="@color/font_4c4c4c"
+        android:src="@drawable/ic_menu_more_white"
+        />
+
+</RelativeLayout>

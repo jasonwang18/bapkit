@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:id="@+id/customEditText"
+        style="@style/DetailText2Line"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:textColor="@color/hintColor"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/customEditInput"
+        style="@style/ContentText"
+        android:layout_toRightOf="@+id/customEditText"
+        android:background="@null"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:scrollbarStyle="outsideOverlay"
+        android:layout_toLeftOf="@+id/customEditDelete"
+        android:layout_marginRight="@dimen/dp_5"
+        android:gravity="center_vertical"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/customEditDelete"
+        android:src="@drawable/ic_delete3"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        android:background="@drawable/sl_transparent_press_no_stroke"
+        />
+
+
+</RelativeLayout>

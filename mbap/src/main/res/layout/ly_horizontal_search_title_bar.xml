@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/titlebar_height"
+    android:id="@+id/rlRootView"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/bapThemeBlue">
+    <com.supcon.mes.mbap.view.CustomSearchView
+        android:id="@+id/customSearchView"
+        android:tag="customSearchView"
+        android:layout_width="match_parent"
+        android:paddingStart="180dp"
+        android:paddingEnd="10dp"
+        android:background="@null"
+        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:id="@+id/rlLeft"
+        android:tag="rl_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:padding="15dp"
+            android:id="@+id/leftBtn"
+            android:tag="leftBtn"
+            android:src="@drawable/ic_back"
+            android:background="@null"
+            android:layout_marginStart="0dp"
+            android:scaleType="centerInside"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:id="@+id/titleText"
+            android:tag="titleText"
+            android:gravity="center_vertical|left"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/leftBtn"
+            android:textSize="16sp"
+            android:text="标题"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/cancelBtn"
+        android:tag="cancelBtn"
+        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:background="@null"
+        android:text="取消"
+        tools:ignore="HardcodedText" />
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:id="@+id/rightBtn"
+        android:tag="rightBtn"
+        android:visibility="invisible"
+        android:src="@drawable/ic_topbtn_new"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:paddingStart="@dimen/dp_30"
+        android:paddingEnd="@dimen/dp_15"
+        android:paddingTop="@dimen/dp_15"
+        android:paddingBottom="@dimen/dp_15"
+        tools:ignore="ContentDescription" />
+</RelativeLayout>

@@ -1,0 +1,41 @@
+apply plugin: 'maven'
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives androidSourcesJar
+//    archives androidJavadocsJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://192.168.90.70:8888/nexus/content/repositories/mbap/") {
+                authentication(userName: "jasonwang", password: "0728snow")
+            }
+            pom.project {
+                name 'mbap'
+//                version '9.2.2'
+                version '8.5.911.12'
+
+                artifactId 'mbap'
+                groupId 'com.supcon.mes.mbap'
+                packaging 'aar'
+                description 'mbap custom module'
+            }
+        }
+    }
+}

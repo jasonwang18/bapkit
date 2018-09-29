@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/customEditText"
+        style="@style/KeyText"
+        android:visibility="gone"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/customEditInput"
+            style="@style/CustomEditTextLeft"
+            android:background="@null"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="true"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbarThumbVertical="@color/hintColor"
+            android:scrollbarFadeDuration="800"
+            android:scrollbarSize="@dimen/dp_1"
+            android:paddingRight="@dimen/dp_32"
+            android:textStyle="bold"
+            android:minHeight="30dp"
+            />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/customEditDelete"
+            android:src="@drawable/ic_delete"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            android:background="@drawable/sl_transparent_press_no_stroke"
+            />
+
+    </RelativeLayout>
+
+
+    <include layout="@layout/ly_line_theme"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:id="@+id/customCheckInfo"
+        style="@style/DetailText"
+        android:textSize="@dimen/fontSize_12sp"
+        android:text="必填"
+        android:textColor="@color/customRed"
+        android:visibility="gone"
+        />
+
+
+</LinearLayout>

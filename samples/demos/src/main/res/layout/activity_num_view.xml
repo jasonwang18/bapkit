@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.supcon.mes.mbap.demo.MainActivity"
+    android:background="@color/bgGray2"
+    android:orientation="vertical"
+    >
+
+    <com.supcon.mes.mbap.view.CustomNumView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/numView"
+        android:background="@color/white"
+        app:necessary="true"
+        app:num = "100"
+        app:editable="true"
+        app:add_icon_res="@drawable/ic_btn_add"
+        app:minus_icon_res="@drawable/ic_btn_add"
+        />
+    <com.supcon.mes.mbap.view.CustomWaveView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:id="@+id/waveView"
+        app:wave_color="@color/customBlue"
+        app:wave_duration="1000"
+        app:wave_height="50"
+        app:wave_text="124345"
+        app:text_color="@color/white"
+        />
+
+</LinearLayout>

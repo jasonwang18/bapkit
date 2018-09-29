@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/customEditText"
+            style="@style/KeyText"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/customEditDelete"
+            android:src="@drawable/ic_clear_holo_light"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="0dp"
+            android:visibility="gone"
+            android:background="@drawable/sl_transparent_press_no_stroke"
+            />
+    </RelativeLayout>
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/customEditInput"
+        style="@style/ContentText"
+        android:background="@null"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="true"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="@color/hintColor"
+        android:scrollbarFadeDuration="800"
+        android:scrollbarSize="@dimen/dp_1"
+        android:paddingRight="@dimen/dp_8"
+        />
+
+
+
+
+</LinearLayout>
