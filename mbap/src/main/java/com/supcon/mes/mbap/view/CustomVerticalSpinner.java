@@ -18,6 +18,8 @@ import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
 import com.supcon.mes.mbap.utils.TextHelper;
 
+import static com.supcon.mes.mbap.MBapConstant.CONTENT_CLEAN;
+
 /**
  * Created by wangshizhan on 2017/8/21.
  * Email:wangshizhan@supcon.com
@@ -33,7 +35,7 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
     TextView customSpinnerText;
     TextView customSpinner;
     ImageView customSpinnerIcon;
-
+    ImageView customDeleteIcon;
     private boolean isNecessary, isEditable;
     private int mTextColor;
     private int mTextHeight, mTextWidth;
@@ -69,7 +71,7 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
         customSpinnerText = findViewById(R.id.customSpinnerText);
         customSpinner = findViewById(R.id.customSpinner);
         customSpinnerIcon = findViewById(R.id.customSpinnerIcon);
-
+        customDeleteIcon = findViewById(R.id.customDeleteIcon);
         if(!TextUtils.isEmpty(mText)){
             customSpinnerText.setText(mText);
             customSpinnerText.setVisibility(View.VISIBLE);
@@ -79,7 +81,8 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
         }
 
         if(!TextUtils.isEmpty(mContent)){
-            customSpinner.setText(mContent);
+            setSpinner(mContent);
+//            customSpinner.setText(mContent);
         }
 
         if(mTextSize!=0){
@@ -176,6 +179,11 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
             CustomContentTextDialog.showContent(getContext(), customSpinner.getText().toString());
             return true;
         });
+
+        customDeleteIcon.setOnClickListener(v -> {
+            setSpinner("");
+            onChildViewClick(CustomVerticalSpinner.this, CONTENT_CLEAN, "");
+        });
     }
 
     public void setTextStyle(int textStyle){
@@ -253,6 +261,12 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
 
     public void setSpinner(String value){
         customSpinner.setText(value);
+        if(TextUtils.isEmpty(value) || !isEditable){
+            customDeleteIcon.setVisibility(GONE);
+        }
+        else {
+            customDeleteIcon.setVisibility(VISIBLE);
+        }
 
     }
 

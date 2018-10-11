@@ -50,7 +50,7 @@
         android:layout_width="180dp"
         android:layout_height="match_parent"
         android:id="@+id/customSpinner"
-        android:drawableRight="@drawable/ic_choose"
+        android:drawableRight="@drawable/ic_choose_gray"
         android:layout_toRightOf="@+id/customText"
         android:layout_centerVertical="true"
         android:visibility="gone"

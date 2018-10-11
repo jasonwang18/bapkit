@@ -11,6 +11,7 @@
         style="@style/KeyText"
         android:gravity="center_vertical"
         />
+
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -24,13 +25,25 @@
         android:scaleType="centerInside"
         android:background="@drawable/sl_transparent_press_no_stroke"
         />
+    <ImageView
+        android:id="@+id/customDeleteIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_clean"
+        android:scaleType="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_centerVertical="true"
+        android:background="@drawable/sl_transparent_press_no_stroke"
+        android:visibility="gone"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/customValue"
         style="@style/ContentText"
         android:layout_toRightOf="@+id/customKey"
-        android:layout_toLeftOf="@+id/customEdit"
+        android:layout_toLeftOf="@+id/customDeleteIcon"
         android:background="@null"
         android:paddingRight="2dp"
         />

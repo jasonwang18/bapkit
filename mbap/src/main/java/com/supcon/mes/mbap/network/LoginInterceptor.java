@@ -139,7 +139,7 @@ public class LoginInterceptor extends BaseInterceptor {
             try {
                 jsonObject.put("success", false);
                 jsonObject.put("errMsg", errorDetail);
-                jsonObject.put("result", "");
+                jsonObject.put("result", null);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

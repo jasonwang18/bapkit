@@ -23,6 +23,8 @@ import com.supcon.mes.mbap.R;
 import com.supcon.mes.mbap.utils.Orientation;
 import com.supcon.mes.mbap.utils.TextHelper;
 
+import static com.supcon.mes.mbap.MBapConstant.CONTENT_CLEAN;
+
 /**
  * Created by wangshizhan on 2017/8/21.
  * Email:wangshizhan@supcon.com
@@ -39,6 +41,7 @@ public class CustomSpinner extends BaseLinearLayout implements View.OnClickListe
     TextView customSpinnerText;
     TextView customSpinner;
     ImageView customSpinnerIcon;
+    ImageView customDeleteIcon;
 
     private boolean isNecessary, isEditable;
     private int mTextColor;
@@ -76,7 +79,7 @@ public class CustomSpinner extends BaseLinearLayout implements View.OnClickListe
         customSpinnerText = findViewById(R.id.customSpinnerText);
         customSpinner = findViewById(R.id.customSpinner);
         customSpinnerIcon = findViewById(R.id.customSpinnerIcon);
-
+        customDeleteIcon = findViewById(R.id.customDeleteIcon);
         if(!TextUtils.isEmpty(mText)){
             customSpinnerText.setText(mText);
             customSpinnerText.setVisibility(View.VISIBLE);
@@ -86,7 +89,8 @@ public class CustomSpinner extends BaseLinearLayout implements View.OnClickListe
         }
 
         if(!TextUtils.isEmpty(mContent)){
-            customSpinner.setText(mContent);
+//            customSpinner.setText(mContent);
+            setSpinner(mContent);
         }
 
         if(mTextSize!=0){
@@ -178,12 +182,17 @@ public class CustomSpinner extends BaseLinearLayout implements View.OnClickListe
             CustomContentTextDialog.showContent(getContext(), customSpinner.getText().toString());
             return true;
         });
+
+        customDeleteIcon.setOnClickListener(v -> {
+            setSpinner("");
+            onChildViewClick(CustomSpinner.this, CONTENT_CLEAN, "");
+        });
     }
 
 
 
     public void setTextWidth(int width){
-        LayoutParams lp = (LayoutParams) customSpinnerText.getLayoutParams();
+        ViewGroup.LayoutParams lp =  customSpinnerText.getLayoutParams();
         lp.width = width;
         customSpinnerText.setLayoutParams(lp);
 
@@ -230,7 +239,12 @@ public class CustomSpinner extends BaseLinearLayout implements View.OnClickListe
 
     public void setSpinner(String value){
         customSpinner.setText(value);
-
+        if(TextUtils.isEmpty(value) || !isEditable){
+            customDeleteIcon.setVisibility(GONE);
+        }
+        else {
+            customDeleteIcon.setVisibility(VISIBLE);
+        }
     }
 
     public void setSpinnerTextSize(int textSize){

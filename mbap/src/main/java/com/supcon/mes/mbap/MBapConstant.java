@@ -9,7 +9,7 @@ public interface MBapConstant {
 
     int UNHANDLE = 0;
     int HANDLE = 1;
-
+    int CONTENT_CLEAN = -1;
 
     interface SPKey{
 

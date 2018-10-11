@@ -8,17 +8,15 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseLinearLayout;
 import com.supcon.common.view.listener.OnChildViewClickListener;
 import com.supcon.mes.mbap.MBapApp;
-import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
 import com.supcon.mes.mbap.utils.TextHelper;
-
-import static com.supcon.mes.mbap.MBapConfig.REQUIRED_MARK;
 
 /**
  * Created by wangshizhan on 2017/8/21.
@@ -32,6 +30,7 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
     TextView customDateText;
     TextView customDateInput;
     ImageView customDateIcon;
+    ImageView customDeleteIcon;
     private int mTextWidth;
 
     private String mGravity;
@@ -69,6 +68,7 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
         customDateText = findViewById(R.id.customDateText);
         customDateInput = findViewById(R.id.customDateInput);
         customDateIcon = findViewById(R.id.customDateIcon);
+        customDeleteIcon = findViewById(R.id.customDeleteIcon);
 
         if(!TextUtils.isEmpty(mText)) {
             customDateText.setText(mText);
@@ -76,7 +76,8 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
         }
 
         if(!TextUtils.isEmpty(mContent)) {
-            customDateInput.setText(mContent);
+//            customDateInput.setText(mContent);
+            setDate(mContent);
         }
 
         if(mTextSize!=0) {
@@ -142,6 +143,10 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
 //        customDateInput.setOnClickListener(this);
         customDateIcon.setOnClickListener(this);
 //        customDateText.setOnClickListener(this);
+        customDeleteIcon.setOnClickListener(v -> {
+            setDate("");
+            onChildViewClick(CustomDateView.this, -1, customDateInput.getText().toString());
+        });
     }
 
     @Override
@@ -165,7 +170,7 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
 
 
     public void setTextWidth(int width){
-        LayoutParams lp = (LayoutParams) customDateText.getLayoutParams();
+        ViewGroup.LayoutParams lp =  customDateText.getLayoutParams();
         lp.width = width;
         customDateText.setLayoutParams(lp);
 
@@ -192,6 +197,13 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
 
     public void setDate(String date){
         customDateInput.setText(date);
+
+        if(TextUtils.isEmpty(date) || !isEditable){
+            customDeleteIcon.setVisibility(GONE);
+        }
+        else {
+            customDeleteIcon.setVisibility(VISIBLE);
+        }
     }
 
     public String getDate(){

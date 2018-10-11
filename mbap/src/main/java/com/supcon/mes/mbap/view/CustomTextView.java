@@ -19,6 +19,8 @@ import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
 import com.supcon.mes.mbap.utils.TextHelper;
 
+import static com.supcon.mes.mbap.MBapConstant.CONTENT_CLEAN;
+
 /**
  * Created by wangshizhan on 2017/9/20.
  * Email:wangshizhan@supcon.com
@@ -29,7 +31,7 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
     TextView customKey;
     TextView customValue;
     ImageView customEdit;
-
+    ImageView customDeleteIcon;
     private String mKey, mValue, mGravity;
     private int mTextSize;
     private int mKeyWidth, mKeyHeight;
@@ -68,14 +70,15 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
         customKey = findViewById(R.id.customKey);
         customValue = findViewById(R.id.customValue);
         customEdit = findViewById(R.id.customEdit);
-
+        customDeleteIcon = findViewById(R.id.customDeleteIcon);
         if(!TextUtils.isEmpty(mKey)){
             customKey.setText(mKey);
             customKey.setVisibility(View.VISIBLE);
         }
 
         if(!TextUtils.isEmpty(mValue)){
-            customValue.setText(mValue);
+//            customValue.setText(mValue);
+            setValue(mValue);
         }
 
         if(mTextSize != 0){
@@ -185,6 +188,13 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
             CustomContentTextDialog.showContent(getContext(), customValue.getText().toString());
             return true;
         });
+
+        customDeleteIcon.setOnClickListener(v -> {
+
+            setValue("");
+            onChildViewClick(CustomTextView.this, CONTENT_CLEAN, "");
+
+        });
     }
 
     public void setInputGravity(int gravity){
@@ -195,8 +205,14 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
         customKey.setText(text);
     }
 
-    public void setValue(String text){
-        customValue.setText(text);
+    public void setValue(String value){
+        customValue.setText(value);
+        if(TextUtils.isEmpty(value) || !isEditable){
+            customDeleteIcon.setVisibility(GONE);
+        }
+        else {
+            customDeleteIcon.setVisibility(VISIBLE);
+        }
     }
 
     public void setKeyColor(int color){

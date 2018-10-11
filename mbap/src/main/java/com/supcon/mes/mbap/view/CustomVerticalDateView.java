@@ -30,7 +30,7 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
     TextView customDateText;
     TextView customDateInput;
     ImageView customDateIcon;
-
+    ImageView customDeleteIcon;
     private String mGravity;
     private int mPadding;
     private int mTextHeight;
@@ -68,6 +68,7 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
         customDateText = findViewById(R.id.customDateText);
         customDateInput = findViewById(R.id.customDateInput);
         customDateIcon = findViewById(R.id.customDateIcon);
+        customDeleteIcon = findViewById(R.id.customDeleteIcon);
 
         if(!TextUtils.isEmpty(mText)) {
             customDateText.setText(mText);
@@ -75,7 +76,8 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
         }
 
         if(!TextUtils.isEmpty(mContent)) {
-            customDateInput.setText(mContent);
+            setDate(mContent);
+//            customDateInput.setText(mContent);
         }
 
         if(mTextSize!=0) {
@@ -143,6 +145,12 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
 //        customDateInput.setOnClickListener(this);
         customDateIcon.setOnClickListener(this);
 //        customDateText.setOnClickListener(this);
+
+
+        customDeleteIcon.setOnClickListener(v -> {
+            setDate("");
+            onChildViewClick(CustomVerticalDateView.this, -1, customDateInput.getText().toString());
+        });
     }
 
     @Override
@@ -186,6 +194,12 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
 
     public void setDate(String date){
         customDateInput.setText(date);
+        if(TextUtils.isEmpty(date) || !isEditable){
+            customDeleteIcon.setVisibility(GONE);
+        }
+        else {
+            customDeleteIcon.setVisibility(VISIBLE);
+        }
     }
 
     public String getDate(){

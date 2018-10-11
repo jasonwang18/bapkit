@@ -9,13 +9,14 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:id="@+id/customKey"
             style="@style/KeyText"
-            android:layout_marginRight="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_60"
 
             />
+
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -29,7 +30,18 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/sl_transparent_press_no_stroke"
             />
-
+        <ImageView
+            android:id="@+id/customDeleteIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_clean"
+            android:scaleType="center"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_40"
+            android:layout_centerVertical="true"
+            android:background="@drawable/sl_transparent_press_no_stroke"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 
     <TextView
