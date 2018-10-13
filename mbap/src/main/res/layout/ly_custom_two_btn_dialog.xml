@@ -50,14 +50,7 @@
         android:layout_gravity="right|bottom"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/grayBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/sl_common"
-            android:text="取消"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/fontSize_16sp" />
+
 
         <Button
             android:id="@+id/redBtn"
@@ -76,8 +69,16 @@
             android:text="确定"
             android:textColor="@color/customBlue4"
             android:textSize="@dimen/fontSize_16sp"
-            android:visibility="gone" />
-
+            android:visibility="gone"
+            />
+        <Button
+            android:id="@+id/grayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sl_common"
+            android:text="取消"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/fontSize_16sp" />
     </LinearLayout>
 
 </LinearLayout>

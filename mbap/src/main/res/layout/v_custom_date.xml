@@ -45,7 +45,7 @@
             android:id="@+id/customDateIcon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_date2"
+            android:src="@drawable/ic_date"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_10"
             android:layout_centerVertical="true"
