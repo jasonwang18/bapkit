@@ -66,7 +66,7 @@ public class CustomRoundTextImageView extends AppCompatImageView {
                 mTextString     = a.getString(R.styleable.CustomRoundTextImageView_text);
                 mTextColor      = a.getColor(R.styleable.CustomRoundTextImageView_text_color, Color.BLACK);
                 mTextSize       = a.getDimensionPixelSize(R.styleable.CustomRoundTextImageView_round_text_size, 22);
-                mTextPadding    = a.getDimensionPixelSize(R.styleable.CustomCircleTextImageView_citv_text_padding, 5);
+                mTextPadding    = a.getDimensionPixelSize(R.styleable.CustomRoundTextImageView_padding, 5);
             }
             catch (Exception e){
 
@@ -89,7 +89,7 @@ public class CustomRoundTextImageView extends AppCompatImageView {
         mTextPaint.setAntiAlias(true);
         mTextPaint.setColor(mTextColor);
         mTextPaint.setTextSize(mTextSize);
-        mTextPaint.setTypeface(Typeface.create(new String(), Typeface.BOLD_ITALIC));
+        mTextPaint.setTypeface(Typeface.create(new String(), Typeface.BOLD));
     }
 
     @Override
@@ -139,7 +139,7 @@ public class CustomRoundTextImageView extends AppCompatImageView {
                 StaticLayout layout = new StaticLayout(mTextString, mTextPaint, getWidth() - 30, Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
                 // 这里的参数300，表示字符串的长度，当满300时，就会换行，也可以使用“\r\n”来实现换行
                 canvas.save();
-                canvas.translate(20, 20);//从100，100开始画
+                canvas.translate(mTextPadding, mTextPadding);//从100，100开始画
                 layout.draw(canvas);
                 canvas.restore();//别忘了restore
             }
@@ -192,8 +192,8 @@ public class CustomRoundTextImageView extends AppCompatImageView {
     @Override
     public void setOnClickListener(OnClickListener l) {
         super.setOnClickListener(l);
-        if (l != null)
-            setOnClickListener(l);
+//        if (l != null)
+//            setOnClickListener(l);
     }
 
     public String getTextString() {

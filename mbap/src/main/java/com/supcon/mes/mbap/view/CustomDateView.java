@@ -9,24 +9,27 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseLinearLayout;
-import com.supcon.common.view.listener.OnChildViewClickListener;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.utils.TextHelper;
+
+import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
 
 /**
  * Created by wangshizhan on 2017/8/21.
  * Email:wangshizhan@supcon.com
  */
 
-public class CustomDateView extends BaseLinearLayout implements View.OnClickListener{
+public class CustomDateView extends BaseLinearLayout implements View.OnClickListener, ICustomView{
 
-    private String  mText, mContent;
-    private float mTextSize;
+    private String  mText, mContent, mKey;
+    private float mTextSize, mKeyTextSize, mContentTextSize;
     TextView customDateText;
     TextView customDateInput;
     ImageView customDateIcon;
@@ -37,7 +40,7 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
     private int mPadding;
     private int mTextColor;
 
-    private boolean isNecessary, isEditable;
+    private boolean isNecessary, isEditable, isEnable;
     private boolean isBold;
 
     public CustomDateView(Context context) {
@@ -56,10 +59,10 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
     @Override
     protected void init(Context context, AttributeSet attrs) {
         super.init(context, attrs);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Typeface newFont = MBapApp.fontType();
-            customDateText.setTypeface(newFont);
-        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Typeface newFont = MBapApp.fontType();
+//            customDateText.setTypeface(newFont);
+//        }
     }
 
     @Override
@@ -75,14 +78,22 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
             customDateText.setVisibility(VISIBLE);
         }
 
-        if(!TextUtils.isEmpty(mContent)) {
-//            customDateInput.setText(mContent);
-            setDate(mContent);
+        if(!TextUtils.isEmpty(mKey)) {
+            customDateText.setText(mKey);
+            customDateText.setVisibility(VISIBLE);
         }
+
 
         if(mTextSize!=0) {
             customDateInput.setTextSize(mTextSize);
-//            customDateText.setTextSize(mTextSize);
+        }
+
+        if(mKeyTextSize!=0){
+            customDateText.setTextSize(mKeyTextSize);
+        }
+
+        if(mContentTextSize!= 0){
+            customDateInput.setTextSize(mContentTextSize);
         }
 
         if(!TextUtils.isEmpty(mGravity)){
@@ -122,19 +133,18 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
             setDatePadding(mPadding);
         }
 
-        if(mTextColor!=0) {
-            customDateText.setTextColor(mTextColor);
-            customDateInput.setTextColor(mTextColor);
-        }
+
 
         if(mTextWidth!=-1)
-            setTextWidth(mTextWidth);
+            setKeyWidth(mTextWidth);
         if(isNecessary)
             setNecessary(isNecessary);
-        setEnabled(isEditable);
+        setEditable(isEditable);
 
         if(isBold)
             setContentTextStyle(Typeface.BOLD);
+
+        setEnabled(isEnable);
     }
 
     @Override
@@ -144,9 +154,10 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
         customDateIcon.setOnClickListener(this);
 //        customDateText.setOnClickListener(this);
         customDeleteIcon.setOnClickListener(v -> {
-            setDate("");
+            setContent("");
             onChildViewClick(CustomDateView.this, -1, customDateInput.getText().toString());
         });
+
     }
 
     @Override
@@ -155,8 +166,11 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
         if(attrs!=null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomDateView);
             mText = array.getString(R.styleable.CustomDateView_text);
+            mKey = array.getString(R.styleable.CustomDateView_key);
             mContent = array.getString(R.styleable.CustomDateView_content);
             mTextSize = array.getInt(R.styleable.CustomDateView_text_size, 0);
+            mKeyTextSize = array.getInt(R.styleable.CustomDateView_key_size, 0);
+            mContentTextSize = array.getInt(R.styleable.CustomDateView_content_size, 0);
             mGravity = array.getString(R.styleable.CustomDateView_gravity);
             mPadding =  array.getDimensionPixelSize(R.styleable.CustomDateView_padding, 0);
             isNecessary = array.getBoolean(R.styleable.CustomDateView_necessary, false);
@@ -164,41 +178,105 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
             mTextWidth =  array.getDimensionPixelSize(R.styleable.CustomDateView_text_width, -1);
             mTextColor = array.getColor(R.styleable.CustomDateView_text_color, 0);
             isBold = array.getBoolean(R.styleable.CustomDateView_bold, false);
+            isEnable =  array.getBoolean(R.styleable.CustomDateView_enable, true);
             array.recycle();
         }
     }
 
-
-    public void setTextWidth(int width){
-        ViewGroup.LayoutParams lp =  customDateText.getLayoutParams();
-        lp.width = width;
-        customDateText.setLayoutParams(lp);
-
-    }
-
-    public void setEditable(boolean editable) {
-        isEditable = editable;
-        if(editable){
-            customDateInput.setOnClickListener(this);
-            customDateIcon.setVisibility(VISIBLE);
+    @Override
+    protected void initData() {
+        super.initData();
+        if(!TextUtils.isEmpty(mContent)) {
+            setDate(mContent);
         }
-        else {
-            customDateIcon.setVisibility(GONE);
-            customDateInput.setOnClickListener(null);
+
+        if(mTextColor!=0) {
+            setDateColor(mTextColor);
         }
     }
-
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        setEditable(enabled);
+        if(!enabled)
+            setEditable(false);
+
+        if (enabled) {
+            customDateText.setAlpha(1);
+            customDateInput.setAlpha(1);
+        } else {
+            customDateText.setAlpha(0.5f);
+            customDateInput.setAlpha(0.5f);
+        }
+
     }
 
-    public void setDate(String date){
-        customDateInput.setText(date);
+    @Override
+    public void setEditable(boolean editable) {
+        isEditable = editable;
+        if(editable){
+            customDateInput.setOnClickListener(this);
+            customDateText.setTextColor(getResources().getColor(R.color.textColorblack));
+            customDateIcon.setVisibility(VISIBLE);
+            customDateInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
+        }
+        else {
+            customDateIcon.setVisibility(GONE);
+            customDateText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+            customDateInput.setOnClickListener(null);
+            customDateInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+        }
+    }
 
-        if(TextUtils.isEmpty(date) || !isEditable){
+    @Override
+    public void setNecessary(boolean isNecessary){
+        TextHelper.setRequired(isNecessary, customDateText);
+    }
+
+    @Override
+    public boolean isNecessary() {
+        return isNecessary;
+    }
+
+    @Override
+    public boolean isEditable() {
+        return isEditable;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return TextUtils.isEmpty(getDate());
+    }
+
+    @Override
+    public void setInputType(int type) {
+        //no use
+    }
+
+    @Override
+    public void setKey(String key) {
+        customDateText.setText(key);
+    }
+
+    @Override
+    public void setKey(int keyResId) {
+        customDateText.setText(keyResId);
+    }
+
+    @Override
+    public String getKey() {
+        return customDateText.getText().toString();
+    }
+
+    @Override
+    public String getContent() {
+        return customDateInput.getText().toString();
+    }
+
+    @Override
+    public void setContent(String content) {
+        customDateInput.setText(content);
+        if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);
         }
         else {
@@ -206,14 +284,101 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
         }
     }
 
-    public String getDate(){
-        CharSequence result =  customDateInput.getText();
-        return TextUtils.isEmpty(result)?"":result.toString().trim();
-
+    @Override
+    public void setContent(int contentResId) {
+        setDate(getResources().getString(contentResId));
     }
 
-    public void setDateTextSize(int textSize){
+    public void setTextStyle(int textStyle){
+        customDateText.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    public void setContentTextStyle(int textStyle){
+        customDateInput.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    @Override
+    public void setTextFont(Typeface newFont) {
+        customDateText.setTypeface(newFont);
+        customDateInput.setTypeface(newFont);
+    }
+
+    @Override
+    public void setKeyTextSize(int textSize) {
+        customDateText.setTextSize(textSize);
+    }
+
+    @Override
+    public void setContentTextSize(int textSize) {
         customDateInput.setTextSize(textSize);
+    }
+
+    @Override
+    public void setKeyTextColor(int color) {
+        customDateText.setTextColor(color);
+    }
+
+    @Override
+    public void setContentTextColor(int color) {
+        customDateInput.setTextColor(color);
+    }
+
+    @Override
+    public void setContentPadding(int left, int top, int right, int bottom) {
+        customDateInput.setPadding(left, top, right, bottom);
+    }
+
+    @Override
+    public void setKeyTextStyle(int textStyle) {
+        customDateText.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    @Override
+    public void setEditIcon(int resId) {
+        customDateIcon.setImageResource(resId);
+    }
+
+    @Override
+    public void setClearIcon(int resId) {
+        customDeleteIcon.setImageResource(resId);
+    }
+
+    @Override
+    public void setKeyWidth(int width) {
+        ViewGroup.LayoutParams lp = customDateText.getLayoutParams();
+        lp.width = width;
+        customDateText.setLayoutParams(lp);
+    }
+
+    @Override
+    public void setKeyHeight(int height) {
+        ViewGroup.LayoutParams lp = customDateText.getLayoutParams();
+        lp.height = height;
+        customDateText.setLayoutParams(lp);
+
+        ViewGroup.LayoutParams lp2 = customDateIcon.getLayoutParams();
+        lp2.height = height;
+        customDateIcon.setLayoutParams(lp2);
+    }
+
+    @Override
+    public EditText editText() {
+        return null;
+    }
+
+    @Override
+    public TextView contentView() {
+        return customDateInput;
+    }
+
+    @Override
+    public TextView keyView() {
+        return customDateText;
+    }
+
+    @Override
+    public void setContentGravity(int gravity) {
+        customDateInput.setGravity(gravity);
     }
 
     public void setDatePadding(int padding){
@@ -236,23 +401,18 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
         customDateInput.setTextColor(color);
     }
 
-    @Override
-    public void setOnChildViewClickListener(OnChildViewClickListener onChildViewClickListener) {
-        super.setOnChildViewClickListener(onChildViewClickListener);
-
+    public void setDateTextSize(int textSize){
+        customDateInput.setTextSize(textSize);
     }
 
-    public void setNecessary(boolean isNecessary){
-        this.isNecessary = isNecessary;
-        TextHelper.setRequired(isNecessary, customDateText);
+    public void setDate(String date){
+        setContent(date);
     }
 
-    public void setTextStyle(int textStyle){
-        customDateText.setTypeface(Typeface.defaultFromStyle(textStyle));
-    }
+    public String getDate(){
+        CharSequence result =  customDateInput.getText();
+        return TextUtils.isEmpty(result)?"":result.toString().trim();
 
-    public void setContentTextStyle(int textStyle){
-        customDateInput.setTypeface(Typeface.defaultFromStyle(textStyle));
     }
 
     @Override

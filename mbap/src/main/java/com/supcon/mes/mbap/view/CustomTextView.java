@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,26 +18,29 @@ import com.supcon.common.view.base.view.BaseRelativeLayout;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.utils.TextHelper;
 
-import static com.supcon.mes.mbap.MBapConstant.CONTENT_CLEAN;
+import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
+import static com.supcon.mes.mbap.MBapConstant.ViewAction.CONTENT_CLEAN;
+
 
 /**
  * Created by wangshizhan on 2017/9/20.
  * Email:wangshizhan@supcon.com
  */
 
-public class CustomTextView extends BaseRelativeLayout implements View.OnClickListener{
+public class CustomTextView extends BaseRelativeLayout implements View.OnClickListener, ICustomView{
 
     TextView customKey;
     TextView customValue;
     ImageView customEdit;
     ImageView customDeleteIcon;
-    private String mKey, mValue, mGravity;
-    private int mTextSize;
-    private int mKeyWidth, mKeyHeight;
+    private String mKey, mText, mValue, mGravity;
+    private int mKeyTextSize, mContentTextSize, mTextSize;
+    private int mKeyWidth, mKeyHeight, mTextWidth, mTextHeight;
     private int mTextKeyColor, mTextValueColor;
-    private boolean isNecessary, isEditable;
+    private boolean isNecessary, isEditable, isEnable;
     private int iconRes ;
     private int maxLines ;
     private boolean isBold;
@@ -52,11 +56,11 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
     @Override
     protected void init(Context context, AttributeSet attrs) {
         super.init(context, attrs);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Typeface newFont = MBapApp.fontType();
-            customKey.setTypeface(newFont);
-            customValue.setTypeface(newFont);
-        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Typeface newFont = MBapApp.fontType();
+//            customKey.setTypeface(newFont);
+//            customValue.setTypeface(newFont);
+//        }
     }
 
     @Override
@@ -76,23 +80,16 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
             customKey.setVisibility(View.VISIBLE);
         }
 
+        if(!TextUtils.isEmpty(mText)){
+            customKey.setText(mText);
+            customKey.setVisibility(View.VISIBLE);
+        }
+
         if(!TextUtils.isEmpty(mValue)){
 //            customValue.setText(mValue);
             setValue(mValue);
         }
 
-        if(mTextSize != 0){
-//            customKey.setTextSize(mTextSize);
-            customValue.setTextSize(mTextSize);
-        }
-
-        if(mTextKeyColor!= 0){
-            customKey.setTextColor(mTextKeyColor);
-        }
-
-        if(mTextValueColor!= 0){
-            customValue.setTextColor(mTextValueColor);
-        }
 
         if(!TextUtils.isEmpty(mGravity)){
 
@@ -135,6 +132,14 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
             setKeyHeight(mKeyHeight);
         }
 
+        if(mTextHeight!=-1){
+            setKeyHeight(mTextHeight);
+        }
+
+        if(mTextWidth!=-1){
+            setKeyWidth(mTextWidth);
+        }
+
         if(isNecessary)
             setNecessary(isNecessary);
 
@@ -150,6 +155,8 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
 
         if(isBold)
             setContentTextStyle(Typeface.BOLD);
+
+        setEnabled(isEnable);
     }
 
 
@@ -159,19 +166,25 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
 
         if(attrs!=null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomTextView);
-            mKey= array.getString(R.styleable.CustomTextView_text_key);
-            mValue= array.getString(R.styleable.CustomTextView_text_value);
+            mKey= array.getString(R.styleable.CustomTextView_key);
+            mText = array.getString(R.styleable.CustomTextView_text);
+            mValue= array.getString(R.styleable.CustomTextView_content);
             mGravity = array.getString(R.styleable.CustomTextView_gravity);
-            mTextSize = array.getInt(R.styleable.CustomTextView_text_size, 0);
-            mTextKeyColor = array.getColor(R.styleable.CustomTextView_text_key_color, 0);
-            mTextValueColor = array.getColor(R.styleable.CustomTextView_text_value_color, 0);
-            mKeyWidth =  array.getDimensionPixelSize(R.styleable.CustomTextView_text_key_width, -1);
-            mKeyHeight =  array.getDimensionPixelSize(R.styleable.CustomTextView_text_key_height, -1);
+            mTextSize = array.getInt(R.styleable.CustomTextView_key_size, 0);
+            mKeyTextSize = array.getInt(R.styleable.CustomTextView_key_size, 0);
+            mContentTextSize = array.getInt(R.styleable.CustomTextView_content_size, 0);
+            mTextKeyColor = array.getColor(R.styleable.CustomTextView_key_color, 0);
+            mTextValueColor = array.getColor(R.styleable.CustomTextView_content_color, 0);
+            mKeyWidth =  array.getDimensionPixelSize(R.styleable.CustomTextView_key_width, -1);
+            mKeyHeight =  array.getDimensionPixelSize(R.styleable.CustomTextView_key_height, -1);
+            mTextWidth = array.getDimensionPixelSize(R.styleable.CustomTextView_text_width, -1);
+            mTextHeight= array.getDimensionPixelSize(R.styleable.CustomTextView_text_height, -1);
             isNecessary = array.getBoolean(R.styleable.CustomTextView_necessary, false);
             isEditable = array.getBoolean(R.styleable.CustomTextView_editable, false);
             iconRes = array.getResourceId(R.styleable.CustomTextView_icon_res, 0);
             maxLines = array.getInt(R.styleable.CustomTextView_max_lines, 0);
             isBold = array.getBoolean(R.styleable.CustomTextView_bold, false);
+            isEnable = array.getBoolean(R.styleable.CustomTextView_enable, true);
             array.recycle();
         }
     }
@@ -181,7 +194,6 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
     protected void initListener() {
         super.initListener();
 
-//        customKey.setOnClickListener(this);
         customValue.setOnClickListener(this);
         customEdit.setOnClickListener(this);
         customValue.setOnLongClickListener(v -> {
@@ -191,28 +203,256 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
 
         customDeleteIcon.setOnClickListener(v -> {
 
-            setValue("");
+            setContent("");
             onChildViewClick(CustomTextView.this, CONTENT_CLEAN, "");
 
         });
     }
 
-    public void setInputGravity(int gravity){
-        customValue.setGravity(gravity);
+    @Override
+    protected void initData() {
+        super.initData();
+        if(!TextUtils.isEmpty(mValue)){
+            setContent(mValue);
+        }
+
+        if(mTextKeyColor!= 0){
+            customKey.setTextColor(mTextKeyColor);
+        }
+
+        if(mTextValueColor!= 0){
+            customValue.setTextColor(mTextValueColor);
+        }
+
+        if(mTextSize!=0){
+            setValueTextSize(mTextSize);
+        }
+
+        if(mKeyTextSize != 0){
+//            customKey.setTextSize(mTextSize);
+            setKeyTextSize(mKeyTextSize);
+        }
+
+        if(mContentTextSize != 0)
+            setContentTextSize(mContentTextSize);
+
     }
 
+    @Override
+    public void setKey(int keyResId) {
+        customKey.setText(keyResId);
+    }
+
+    @Override
     public void setKey(String text){
         customKey.setText(text);
     }
 
-    public void setValue(String value){
-        customValue.setText(value);
-        if(TextUtils.isEmpty(value) || !isEditable){
+    @Override
+    public String getKey() {
+        return customKey.getText().toString().trim();
+    }
+
+    @Override
+    public String getContent() {
+        return customValue.getText().toString();
+    }
+
+    @Override
+    public void setContent(String content) {
+        customValue.setText(content);
+        if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);
         }
         else {
             customDeleteIcon.setVisibility(VISIBLE);
         }
+    }
+
+    @Override
+    public void setContent(int contentResId) {
+        setValue(getResources().getString(contentResId));
+    }
+
+    @Override
+    public void setKeyWidth(int width){
+        ViewGroup.LayoutParams lp = customKey.getLayoutParams();
+        lp.width = width;
+        customKey.setLayoutParams(lp);
+    }
+
+    @Override
+    public void setKeyHeight(int height){
+        ViewGroup.LayoutParams lp = customKey.getLayoutParams();
+        lp.height = height;
+        customKey.setLayoutParams(lp);
+
+        if(height == 0){
+            customEdit.setVisibility(GONE);
+        }
+        else {
+            ViewGroup.LayoutParams lp2 = customEdit.getLayoutParams();
+            lp2.height = height;
+            customEdit.setLayoutParams(lp2);
+        }
+    }
+
+    @Override
+    public EditText editText() {
+        return null;
+    }
+
+    @Override
+    public TextView contentView() {
+        return customValue;
+    }
+
+    @Override
+    public TextView keyView() {
+        return customKey;
+    }
+
+    @Override
+    public void setContentGravity(int gravity) {
+        customValue.setGravity(gravity);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        if(!enabled)
+            setEditable(false);
+
+        if (enabled) {
+            customKey.setAlpha(1);
+            customValue.setAlpha(1);
+        } else {
+            customKey.setAlpha(0.5f);
+            customValue.setAlpha(0.5f);
+        }
+    }
+
+    @Override
+    public void setEditable(boolean isEditable){
+        this.isEditable = isEditable;
+        if(isEditable){
+            customEdit.setVisibility(VISIBLE);
+            customValue.setOnClickListener(this);
+            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.textColorblack));
+            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.editableTextColor));
+        }
+        else{
+            customEdit.setVisibility(GONE);
+            customValue.setOnClickListener(null);
+            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.notEditableTextColor));
+            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.notEditableTextColor));
+        }
+
+    }
+
+    @Override
+    public void setNecessary(boolean isNecessary){
+        TextHelper.setRequired(isNecessary, customKey);
+    }
+
+    @Override
+    public boolean isNecessary() {
+        return isNecessary;
+    }
+
+    @Override
+    public boolean isEditable() {
+        return isEditable;
+    }
+
+    @Override
+    public void setInputType(int type) {
+        //no use
+    }
+
+    public void setTextStyle(int textStyle){
+        customKey.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    public void setContentTextStyle(int textStyle){
+        customValue.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    @Override
+    public void setTextFont(Typeface newFont) {
+        customKey.setTypeface(newFont);
+        customValue.setTypeface(newFont);
+    }
+
+    @Override
+    public void setKeyTextSize(int textSize) {
+        customKey.setTextSize(textSize);
+    }
+
+    @Override
+    public void setContentTextSize(int textSize) {
+        customValue.setTextSize(textSize);
+    }
+
+    @Override
+    public void setKeyTextColor(int color) {
+        customKey.setTextColor(color);
+    }
+
+    @Override
+    public void setContentTextColor(int color) {
+        customValue.setTextColor(color);
+    }
+
+    @Override
+    public void setContentPadding(int left, int top, int right, int bottom) {
+        customValue.setPadding(left, top, right, bottom);
+    }
+
+    @Override
+    public void setKeyTextStyle(int textStyle) {
+        customKey.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    @Override
+    public void setEditIcon(int resId) {
+        customEdit.setImageResource(resId);
+    }
+
+    @Override
+    public void setClearIcon(int resId) {
+        customDeleteIcon.setImageResource(resId);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return TextUtils.isEmpty(getContent());
+    }
+
+    public void setIconRes(int iconRes){
+        if(iconRes!=0){
+            customEdit.setImageResource(iconRes);
+        }
+    }
+
+    public void setValueTextSize(int textSize){
+        customValue.setTextSize(textSize);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if(isEditable)
+            onChildViewClick(this, 0);
+
+    }
+
+    public TextView getCustomValue() {
+        return customValue;
+    }
+
+    public void setValue(String value){
+        setContent(value);
     }
 
     public void setKeyColor(int color){
@@ -227,84 +467,7 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
         return customValue.getText().toString().trim();
     }
 
-    public String getKey() {
-        return customKey.getText().toString().trim();
-    }
-
-    public void setKeyWidth(int width){
-        ViewGroup.LayoutParams lp = customKey.getLayoutParams();
-        lp.width = width;
-        customKey.setLayoutParams(lp);
-
-    }
-
-    public void setKeyHeight(int height){
-        ViewGroup.LayoutParams lp = customKey.getLayoutParams();
-        lp.height = height;
-        customKey.setLayoutParams(lp);
-
-    }
-
-    public void setValueTextSize(int textSize){
-        customValue.setTextSize(textSize);
-    }
-
-    public void setEditable(boolean isEditable){
-        this.isEditable = isEditable;
-        if(isEditable){
-            customEdit.setVisibility(VISIBLE);
-            customValue.setOnClickListener(this);
-        }
-        else{
-            customEdit.setVisibility(GONE);
-            customValue.setOnClickListener(null);
-        }
-
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        setEditable(enabled);
-    }
-
-    public void setNecessary(boolean isNecessary){
-
-//        if(isNecessary){
-//            customKey.setTextColor(getResources().getColor(R.color.customRed));
-//        }
-//        else {
-//            customKey.setTextColor(getResources().getColor(MBapConfig.NECESSARY_FALSE_COLOR));
-//        }
-        TextHelper.setRequired(isNecessary, customKey);
-
-    }
-
-    public void setTextStyle(int textStyle){
-        customKey.setTypeface(Typeface.defaultFromStyle(textStyle));
-    }
-
-    public void setContentTextStyle(int textStyle){
-        customValue.setTypeface(Typeface.defaultFromStyle(textStyle));
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        if(isEditable)
-            onChildViewClick(this, 0);
-
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (isEditable) {
-            return false;
-        }
-        return true;
-    }
-    
-    public TextView getCustomValue() {
-        return customValue;
+    public void setInputGravity(int gravity){
+        customValue.setGravity(gravity);
     }
 }

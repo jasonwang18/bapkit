@@ -5,47 +5,49 @@
     android:orientation="horizontal"
     >
     <TextView
-        android:layout_width="80dp"
+        android:layout_width="@dimen/custom_view_width"
         android:layout_height="match_parent"
         android:id="@+id/customKey"
         style="@style/KeyText"
         android:gravity="center_vertical"
         />
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:padding="@dimen/dp_5"
-        android:layout_centerVertical="true"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_search_99"
-        android:visibility="gone"
-        android:id="@+id/customEdit"
-        android:layout_marginRight="10dp"
-        android:scaleType="centerInside"
-        android:background="@drawable/sl_transparent_press_no_stroke"
-        />
-    <ImageView
-        android:id="@+id/customDeleteIcon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_clean"
-        android:scaleType="center"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_40"
         android:layout_centerVertical="true"
-        android:background="@drawable/sl_transparent_press_no_stroke"
-        android:visibility="gone"
-        />
+        android:id="@+id/iconLayout"
+        >
+        <ImageView
+            android:id="@+id/customDeleteIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_clear"
+            android:scaleType="center"
+            android:background="@drawable/sl_transparent_press_no_stroke"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_search_99"
+            android:visibility="visible"
+            android:id="@+id/customEdit"
+            android:scaleType="center"
+            android:background="@drawable/sl_transparent_press_no_stroke"
+            />
+    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/customValue"
         style="@style/ContentText"
         android:layout_toRightOf="@+id/customKey"
-        android:layout_toLeftOf="@+id/customDeleteIcon"
+        android:layout_toLeftOf="@+id/iconLayout"
         android:background="@null"
-        android:paddingRight="2dp"
+        android:gravity="center_vertical"
         />
 
 </RelativeLayout>

@@ -53,7 +53,7 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
     private boolean isNecessary;
     private boolean isIconVisible;
     private GalleryAdapter mGalleryAdapter;
-    private boolean isEditable;
+    private boolean isEditable, isEnable;
     private String imgUrl;
 
     public static final int ACTION_VIEW = 10;
@@ -128,6 +128,8 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
         if(mTextHeight!=-1){
             setTextHeight(mTextHeight);
         }
+
+        setEnabled(isEnable);
     }
 
 
@@ -148,6 +150,7 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
             isIconVisible = array.getBoolean(R.styleable.CustomGalleryView_icon_visible, false);
             mIconResId = array.getResourceId(R.styleable.CustomGalleryView_icon_res, -1);
             mTextHeight = array.getDimensionPixelSize(R.styleable.CustomGalleryView_text_height, -1);
+            isEnable =  array.getBoolean(R.styleable.CustomGalleryView_enable, true);
             array.recycle();
         }
     }
@@ -167,6 +170,19 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
 
             onChildViewClick(view, ACTION_TAKE_PICTURE_FROM_CAMERA, -1);
         });
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        if(!enabled)
+            setEditable(false);
+
+        if (enabled) {
+            customGalleryText.setAlpha(1);
+        } else {
+            customGalleryText.setAlpha(0.5f);
+        }
     }
 
     public void setTextHeight(int height){

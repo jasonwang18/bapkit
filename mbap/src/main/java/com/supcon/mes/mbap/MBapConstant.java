@@ -9,7 +9,14 @@ public interface MBapConstant {
 
     int UNHANDLE = 0;
     int HANDLE = 1;
-    int CONTENT_CLEAN = -1;
+
+    float KEY_RADIO = 1.1f;
+
+    interface ViewAction{
+        int CONTENT_CLEAN = -1;
+        int NORMAL = 0;
+        int CONTENT_COPY = 1;
+    }
 
     interface SPKey{
 

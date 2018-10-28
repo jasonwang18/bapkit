@@ -84,6 +84,8 @@ public class CustomCheckBox extends BaseLinearLayout implements View.OnClickList
         if(isNecessary)
             setNecessary(isNecessary);
 
+        setEnable(isEnable);
+
     }
 
     public void setTextWidth(int width){
@@ -146,9 +148,11 @@ public class CustomCheckBox extends BaseLinearLayout implements View.OnClickList
         isEnable = enable;
         if(!isEnable){
             customCheckBoxIcon.getBackground().setAlpha(100);
+            customCheckBoxText.setAlpha(0.5f);
         }
         else{
             customCheckBoxIcon.getBackground().setAlpha(255);
+            customCheckBoxText.setAlpha(1);
         }
     }
 

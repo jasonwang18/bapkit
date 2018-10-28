@@ -196,7 +196,7 @@ public class XEditText extends BaseLinearLayout implements View.OnTouchListener{
             mTextHeight = array.getDimensionPixelSize(R.styleable.XEditText_text_height, -1);
             mTextWidth = array.getDimensionPixelSize(R.styleable.XEditText_text_width, -1);
             mHintColor = array.getColor(R.styleable.XEditText_edit_hint_color, 0);
-            isLineVisible = array.getBoolean(R.styleable.XEditText_line_visiboe, true);
+            isLineVisible = array.getBoolean(R.styleable.XEditText_line_visible, true);
             array.recycle();
         }
     }

@@ -6,9 +6,11 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,27 +18,30 @@ import com.supcon.common.view.base.view.BaseLinearLayout;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.utils.TextHelper;
 
-import static com.supcon.mes.mbap.MBapConstant.CONTENT_CLEAN;
+import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
+import static com.supcon.mes.mbap.MBapConstant.ViewAction.CONTENT_CLEAN;
+
 
 /**
  * Created by wangshizhan on 2017/8/21.
  * Email:wangshizhan@supcon.com
  */
 
-public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnClickListener{
+public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnClickListener, ICustomView{
 
-    private String mText, mContent;
+    private String mText, mContent, mKey;
 
-    private float mTextSize;
+    private float mTextSize, mKeyTextSize, mContentTextSize;
     private String mGravity;
     private int mPadding;
     TextView customSpinnerText;
     TextView customSpinner;
     ImageView customSpinnerIcon;
     ImageView customDeleteIcon;
-    private boolean isNecessary, isEditable;
+    private boolean isNecessary, isEditable, isEnable;
     private int mTextColor;
     private int mTextHeight, mTextWidth;
     private boolean isBold;
@@ -58,11 +63,11 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
     @Override
     protected void init(Context context, AttributeSet attrs) {
         super.init(context, attrs);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Typeface newFont = MBapApp.fontType();
-            customSpinnerText.setTypeface(newFont);
-            customSpinner.setTypeface(newFont);
-        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Typeface newFont = MBapApp.fontType();
+//            customSpinnerText.setTypeface(newFont);
+//            customSpinner.setTypeface(newFont);
+//        }
     }
 
     @Override
@@ -76,18 +81,22 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
             customSpinnerText.setText(mText);
             customSpinnerText.setVisibility(View.VISIBLE);
         }
-        else{
-            customSpinnerText.setVisibility(View.GONE);
+
+        if(!TextUtils.isEmpty(mKey)){
+            customSpinnerText.setText(mKey);
+            customSpinnerText.setVisibility(View.VISIBLE);
         }
 
-        if(!TextUtils.isEmpty(mContent)){
-            setSpinner(mContent);
-//            customSpinner.setText(mContent);
-        }
-
-        if(mTextSize!=0){
+        if(mTextSize!=0) {
             customSpinner.setTextSize(mTextSize);
-//            customSpinnerText.setTextSize(mTextSize);
+        }
+
+        if(mKeyTextSize!=0){
+            customSpinnerText.setTextSize(mKeyTextSize);
+        }
+
+        if(mContentTextSize!=0){
+            customSpinner.setTextSize(mContentTextSize);
         }
 
         if(!TextUtils.isEmpty(mGravity)){
@@ -127,24 +136,23 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
             setSpinnerPadding(mPadding);
         }
 
-        if(mTextColor!=0) {
-            customSpinnerText.setTextColor(mTextColor);
-            customSpinner.setTextColor(mTextColor);
-        }
+
 
         if(mTextHeight != -1){
-            setTextHeight(mTextHeight);
+            setKeyHeight(mTextHeight);
         }
 
         if(mTextWidth != -1){
-            setTextWidth(mTextWidth);
+            setKeyWidth(mTextWidth);
         }
         if(isNecessary)
             setNecessary(isNecessary);
-        setEnabled(isEditable);
+        setEditable(isEditable);
 
         if(isBold)
             setContentTextStyle(Typeface.BOLD);
+
+        setEnabled(isEnable);
     }
 
     @Override
@@ -154,8 +162,11 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
         if(attrs!=null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomVerticalSpinner);
             mText = array.getString(R.styleable.CustomVerticalSpinner_text);
+            mKey = array.getString(R.styleable.CustomVerticalSpinner_key);
             mContent = array.getString(R.styleable.CustomVerticalSpinner_content);
             mTextSize = array.getInt(R.styleable.CustomVerticalSpinner_text_size, 0);
+            mKeyTextSize = array.getInt(R.styleable.CustomVerticalSpinner_key_size, 0);
+            mContentTextSize = array.getInt(R.styleable.CustomVerticalSpinner_content_size, 0);
             mGravity = array.getString(R.styleable.CustomVerticalSpinner_gravity);
             mPadding = array.getDimensionPixelSize(R.styleable.CustomVerticalSpinner_padding, 0);
             isNecessary = array.getBoolean(R.styleable.CustomVerticalSpinner_necessary, false);
@@ -164,6 +175,7 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
             mTextHeight = array.getDimensionPixelSize(R.styleable.CustomVerticalSpinner_text_height, -1);
             mTextWidth = array.getDimensionPixelSize(R.styleable.CustomVerticalSpinner_text_width, -1);
             isBold = array.getBoolean(R.styleable.CustomVerticalSpinner_bold, false);
+            isEnable = array.getBoolean(R.styleable.CustomVerticalSpinner_enable, true);
             array.recycle();
         }
 
@@ -172,44 +184,82 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
     @Override
     protected void initListener() {
         super.initListener();
-//        customSpinner.setOnClickListener(this);
         customSpinnerIcon.setOnClickListener(this);
-//        customSpinnerText.setOnClickListener(this);
         customSpinner.setOnLongClickListener(v -> {
             CustomContentTextDialog.showContent(getContext(), customSpinner.getText().toString());
             return true;
         });
 
         customDeleteIcon.setOnClickListener(v -> {
-            setSpinner("");
+            setContent("");
             onChildViewClick(CustomVerticalSpinner.this, CONTENT_CLEAN, "");
         });
     }
 
-    public void setTextStyle(int textStyle){
+    @Override
+    protected void initData() {
+        super.initData();
+        if(!TextUtils.isEmpty(mContent)){
+//            customSpinner.setText(mContent);
+            setContent(mContent);
+        }
+
+        if(mTextColor!=0) {
+//            customSpinnerText.setTextColor(mTextColor);
+            customSpinner.setTextColor(mTextColor);
+        }
+    }
+
+    public void setKeyTextStyle(int textStyle){
         customSpinnerText.setTypeface(Typeface.defaultFromStyle(textStyle));
     }
 
+    @Override
+    public void setEditIcon(int resId) {
+        customSpinnerIcon.setImageResource(resId);
+    }
+
+    @Override
+    public void setClearIcon(int resId) {
+        customDeleteIcon.setImageResource(resId);
+    }
+
+
+    @Override
+    public EditText editText() {
+        return null;
+    }
+
+    @Override
+    public TextView contentView() {
+        return customSpinner;
+    }
+
+    @Override
+    public TextView keyView() {
+        return customSpinnerText;
+    }
+
+    @Override
+    public void setContentGravity(int gravity) {
+        customSpinner.setGravity(gravity);
+    }
+
+    @Override
     public void setContentTextStyle(int textStyle){
         customSpinner.setTypeface(Typeface.defaultFromStyle(textStyle));
     }
 
-    public void setText(String text){
-        customSpinnerText.setText(text);
-    }
-
-    public void setText(int resId){
-        customSpinnerText.setText(resId);
-    }
-
-    public void setTextWidth(int width){
+    @Override
+    public void setKeyWidth(int width){
         ViewGroup.LayoutParams lp = customSpinnerText.getLayoutParams();
         lp.width = width;
         customSpinnerText.setLayoutParams(lp);
 
     }
 
-    public void setTextHeight(int height){
+    @Override
+    public void setKeyHeight(int height){
         ViewGroup.LayoutParams lp =  customSpinnerText.getLayoutParams();
         lp.height = height;
         customSpinnerText.setLayoutParams(lp);
@@ -220,69 +270,160 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
         customSpinnerIcon.setLayoutParams(lp2);
     }
 
-    public void setTextColor(int color){
-
-        customSpinnerText.setTextColor(color);
+    @Override
+    public boolean isEmpty() {
+        return TextUtils.isEmpty(getContent());
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        setEditable(enabled);
+
+        if(!enabled)
+            setEditable(false);
+
+        if (enabled) {
+            customSpinner.setAlpha(1);
+            customSpinnerText.setAlpha(1);
+        } else {
+            customSpinnerText.setAlpha(0.5f);
+            customSpinner.setAlpha(0.5f);
+        }
     }
 
+    @Override
     public void setEditable(boolean editable) {
         isEditable = editable;
         if(!editable){
-            customSpinnerIcon.setVisibility(View.INVISIBLE);
+            customSpinnerIcon.setVisibility(View.GONE);
             customSpinner.setOnClickListener(this);
+            customSpinnerText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+            customSpinner.setTextColor(getResources().getColor(R.color.notEditableTextColor));
         }
         else{
             customSpinnerIcon.setVisibility(View.VISIBLE);
             customSpinner.setOnClickListener(null);
+            customSpinnerText.setTextColor(getResources().getColor(R.color.textColorblack));
+            customSpinner.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
         }
     }
 
+    @Override
     public void setNecessary(boolean isNecessary){
-
-//        if(isNecessary){
-//            customSpinnerText.setTextColor(getResources().getColor(R.color.customRed));
-//        }
-//        else {
-//            customSpinnerText.setTextColor(getResources().getColor(MBapConfig.NECESSARY_FALSE_COLOR));
-//        }
         TextHelper.setRequired(isNecessary, customSpinnerText);
     }
 
-    public void setSpinnerColor(int color){
-        customSpinner.setTextColor(color);
+    @Override
+    public boolean isNecessary() {
+        return isNecessary;
     }
 
+    @Override
+    public boolean isEditable() {
+        return isEditable;
+    }
 
-    public void setSpinner(String value){
-        customSpinner.setText(value);
-        if(TextUtils.isEmpty(value) || !isEditable){
+    @Override
+    public void setInputType(int type) {
+        customSpinner.setInputType(type);
+    }
+
+    @Override
+    public void setKey(String key) {
+        customSpinnerText.setText(key);
+    }
+
+    @Override
+    public void setKey(int keyResId) {
+        customSpinnerText.setText(keyResId);
+    }
+
+    @Override
+    public String getKey() {
+        return customSpinnerText.getText().toString();
+    }
+
+    @Override
+    public String getContent() {
+        return customSpinner.getText().toString();
+    }
+
+    @Override
+    public void setContent(String content) {
+        customSpinner.setText(content);
+        if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);
         }
         else {
             customDeleteIcon.setVisibility(VISIBLE);
         }
-
     }
 
-    public void setSpinnerTextSize(int textSize){
+    @Override
+    public void setContent(int contentResId) {
+//        customSpinner.setText(contentResId);
+        setContent(getResources().getString(contentResId));
+    }
+
+    @Override
+    public void setTextFont(Typeface newFont) {
+        customSpinnerText.setTypeface(newFont);
+        customSpinner.setTypeface(newFont);
+    }
+
+    @Override
+    public void setKeyTextSize(int textSize) {
+        customSpinnerText.setTextSize(textSize);
+    }
+
+    @Override
+    public void setContentTextSize(int textSize) {
         customSpinner.setTextSize(textSize);
     }
 
+    @Override
+    public void setKeyTextColor(int color) {
+        customSpinnerText.setTextColor(color);
+    }
+
+    @Override
+    public void setContentTextColor(int color) {
+        customSpinner.setTextColor(color);
+    }
+
+    @Override
+    public void setContentPadding(int left, int top, int right, int bottom) {
+        customSpinner.setPadding(left, top, right, bottom);
+    }
+
+    public void setText(String text){
+        setKey(text);
+    }
+
+    public void setText(int resId){
+        setKey(resId);
+    }
+
+    public void setSpinner(String value){
+        setContent(value);
+    }
+
+    public void setSpinnerTextSize(int textSize){
+        setKeyTextSize(textSize);
+    }
+
     public String getSpinnerValue(){
-        return customSpinner.getText().toString();
+        return getContent();
     }
 
 
     public void setSpinnerPadding(int padding){
-        customSpinner.setPadding(mPadding, 0, 0,0);
+        setContentPadding(padding, 0, 0,0);
     }
 
+    public void setTextColor(int color){
+        setKeyTextColor(color);
+    }
 
     @Override
     public void onClick(View v) {
@@ -291,6 +432,6 @@ public class CustomVerticalSpinner extends BaseLinearLayout implements View.OnCl
     }
 
     public TextView getCustomSpinner() {
-        return customSpinner;
+        return contentView();
     }
 }

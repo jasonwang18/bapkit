@@ -277,7 +277,7 @@ public class CustomFilterView<T extends FilterBean> extends BaseLinearLayout imp
         View popupView = LayoutInflater.from(SystemUtil.getActivityFromView(this)).inflate(R.layout.ly_filter_recyclerview, null);
         RecyclerView contentView = popupView.findViewById(R.id.contentView);
         contentView.setLayoutManager(new GridLayoutManager(getContext(), 4));
-        contentView.addItemDecoration(new NomalSpaceItemDecoration(DisplayUtil.dip2px(5, getContext())));
+        contentView.addItemDecoration(new NomalSpaceItemDecoration(DisplayUtil.dip2px(3, getContext())));
         mFilterAdapter = new FilterAdapter<>(SystemUtil.getActivityFromView(this));
         mFilterAdapter.setOnItemChildViewClickListener((childView, position, action, obj) -> {
             onChildViewClick(childView, action, childView.getTag());

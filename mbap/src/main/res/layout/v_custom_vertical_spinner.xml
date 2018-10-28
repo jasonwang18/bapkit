@@ -15,17 +15,7 @@
             android:id="@+id/customSpinnerText"
             style="@style/KeyText"
             />
-        <ImageView
-            android:id="@+id/customDeleteIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_clean"
-            android:scaleType="center"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dp_40"
-            android:background="@drawable/sl_transparent_press_no_stroke"
-            android:visibility="gone"
-            />
+
         <ImageView
             android:id="@+id/customSpinnerIcon"
             android:layout_width="30dp"
@@ -33,18 +23,35 @@
             android:src="@drawable/ic_unfold"
             android:scaleType="center"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
             android:background="@drawable/sl_transparent_press_no_stroke"
             />
     </RelativeLayout>
 
-
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/customSpinner"
-        style="@style/ContentText"
-        />
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/customSpinner"
+            style="@style/ContentText"
+            android:paddingRight="@dimen/dp_20"
+            />
+        <ImageView
+            android:id="@+id/customDeleteIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_clear"
+            android:scaleType="center"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/sl_transparent_press_no_stroke"
+            android:visibility="gone"
+            />
+
+
+    </RelativeLayout>
+
 
 
 </LinearLayout>

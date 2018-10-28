@@ -16,6 +16,8 @@
     <color name="bgSwitchOrange">#EF8742</color>
     <color name="textColorlightblack">#626262</color>
     <color name="textColorblack">#222222</color>
+    <color name="editableTextColor">#a1a1a1</color>
+    <color name="notEditableTextColor">#a1a1a1</color>
     <color name="textColorGray">#8b8b8b</color>
     <color name="hintColor">#a1a1a1</color>
     <color name="equipmentThemeColor">#477090</color>

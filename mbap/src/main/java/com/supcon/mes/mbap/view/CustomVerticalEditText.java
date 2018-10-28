@@ -17,35 +17,48 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.supcon.common.view.base.view.BaseLinearLayout;
 import com.supcon.common.view.util.DisplayUtil;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.listener.OnContentCheckListener;
 import com.supcon.mes.mbap.listener.OnTextListener;
+import com.supcon.mes.mbap.utils.KeyboardUtil;
 import com.supcon.mes.mbap.utils.TextHelper;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+
+import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
 
 /**
  * Created by wangshizhan on 2017/9/20.
  * Email:wangshizhan@supcon.com
  */
 
-public class CustomVerticalEditText extends BaseLinearLayout implements View.OnTouchListener {
+public class CustomVerticalEditText extends BaseLinearLayout implements View.OnTouchListener, View.OnClickListener, ICustomView {
 
     TextView customEditText;
     ImageView customEditDelete;
     EditText customEditInput;
-
-    private String mText;
+    ImageView customEditIcon;
+    private String mText, mKey, mContent;
     private String mHint;
     private String mGravity;
     private OnTextListener mTextListener;
 
-    private int mTextSize, mPadding;
+    private float mTextSize, mKeyTextSize, mContentTextSize;
+    private int mPadding;
     private int deleteIconResId, maxLength, maxLine;
     private int mTextColor, mHintColor;
-    private boolean isNecessary, isEditable, isBold;
+    private boolean isNecessary, isEditable, isBold, isEnable;
     private int mTextHeight, mTextWidth;
+    private boolean isEditIconVisible = true;
     private OnContentCheckListener mOnContentCheckListener;
 
     public CustomVerticalEditText(Context context) {
@@ -59,11 +72,11 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
     @Override
     protected void init(Context context, AttributeSet attrs) {
         super.init(context, attrs);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Typeface newFont = MBapApp.fontType();
-            customEditText.setTypeface(newFont);
-            customEditInput.setTypeface(newFont);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Typeface newFont = MBapApp.fontType();
+//            customEditText.setTypeface(newFont);
+//            customEditInput.setTypeface(newFont);
+//        }
     }
 
     @Override
@@ -77,11 +90,19 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
         customEditText = findViewById(R.id.customEditText);
         customEditDelete = findViewById(R.id.customEditDelete);
         customEditInput = findViewById(R.id.customEditInput);
+        customEditIcon =  findViewById(R.id.customEditIcon);
 
         if (!TextUtils.isEmpty(mText)) {
             customEditText.setText(mText);
             customEditText.setVisibility(View.VISIBLE);
         }
+
+        if(!TextUtils.isEmpty(mKey)){
+            customEditText.setText(mKey);
+            customEditText.setVisibility(View.VISIBLE);
+        }
+
+
 
         if (!TextUtils.isEmpty(mHint)) {
             customEditInput.setHint(mHint);
@@ -95,10 +116,7 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
             customEditInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
         }
 
-        if (mTextSize != 0) {
-            customEditInput.setTextSize(mTextSize);
-//            customEditText.setTextSize(mTextSize);
-        }
+
 
         if (maxLine != 0) {
             customEditInput.setMaxLines(maxLine);
@@ -144,17 +162,14 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
 
         }
 
-        if (mTextColor != 0)
-            customEditText.setTextColor(mTextColor);
-
         if (isNecessary)
             setNecessary(isNecessary);
         if (mTextHeight != -1) {
-            setTextHeight(mTextHeight);
+            setKeyHeight(mTextHeight);
         }
 
         if (mTextWidth != -1) {
-            setTextWidth(mTextWidth);
+            setKeyWidth(mTextWidth);
         }
 
         if (mHintColor != 0) {
@@ -165,6 +180,8 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
 
         if (isBold)
             setContentTextStyle(Typeface.BOLD);
+
+        setEnabled(isEnable);
     }
 
 
@@ -175,10 +192,14 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
         if (attrs != null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomVerticalEditText);
             mText = array.getString(R.styleable.CustomVerticalEditText_text);
+            mKey = array.getString(R.styleable.CustomVerticalEditText_key);
+            mContent = array.getString(R.styleable.CustomVerticalEditText_content);
             mHint = array.getString(R.styleable.CustomVerticalEditText_edit_hint);
             mGravity = array.getString(R.styleable.CustomVerticalEditText_gravity);
             mTextSize = array.getInt(R.styleable.CustomVerticalEditText_text_size, 0);
-            deleteIconResId = array.getResourceId(R.styleable.CustomEditText_edit_delete, R.drawable.ic_delete);
+            mKeyTextSize = array.getInt(R.styleable.CustomVerticalEditText_key_size, 0);
+            mContentTextSize = array.getInt(R.styleable.CustomVerticalEditText_content_size, 0);
+            deleteIconResId = array.getResourceId(R.styleable.CustomEditText_edit_delete, 0);
             maxLength = array.getDimensionPixelSize(R.styleable.CustomEditText_edit_maxLength, 0);
             maxLine = array.getInt(R.styleable.CustomEditText_edit_maxLine, 0);
             mPadding = array.getDimensionPixelSize(R.styleable.CustomVerticalEditText_padding, 0);
@@ -189,58 +210,10 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
             mTextWidth = array.getDimensionPixelSize(R.styleable.CustomVerticalEditText_text_width, -1);
             mHintColor = array.getColor(R.styleable.CustomVerticalEditText_edit_hint_color, 0);
             isBold = array.getBoolean(R.styleable.CustomVerticalEditText_bold, false);
+            isEnable = array.getBoolean(R.styleable.CustomVerticalEditText_enable, true);
+            isEditIconVisible = array.getBoolean(R.styleable.CustomVerticalEditText_icon_visible, true);
             array.recycle();
         }
-    }
-
-    public EditText editText() {
-        return customEditInput;
-    }
-
-    public TextView textView() {
-        return customEditText;
-    }
-
-    public void setNecessary(boolean isNecessary) {
-
-//        if(isNecessary){
-//            customEditText.setTextColor(getResources().getColor(R.color.customRed));
-//        }
-//        else {
-//            customEditText.setTextColor(getResources().getColor(MBapConfig.NECESSARY_FALSE_COLOR));
-//        }
-        TextHelper.setRequired(isNecessary, customEditText);
-    }
-
-    public void setTextStyle(int textStyle) {
-        customEditText.setTypeface(Typeface.defaultFromStyle(textStyle));
-    }
-
-    public void setContentTextStyle(int textStyle) {
-        customEditInput.setTypeface(Typeface.defaultFromStyle(textStyle));
-    }
-
-
-    public void setTextWidth(int width) {
-        ViewGroup.LayoutParams lp = customEditText.getLayoutParams();
-        lp.width = width;
-        customEditText.setLayoutParams(lp);
-
-    }
-
-    public void setTextHeight(int height) {
-        ViewGroup.LayoutParams lp = customEditText.getLayoutParams();
-        lp.height = height;
-        customEditText.setLayoutParams(lp);
-
-
-        ViewGroup.LayoutParams lp2 = customEditDelete.getLayoutParams();
-        lp2.height = height;
-        customEditDelete.setLayoutParams(lp2);
-    }
-
-    public void setInputTextSize(int textSize) {
-        customEditInput.setTextSize(textSize);
     }
 
     @Override
@@ -272,12 +245,47 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
             }
         });
 
-        customEditDelete.setOnClickListener(v -> customEditInput.getText().clear());
+        customEditDelete.setOnClickListener(v -> setContent(""));
 
         customEditInput.setOnTouchListener(this);
 
+        customEditIcon.setOnClickListener(v -> {
+            KeyboardUtil.editTextRequestFocus(customEditInput);
+
+        });
+
+        setOnClickListener(this);
     }
 
+    @Override
+    protected void initData() {
+        super.initData();
+        if(!TextUtils.isEmpty(mContent)){
+            customEditInput.setText(mContent);
+            customEditInput.setVisibility(View.VISIBLE);
+        }
+
+        if (mTextColor != 0)
+            customEditText.setTextColor(mTextColor);
+
+        if (mTextSize != 0) {
+            customEditInput.setTextSize(mTextSize);
+        }
+
+        if(mKeyTextSize!=0){
+            customEditText.setTextSize(mKeyTextSize);
+        }
+
+        if(mContentTextSize!=0){
+            customEditInput.setTextSize(mContentTextSize);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(isEditable)
+            KeyboardUtil.editTextRequestFocus(customEditInput);
+    }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -317,71 +325,191 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        setEditable(enabled);
+        if(!enabled)
+            setEditable(false);
+
+        if (enabled) {
+            customEditText.setAlpha(1);
+            customEditInput.setAlpha(1);
+        } else {
+            customEditText.setAlpha(0.5f);
+            customEditInput.setAlpha(0.5f);
+        }
     }
 
+    @Override
     public void setEditable(boolean editable) {
         isEditable = editable;
         customEditInput.setEnabled(editable);
-
-        if (editable) {
-            customEditInput.setFocusable(true);
-        } else {
-            customEditInput.setFocusable(false);
-            customEditInput.setPadding(0, 0, DisplayUtil.dip2px(8, getContext()), 0);
+        if(editable){
+            customEditText.setTextColor(getResources().getColor(R.color.textColorblack));
+            customEditInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
+            customEditText.setOnClickListener(this);
         }
-    }
-
-    //新加不可编辑方法
-    public void setCompile(boolean editable) {
-        isEditable = editable;
-        customEditInput.setEnabled(editable);
-
-        if (!editable) {
-            customEditInput.setPadding(0, 0, DisplayUtil.dip2px(8, getContext()), 0);
+        else{
+            customEditText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+            customEditInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+            customEditText.setOnClickListener(null);
         }
-    }
 
-    public void setText(String text) {
-        if (!TextUtils.isEmpty(text)) {
-            customEditText.setVisibility(VISIBLE);
-            customEditText.setText(text);
+        if(isEditIconVisible && editable){
+            customEditIcon.setVisibility(VISIBLE);
         }
+        else{
+            customEditIcon.setVisibility(GONE);
+        }
+//        if(editable){
+//            customEditInput.setFocusable(true);
+//        }
+//        else{
+//            customEditInput.setFocusable(false);
+//            customEditInput.setPadding(0,0, DisplayUtil.dip2px(8, getContext()),0);
+//        }
     }
 
-    public String getText() {
-        return customEditText.getText().toString();
+    @Override
+    public EditText editText() {
+        return customEditInput;
     }
 
-    public void setInput(String input) {
-        customEditInput.setText(input);
-        if (!TextUtils.isEmpty(input))
-            customEditInput.setSelection(input.length());
+    @Override
+    public TextView contentView() {
+        return null;
     }
 
-    public void setHint(String hint) {
-        customEditInput.setHint(hint);
+    @Override
+    public TextView keyView() {
+        return customEditText;
     }
 
-    public String getInput() {
-        return customEditInput.getText().toString();
-    }
-
-    public void setMaxLength(int maxLength) {
-        this.maxLength = maxLength;
-        customEditInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
-    }
-
-    public void setHintColor(int color) {
-        customEditInput.setHintTextColor(color);
-    }
-
-    public void setInputGravity(int gravity) {
+    @Override
+    public void setContentGravity(int gravity) {
         customEditInput.setGravity(gravity);
     }
 
-    public void setInputType(int type) {
-        customEditInput.setInputType(type);
+
+    @Override
+    public void setNecessary(boolean isNecessary){
+        TextHelper.setRequired(isNecessary, customEditText);
+    }
+
+    @Override
+    public boolean isNecessary() {
+        return isNecessary;
+    }
+
+    @Override
+    public boolean isEditable() {
+        return isEditable;
+    }
+
+    public void setTextStyle(int textStyle){
+        customEditText.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    public void setContentTextStyle(int textStyle){
+        customEditInput.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    @Override
+    public void setTextFont(Typeface newFont) {
+        customEditText.setTypeface(newFont);
+        customEditInput.setTypeface(newFont);
+    }
+
+    @Override
+    public void setKeyTextSize(int textSize) {
+        customEditText.setTextSize(textSize);
+    }
+
+    @Override
+    public void setContentTextSize(int textSize) {
+        customEditInput.setTextSize(textSize);
+    }
+
+    @Override
+    public void setKeyTextColor(int color) {
+        customEditText.setTextColor(color);
+    }
+
+    @Override
+    public void setContentTextColor(int color) {
+        customEditInput.setTextColor(color);
+    }
+
+    @Override
+    public void setContentPadding(int left, int top, int right, int bottom) {
+        customEditInput.setPadding(left, top, right, bottom);
+    }
+
+    @Override
+    public void setKeyTextStyle(int textStyle) {
+        customEditText.setTypeface(Typeface.defaultFromStyle(textStyle));
+    }
+
+    @Override
+    public void setEditIcon(int resId) {
+        //no use
+    }
+
+    @Override
+    public void setClearIcon(int resId) {
+        customEditDelete.setImageResource(resId);
+    }
+
+    @Override
+    public void setKeyWidth(int width) {
+        ViewGroup.LayoutParams lp = customEditText.getLayoutParams();
+        lp.width = width;
+        customEditText.setLayoutParams(lp);
+    }
+
+    @Override
+    public void setKeyHeight(int height) {
+        ViewGroup.LayoutParams lp = customEditText.getLayoutParams();
+        lp.height = height;
+        customEditText.setLayoutParams(lp);
+
+        ViewGroup.LayoutParams lp2 =  customEditDelete.getLayoutParams();
+        lp2.height = height;
+        customEditDelete.setLayoutParams(lp2);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return TextUtils.isEmpty(getContent());
+    }
+
+    @Override
+    public void setKey(String key) {
+        customEditText.setText(key);
+    }
+
+    @Override
+    public void setKey(int keyResId) {
+        customEditText.setText(keyResId);
+    }
+
+    @Override
+    public String getKey() {
+        return customEditText.getText().toString();
+    }
+
+    @Override
+    public String getContent() {
+        return customEditInput.getText().toString();
+    }
+
+    @Override
+    public void setContent(String content) {
+        customEditInput.setText(content);
+        if(!TextUtils.isEmpty(content))
+            customEditInput.setSelection(content.length());
+    }
+
+    @Override
+    public void setContent(int contentResId) {
+        setInput(getResources().getString(contentResId));
     }
 
 
@@ -390,8 +518,52 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
     }
 
 
-    public void setImeOptions(int imeOptions) {
+    public void setImeOptions(int imeOptions){
         customEditInput.setImeOptions(imeOptions);
     }
 
+    public TextView textView(){
+        return customEditText;
+    }
+
+    public void setText(String text){
+        customEditText.setText(text);
+    }
+
+    public String getText(){
+        return customEditText.getText().toString();
+    }
+
+    public void setInput(String input){
+        setContent(input);
+    }
+
+    public void setHint(String hint){
+        customEditInput.setHint(hint);
+    }
+
+    public void setHintColor(int color){
+        customEditInput.setHintTextColor(color);
+    }
+
+    public String getInput(){
+        return customEditInput.getText().toString();
+    }
+
+    public void setInputTextSize(int textSize){
+        customEditInput.setTextSize(textSize);
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
+        customEditInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
+    }
+
+    public void setInputGravity(int gravity){
+        customEditInput.setGravity(gravity);
+    }
+
+    public void setInputType(int type){
+        customEditInput.setInputType(type);
+    }
 }

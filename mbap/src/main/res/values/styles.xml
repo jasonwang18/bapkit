@@ -129,18 +129,16 @@
     </style>
 
     <style name="KeyText" parent="BaseFont">
-        <item name="android:textColor">@color/hintColor</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/textColorblack</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
 
     <style name="ContentText" parent="BaseFont">
-        <item name="android:textColor">@color/textColorblack</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/editableTextColor</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
@@ -171,8 +169,8 @@
 
 
     <style name="DetailText2Line" parent="BaseFont">
-        <item name="android:textColor">@color/hintColor</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColorblack</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:gravity">center</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
