@@ -3,7 +3,6 @@ package com.supcon.mes.mbap.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -14,19 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseLinearLayout;
-import com.supcon.mes.mbap.MBapApp;
+import com.supcon.common.view.view.custom.ICustomView;
 import com.supcon.mes.mbap.R;
-import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.utils.TextHelper;
-
-import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
 
 /**
  * Created by wangshizhan on 2017/8/21.
  * Email:wangshizhan@supcon.com
  */
 
-public class CustomDateView extends BaseLinearLayout implements View.OnClickListener, ICustomView{
+public class CustomDateView extends BaseLinearLayout implements View.OnClickListener, ICustomView {
 
     private String  mText, mContent, mKey;
     private float mTextSize, mKeyTextSize, mContentTextSize;
@@ -275,6 +271,9 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
 
     @Override
     public void setContent(String content) {
+        if(content == null){
+            return;
+        }
         customDateInput.setText(content);
         if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);

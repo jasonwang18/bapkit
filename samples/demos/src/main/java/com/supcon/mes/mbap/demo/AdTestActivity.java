@@ -28,13 +28,13 @@ public class AdTestActivity extends BaseActivity {
 
         List<GalleryBean> ads = new ArrayList<>();
         GalleryBean galleryBean = new GalleryBean();
-        galleryBean.resId = R.drawable.pic_wms;
+        galleryBean.resId = R.drawable.ic_default_pic;
         ads.add(galleryBean);
         galleryBean = new GalleryBean();
-        galleryBean.resId = R.drawable.pic_wom;
+        galleryBean.resId = R.drawable.ic_default_pic;
         ads.add(galleryBean);
         galleryBean = new GalleryBean();
-        galleryBean.resId = R.drawable.pic_eam;
+        galleryBean.resId = R.drawable.ic_default_pic;
         ads.add(galleryBean);
 
 

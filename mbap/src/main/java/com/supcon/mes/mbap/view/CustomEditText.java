@@ -19,10 +19,9 @@ import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseRelativeLayout;
 import com.supcon.common.view.util.DisplayUtil;
+import com.supcon.common.view.view.custom.ICustomView;
 import com.supcon.mes.mbap.MBapApp;
-import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
-import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.listener.OnTextListener;
 import com.supcon.mes.mbap.utils.KeyboardUtil;
 import com.supcon.mes.mbap.utils.TextHelper;
@@ -34,7 +33,7 @@ import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
  * Email:wangshizhan@supcon.com
  */
 
-public class CustomEditText extends BaseRelativeLayout implements View.OnTouchListener, View.OnClickListener, ICustomView{
+public class CustomEditText extends BaseRelativeLayout implements View.OnTouchListener, View.OnClickListener, ICustomView {
 
     TextView customEditText;
 
@@ -238,8 +237,7 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
             }
         });
 
-        customDeleteIcon.setOnClickListener(v -> setContent("")
-        );
+        customDeleteIcon.setOnClickListener(v -> setContent(""));
 
         customEditInput.setOnTouchListener(this);
 
@@ -498,9 +496,11 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
 
     @Override
     public void setContent(String content) {
+        if(content == null){
+            return;
+        }
         customEditInput.setText(content);
-        if(!TextUtils.isEmpty(content))
-            customEditInput.setSelection(content.length());
+        customEditInput.setSelection(content.length());
     }
 
     @Override
@@ -531,7 +531,7 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
     }
 
     public void setInput(String input){
-            setContent(input);
+        setContent(input);
     }
 
     public void setHint(String hint){

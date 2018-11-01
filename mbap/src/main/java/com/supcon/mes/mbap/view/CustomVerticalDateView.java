@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseLinearLayout;
+import com.supcon.common.view.view.custom.ICustomView;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.R;
-import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.utils.TextHelper;
 
 import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
@@ -271,6 +271,11 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
 
     @Override
     public void setContent(String content) {
+
+        if(content == null){
+            return;
+        }
+
         customDateInput.setText(content);
         if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);

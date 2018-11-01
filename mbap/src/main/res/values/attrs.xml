@@ -258,6 +258,7 @@
         <attr name="editable"/>
         <attr name="add_icon_res" format="reference"/>
         <attr name="minus_icon_res" format="reference"/>
+        <attr name="is_float"/>
     </declare-styleable>
 
     <declare-styleable name="CustomWaveView">

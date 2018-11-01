@@ -15,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseRelativeLayout;
+import com.supcon.common.view.view.custom.ICustomView;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
-import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.utils.TextHelper;
 
 import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
@@ -30,7 +30,7 @@ import static com.supcon.mes.mbap.MBapConstant.ViewAction.CONTENT_CLEAN;
  * Email:wangshizhan@supcon.com
  */
 
-public class CustomTextView extends BaseRelativeLayout implements View.OnClickListener, ICustomView{
+public class CustomTextView extends BaseRelativeLayout implements View.OnClickListener, ICustomView {
 
     TextView customKey;
     TextView customValue;
@@ -260,6 +260,9 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
 
     @Override
     public void setContent(String content) {
+        if(content == null){
+            return;
+        }
         customValue.setText(content);
         if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);

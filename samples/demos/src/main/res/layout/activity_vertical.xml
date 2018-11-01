@@ -41,17 +41,17 @@
             <com.supcon.mes.mbap.view.CustomVerticalTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:text_key="横向键值对文本框"
-                app:text_value="33453453576876897987090-0-=65465464565789780989-08464"
-                app:text_key_width="100dp"
+                app:key="横向键值对文本框"
+                app:content="33453453576876897987090-0-=65465464565789780989-08464"
+                app:key_width="100dp"
                 app:editable="true"
                 />
             <com.supcon.mes.mbap.view.CustomVerticalTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:text_key="纵向键值对文本框"
-                app:text_key_height="50dp"
-                app:text_value="3345345353464"
+                app:key="纵向键值对文本框"
+                app:key_height="50dp"
+                app:content="3345345353464"
                 app:editable="true"
                 />
             <com.supcon.mes.mbap.view.CustomVerticalEditText

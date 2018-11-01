@@ -37,7 +37,7 @@ public class CustomNumView extends BaseLinearLayout {
     String mText;
     int mTextSize;
     int mTextColor, mTextWidth;
-    boolean isEditable, isNecessary;
+    boolean isEditable, isNecessary,isFloat;
     double mNum;
     float max;
     Drawable addIcon, minusIcon;
@@ -81,6 +81,7 @@ public class CustomNumView extends BaseLinearLayout {
             mTextWidth = array.getDimensionPixelSize(R.styleable.CustomNumView_text_width, -1);
             addIcon    = array.getDrawable(R.styleable.CustomNumView_add_icon_res);
             minusIcon  = array.getDrawable(R.styleable.CustomNumView_minus_icon_res);
+            isFloat = array.getBoolean(R.styleable.CustomNumView_is_float, false);
 
             array.recycle();
         }
@@ -138,7 +139,8 @@ public class CustomNumView extends BaseLinearLayout {
 
         numViewAdd.setOnClickListener(v -> {
             if(mNum<max || max == -1)
-                mNum++;
+                mNum = new BigDecimal(mNum).add(new BigDecimal(1)).doubleValue();
+//                mNum++;
 //            numViewInput.setText(String.valueOf(mNum));
             setNum(mNum);
         });
@@ -166,7 +168,7 @@ public class CustomNumView extends BaseLinearLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!TextUtils.isEmpty(s.toString()) && isEditable){
+                if(!TextUtils.isEmpty(s.toString()) && isEditable && (s.toString().indexOf(".") != 0)){
                     mNum = Double.valueOf(s.toString());
                 }
 //                else{

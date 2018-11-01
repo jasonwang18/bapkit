@@ -7,10 +7,10 @@ import android.widget.EditText;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.supcon.common.view.base.controller.BaseController;
 import com.supcon.common.view.util.LogUtil;
+import com.supcon.common.view.view.custom.ICustomView;
+import com.supcon.common.view.view.custom.OnContentCallback;
+import com.supcon.common.view.view.custom.OnResultListener;
 import com.supcon.common.view.view.picker.SinglePicker;
-import com.supcon.mes.mbap.listener.ICustomView;
-import com.supcon.mes.mbap.listener.OnContentCallback;
-import com.supcon.mes.mbap.listener.OnResultListener;
 import com.supcon.mes.mbap.utils.PickerHelper;
 
 import java.util.List;
@@ -23,16 +23,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Email:wangshizhan@supcom.com
  */
 
-public class CustomViewController extends BaseController {
+public class BAPViewController extends BaseController {
 
     private Context context;
 
-    public CustomViewController(Context context) {
+    public BAPViewController(Context context) {
         this.context = context;
     }
 
     @SuppressLint("CheckResult")
-    public CustomViewController addEditView(EditText editText, int debounce, OnResultListener<String> onResultListener){
+    public BAPViewController addEditView(EditText editText, int debounce, OnResultListener<String> onResultListener){
 
         RxTextView.textChanges(editText)
                 .skipInitialValue()
@@ -47,7 +47,7 @@ public class CustomViewController extends BaseController {
     }
 
     @SuppressLint("CheckResult")
-    public CustomViewController addEditView(EditText editText, OnResultListener<String> onSuccessListener){
+    public BAPViewController addEditView(EditText editText, OnResultListener<String> onSuccessListener){
 
         if(editText == null) {
             LogUtil.e("editText == null");
@@ -58,7 +58,7 @@ public class CustomViewController extends BaseController {
     }
 
     @SuppressLint("CheckResult")
-    public CustomViewController addDateView(ICustomView customView, OnContentCallback<Long> onContentCallback, OnResultListener<String> onResultListener){
+    public BAPViewController addDateView(ICustomView customView, OnContentCallback<Long> onContentCallback, OnResultListener<String> onResultListener){
 
         customView.setOnChildViewClickListener((childView, action, obj) -> {
             if(action!=-1) {
@@ -83,8 +83,8 @@ public class CustomViewController extends BaseController {
         return this;
     }
 
-    public CustomViewController addSpinner(ICustomView customView, List<String> list, OnContentCallback<String> onContentCallback,
-                                           OnResultListener<String> onResultListener){
+    public BAPViewController addSpinner(ICustomView customView, List<String> list, OnContentCallback<String> onContentCallback,
+                                        OnResultListener<String> onResultListener){
 
         customView.setOnChildViewClickListener((childView, action, obj) -> {
             if(action!=-1) {

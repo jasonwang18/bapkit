@@ -3,7 +3,6 @@ package com.supcon.mes.mbap.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -17,24 +16,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding2.view.RxView;
 import com.supcon.common.view.base.view.BaseLinearLayout;
-import com.supcon.common.view.util.DisplayUtil;
-import com.supcon.mes.mbap.MBapApp;
+import com.supcon.common.view.view.custom.ICustomView;
 import com.supcon.mes.mbap.R;
-import com.supcon.mes.mbap.listener.ICustomView;
 import com.supcon.mes.mbap.listener.OnContentCheckListener;
 import com.supcon.mes.mbap.listener.OnTextListener;
 import com.supcon.mes.mbap.utils.KeyboardUtil;
 import com.supcon.mes.mbap.utils.TextHelper;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-
-import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
 
 /**
  * Created by wangshizhan on 2017/9/20.
@@ -502,9 +490,11 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
 
     @Override
     public void setContent(String content) {
+        if(content == null){
+            return;
+        }
         customEditInput.setText(content);
-        if(!TextUtils.isEmpty(content))
-            customEditInput.setSelection(content.length());
+        customEditInput.setSelection(content.length());
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.supcon.mes.mbap.network;
 
+import com.app.annotation.apt.ApiFactory;
+
 /**
  * Created by Administrator on 2016/3/23.
  * 接口参考文件，以下接口必须定义在接口中，复制到工程的接口中
  */
+@ApiFactory
 public interface ApiService {
 
     /**
