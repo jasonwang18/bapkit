@@ -41,7 +41,7 @@ dependencies {
     implementation project(':mbap')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation "com.github.jasonwang18.common:com_view:$rootProject.ext.viewVersion"
-    implementation "com.github.jasonwang18.common:com_http:$rootProject.ext.httpVersion"
+    implementation "com.github.jasonwang18:Common:$rootProject.ext.commonVersion"
+    implementation "com.github.jasonwang18:Common:$rootProject.ext.commonVersion"
 
 }

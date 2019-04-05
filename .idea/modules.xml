@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/bapkit.iml" filepath="$PROJECT_DIR$/.idea/bapkit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/demos/demos.iml" filepath="$PROJECT_DIR$/samples/demos/demos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mbap/mbap.iml" filepath="$PROJECT_DIR$/mbap/mbap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/samples.iml" filepath="$PROJECT_DIR$/samples/samples.iml" />
+    </modules>
+  </component>
+</project>

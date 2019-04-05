@@ -30,9 +30,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly "com.github.jasonwang18.common:com_view:$rootProject.ext.viewVersion"
-    compileOnly "com.github.jasonwang18.common:com_http:$rootProject.ext.httpVersion"
-    compileOnly "com.github.jasonwang18.common:annotation:$rootProject.ext.annotationVersion"
+    compileOnly "com.github.jasonwang18:common:$rootProject.ext.commonVersion"
+    compileOnly "com.github.jasonwang18:common:$rootProject.ext.commonVersion"
+    compileOnly "com.github.jasonwang18:common:$rootProject.ext.commonVersion"
     implementation 'com.github.bumptech.glide:glide:4.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
     compileOnly 'com.android.support:multidex:1.0.2'

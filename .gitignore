@@ -6,3 +6,5 @@
 .DS_Store
 *.properties
 *.iml
+.idea/misc.xml
+.idea/libraries/Gradle__org_reactivestreams_reactive_streams_1_0_1_jar.xml
