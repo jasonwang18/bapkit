@@ -1,14 +1,18 @@
 package com.supcon.mes.mbap.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,17 +23,21 @@ import android.widget.TextView;
 import com.supcon.common.view.base.view.BaseRelativeLayout;
 import com.supcon.common.view.listener.OnItemChildViewClickListener;
 import com.supcon.common.view.util.DisplayUtil;
+import com.supcon.common.view.util.LogUtil;
 import com.supcon.common.view.util.ToastUtils;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
 import com.supcon.mes.mbap.adapter.GalleryAdapter;
 import com.supcon.mes.mbap.beans.GalleryBean;
+import com.supcon.mes.mbap.beans.SheetEntity;
 import com.supcon.mes.mbap.utils.GridSpaceItemDecoration;
 import com.supcon.mes.mbap.utils.NomalSpaceItemDecoration;
+import com.supcon.mes.mbap.utils.SheetUtil;
 import com.supcon.mes.mbap.utils.SpaceItemDecoration;
 import com.supcon.mes.mbap.utils.TextHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +48,7 @@ import java.util.List;
 public class CustomGalleryView extends BaseRelativeLayout implements OnItemChildViewClickListener {
 
     TextView customGalleryText;
-    ImageView customGalleryIv;
+    ImageView customCameraIv/*, customGalleryIv*/;
     RecyclerView customGallery;
 
     private String mText;
@@ -48,18 +56,21 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
     private int mTextColor, mBgColor;
     private int columns;
     private int lines;
-    private int mIconResId;
+    private int mCameraIconResId/*, mGalleryIconResId*/;
     private int mTextHeight;
     private boolean isNecessary;
     private boolean isIconVisible;
+//    private boolean isGalleryIconVisible;
     private GalleryAdapter mGalleryAdapter;
     private boolean isEditable, isEnable;
     private String imgUrl;
 
+    public static final int ACTION_VIDEO_PLAY = 9;
     public static final int ACTION_VIEW = 10;
     public static final int ACTION_DELETE = 11;
     public static final int ACTION_TAKE_PICTURE_FROM_CAMERA = 12;
     public static final int ACTION_TAKE_PICTURE_FROM_GALLERY = 13;
+    public static final int ACTION_TAKE_VIDEO_FROM_CAMERA = 14;
 
     public CustomGalleryView(Context context) {
         super(context);
@@ -72,10 +83,10 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
     @Override
     protected void init(Context context, AttributeSet attrs) {
         super.init(context, attrs);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Typeface newFont = MBapApp.fontType();
-            customGalleryText.setTypeface(newFont);
-        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Typeface newFont = MBapApp.fontType();
+//            customGalleryText.setTypeface(newFont);
+//        }
     }
 
     @Override
@@ -88,7 +99,8 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
         super.initView();
         customGalleryText = findViewById(R.id.customGalleryText);
         customGallery = findViewById(R.id.customGallery);
-        customGalleryIv = findViewById(R.id.customGalleryIv);
+        customCameraIv = findViewById(R.id.customCameraIv);
+//        customGalleryIv = findViewById(R.id.customGalleryIv);
 
         if(!TextUtils.isEmpty(mText)){
             customGalleryText.setText(mText);
@@ -106,7 +118,7 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
         setNecessary(isNecessary);
 
         if(columns == 0){
-            columns = 4;//默认一行4个
+            columns = 3;//默认一行3个
         }
 
         if(lines == 0){
@@ -115,21 +127,47 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
 
         if(mBgColor!=0)
             customGallery.setBackgroundColor(mBgColor);
-        customGallery.setLayoutManager(new GridLayoutManager(getContext(), columns));
+
+        GridLayoutManager manager = new GridLayoutManager(getContext(), columns);
+
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+
+            @Override
+
+            public int getSpanSize(int position) {
+                int itemCount = mGalleryAdapter.getItemCount();
+                if(position == 0 && itemCount == 1 && !isEditable){
+
+                    return columns;
+                }
+
+                return 1;
+            }
+
+        });
+
+
+        customGallery.setLayoutManager(manager);
+//        customGallery.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         customGallery.addItemDecoration(new NomalSpaceItemDecoration(DisplayUtil.dip2px(2, getContext())));
         mGalleryAdapter = new GalleryAdapter(getContext(), isEditable);
         customGallery.setAdapter(mGalleryAdapter);
 
-        setIconVisibility(isIconVisible);
 
-        if(mIconResId!=-1)
-            customGalleryIv.setImageResource(mIconResId);
+        setIconVisibility(isIconVisible);
+//        setGalleryIconVisibility(isGalleryIconVisible);
+
+        if(mCameraIconResId!=-1)
+            customCameraIv.setImageResource(mCameraIconResId);
+
+//        if(mGalleryIconResId!=-1)
+//            customGalleryIv.setImageResource(mGalleryIconResId);
 
         if(mTextHeight!=-1){
             setTextHeight(mTextHeight);
         }
 
-        setEnabled(isEnable);
+        setEditable(isEditable);
     }
 
 
@@ -146,11 +184,12 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
             isNecessary = array.getBoolean(R.styleable.CustomGalleryView_necessary, false);
             columns = array.getInteger(R.styleable.CustomGalleryView_columns, 3);
             lines = array.getInteger(R.styleable.CustomGalleryView_lines, 1);
-            isEditable = array.getBoolean(R.styleable.CustomGalleryView_editable, false);
+            isEditable = array.getBoolean(R.styleable.CustomGalleryView_editable, true);
             isIconVisible = array.getBoolean(R.styleable.CustomGalleryView_icon_visible, false);
-            mIconResId = array.getResourceId(R.styleable.CustomGalleryView_icon_res, -1);
+//            isGalleryIconVisible = array.getBoolean(R.styleable.CustomGalleryView_gallery_icon_visible, false);
+            mCameraIconResId = array.getResourceId(R.styleable.CustomGalleryView_camera_icon_res, -1);
+//            mGalleryIconResId = array.getResourceId(R.styleable.CustomGalleryView_gallery_icon_res, -1);
             mTextHeight = array.getDimensionPixelSize(R.styleable.CustomGalleryView_text_height, -1);
-            isEnable =  array.getBoolean(R.styleable.CustomGalleryView_enable, true);
             array.recycle();
         }
     }
@@ -161,15 +200,28 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
         super.initListener();
 
         mGalleryAdapter.setOnItemChildViewClickListener(this);
-        customGalleryIv.setOnClickListener(view -> {
-
-            if(mGalleryAdapter.getItemCount() == 9){
+        customCameraIv.setOnClickListener(view -> {
+            /*if(mGalleryAdapter.getItemCount() == 9){
                 ToastUtils.show(getContext(), "最多支持9张照片！");
                 return;
             }
 
-            onChildViewClick(view, ACTION_TAKE_PICTURE_FROM_CAMERA, -1);
+            onChildViewClick(view, ACTION_TAKE_PICTURE_FROM_CAMERA, -1);*/
+
+            showCustomDialog();
+
         });
+
+//        customGalleryIv.setOnClickListener(view -> {
+//
+//            if(mGalleryAdapter.getItemCount() == 9){
+//                ToastUtils.show(getContext(), "最多支持9张照片！");
+//                return;
+//            }
+//
+//            onChildViewClick(view, ACTION_TAKE_PICTURE_FROM_GALLERY, -1);
+//        });
+
     }
 
     @Override
@@ -191,9 +243,13 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
         customGalleryText.setLayoutParams(lp);
 
 
-        ViewGroup.LayoutParams lp2 =  customGalleryIv.getLayoutParams();
+        ViewGroup.LayoutParams lp2 =  customCameraIv.getLayoutParams();
         lp2.height = height;
-        customGalleryIv.setLayoutParams(lp2);
+        customCameraIv.setLayoutParams(lp2);
+
+//        lp2 =  customGalleryIv.getLayoutParams();
+//        lp2.height = height;
+//        customGalleryIv.setLayoutParams(lp2);
     }
 
     public void setText(String text){
@@ -270,13 +326,25 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
         isIconVisible = iconVisibility;
 
         if(isIconVisible){
-            customGalleryIv.setVisibility(VISIBLE);
+            customCameraIv.setVisibility(VISIBLE);
         }
         else{
-            customGalleryIv.setVisibility(GONE);
+            customCameraIv.setVisibility(GONE);
         }
 
     }
+
+//    public void setGalleryIconVisibility(boolean iconVisibility) {
+//        isGalleryIconVisible = iconVisibility;
+//
+//        if(isGalleryIconVisible){
+//            customGalleryIv.setVisibility(VISIBLE);
+//        }
+//        else{
+//            customGalleryIv.setVisibility(GONE);
+//        }
+//
+//    }
 
     public boolean isEditable() {
         return isEditable;
@@ -289,4 +357,56 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
     public String getImgUrl() {
         return imgUrl;
     }
+
+
+    private static final String[] SHEET_ENTITY = {"拍摄照片","本地照片", "拍摄短视频"};
+
+    @SuppressLint("CheckResult")
+    private void showCustomDialog() {
+        new CustomSheetDialog(context)
+                .sheet("请选择获取照片或视频的方式", SheetUtil.getSheetEntities(SHEET_ENTITY))
+                .setOnItemChildViewClickListener((childView, position, action, obj) -> {
+
+                    if(!check(position)){
+                        return;
+                    }
+
+                    if (position == 0) {
+                        onChildViewClick(customCameraIv, ACTION_TAKE_PICTURE_FROM_CAMERA, -1);
+                    }
+                    else if(position == 2){
+                        onChildViewClick(customCameraIv, ACTION_TAKE_VIDEO_FROM_CAMERA, -1);
+                    }
+                    else {
+                        onChildViewClick(customCameraIv, ACTION_TAKE_PICTURE_FROM_GALLERY, -1);
+                    }
+                }).show();
+    }
+
+    private boolean check(int position) {
+
+        if(mGalleryAdapter.getItemCount() == 9){
+            ToastUtils.show(getContext(), "最多支持9张照片或视频！");
+            return false;
+        }
+
+        if(checkVideo() && position == 2){
+            ToastUtils.show(getContext(), "最多支持录制1次视频！");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkVideo(){
+        if(mGalleryAdapter.getItemCount()!=0)
+        for(GalleryBean galleryBean: mGalleryAdapter.getList()){
+            if(galleryBean.fileType == GalleryAdapter.FILE_TYPE_VIDEO){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

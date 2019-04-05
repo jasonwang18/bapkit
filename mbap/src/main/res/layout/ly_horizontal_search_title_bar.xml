@@ -27,10 +27,10 @@
             android:padding="15dp"
             android:id="@+id/leftBtn"
             android:tag="leftBtn"
-            android:src="@drawable/ic_back"
+            android:src="@drawable/sl_top_back"
             android:background="@null"
             android:layout_marginStart="0dp"
-            android:scaleType="centerInside"
+            android:scaleType="center"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -65,15 +65,12 @@
         android:layout_height="50dp"
         android:id="@+id/rightBtn"
         android:tag="rightBtn"
+        android:padding="@dimen/dp_15"
         android:visibility="invisible"
-        android:src="@drawable/ic_topbtn_new"
+        android:src="@drawable/sl_top_add"
         android:background="@null"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:paddingStart="@dimen/dp_30"
-        android:paddingEnd="@dimen/dp_15"
-        android:paddingTop="@dimen/dp_15"
-        android:paddingBottom="@dimen/dp_15"
         tools:ignore="ContentDescription" />
 </RelativeLayout>

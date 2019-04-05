@@ -147,11 +147,11 @@ public class CustomCheckBox extends BaseLinearLayout implements View.OnClickList
     public void setEnable(boolean enable) {
         isEnable = enable;
         if(!isEnable){
-            customCheckBoxIcon.getBackground().setAlpha(100);
+            customCheckBoxIcon.setImageAlpha(100);
             customCheckBoxText.setAlpha(0.5f);
         }
         else{
-            customCheckBoxIcon.getBackground().setAlpha(255);
+            customCheckBoxIcon.setImageAlpha(255);
             customCheckBoxText.setAlpha(1);
         }
     }

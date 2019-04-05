@@ -1,351 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="orientation" format="string"/>
-    <attr name="text_width" format="dimension"/>
-    <attr name="text_height" format="dimension"/>
-    <attr name="text_size" format="integer"/>
-    <attr name="key_size" format="integer"/>
-    <attr name="content_size" format="integer"/>
-    <attr name="text_size_float" format="float|dimension"/>
-    <attr name="text_style" format="integer"/>
-    <attr name="text" format="string|reference"/>
-    <attr name="content" format="string|reference"/>
-    <attr name="padding" format="dimension"/>
-    <attr name="gravity" format="string"/>
-    <attr name="necessary" format="boolean"/>
-    <attr name="text_color" format="color"/>
-    <attr name="bg_color" format="color"/>
-    <attr name="edit_hint" format="string"/>
-    <attr name="edit_hint_color" format="color"/>
-    <attr name="edit_delete" format="reference"/>
-    <attr name="edit_maxLength" format="integer"/>
-    <attr name="edit_maxLine" format="integer"/>
-    <attr name="editable" format="boolean"/>
-    <attr name="icon_visible" format="boolean"/>
-    <attr name="icon_res" format="reference"/>
-    <attr name="item_text_color" format="color"/>
-    <attr name="item_text_size" format="integer"/>
-    <attr name="item_bg_color" format="color"/>
-    <attr name="position" format="integer"/>
-    <attr name="max_lines" format="integer"/>
-    <attr name="bold" format="boolean"/>
-    <attr name="gap"                    format="dimension"/>
-    <attr name="num" format="integer"/>
-    <attr name="max" format="integer"/>
-    <attr name="key" format="string|reference"/>
-    <attr name="text_key" format="string|reference"/>
-    <attr name="text_value" format="string|reference"/>
-    <attr name="key_color" format="string|reference"/>
-    <attr name="content_color" format="color"/>
-    <attr name="text_key_color" format="color"/>
-    <attr name="text_value_color" format="color"/>
-    <attr name="text_key_width" format="dimension"/>
-    <attr name="key_width" format="dimension"/>
-    <attr name="key_height" format="dimension"/>
-    <attr name="text_editable" format="boolean"/>
+    <attr name="orientation" format="string" />
+    <attr name="text_width" format="dimension" />
+    <attr name="text_height" format="dimension" />
+    <attr name="text_size" format="integer" />
+    <attr name="key_size" format="integer" />
+    <attr name="content_size" format="integer" />
+    <attr name="text_size_float" format="float|dimension" />
+    <attr name="text_style" format="integer" />
+    <attr name="text" format="string|reference" />
+    <attr name="content_hint" format="string|reference" />
+    <attr name="content_value" format="string|reference" />
+    <attr name="padding" format="dimension" />
+    <attr name="gravity" format="string" />
+    <attr name="necessary" format="boolean" />
+    <attr name="text_color" format="color" />
+    <attr name="bg_color" format="color" />
+    <attr name="edit_hint" format="string" />
+    <attr name="edit_hint_color" format="color" />
+    <attr name="edit_delete" format="reference" />
+    <attr name="edit_maxLength" format="integer" />
+    <attr name="edit_maxLine" format="integer" />
+    <attr name="editable" format="boolean" />
+    <attr name="icon_visible" format="boolean" />
+    <attr name="icon_res" format="reference" />
+    <attr name="item_text_color" format="color" />
+    <attr name="item_text_size" format="integer" />
+    <attr name="item_bg_color" format="color" />
+    <attr name="position" format="integer" />
+    <attr name="max_lines" format="integer" />
+    <attr name="bold" format="boolean" />
+    <attr name="gap" format="dimension" />
+    <attr name="num" format="integer" />
+    <attr name="max" format="integer" />
+    <attr name="key" format="string|reference" />
+    <attr name="text_key" format="string|reference" />
+    <attr name="text_value" format="string|reference" />
+    <attr name="key_color" format="color" />
+    <attr name="content_color" format="color" />
+    <attr name="text_key_color" format="color" />
+    <attr name="text_value_color" format="color" />
+    <attr name="text_key_width" format="dimension" />
+    <attr name="key_width" format="dimension" />
+    <attr name="key_height" format="dimension" />
+    <attr name="text_editable" format="boolean" />
+    <attr name="precision" format="integer" />
+    <attr name="online" format="boolean" />
 
     <declare-styleable name="CustomInputView">
         <attr name="text" />
-        <attr name="type" format="string"/>
-        <attr name="text_size"/>
-        <attr name="necessary"/>
-        <attr name="text_width"/>
+        <attr name="type" format="string" />
+        <attr name="text_size" />
+        <attr name="necessary" />
+        <attr name="text_width" />
     </declare-styleable>
     <declare-styleable name="CustomDateView">
         <attr name="text" />
-        <attr name="key"/>
-        <attr name="content"/>
+        <attr name="key" />
+        <attr name="content_value" />
         <attr name="text_size" />
-        <attr name="key_size"/>
-        <attr name="content_size"/>
+        <attr name="key_size" />
+        <attr name="content_size" />
         <attr name="text_width" />
         <attr name="gravity" />
         <attr name="padding" />
-        <attr name="text_color"/>
-        <attr name="necessary"/>
-        <attr name="editable"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
+        <attr name="text_color" />
+        <attr name="necessary" />
+        <attr name="editable" />
+        <attr name="bold" />
+        <attr name="enable" />
     </declare-styleable>
 
     <declare-styleable name="CustomVerticalDateView">
-        <attr name="text"/>
-        <attr name="key"/>
-        <attr name="content"/>
-        <attr name="text_size"/>
-        <attr name="key_size"/>
-        <attr name="content_size"/>
-        <attr name="text_height"/>
-        <attr name="gravity"/>
-        <attr name="padding"/>
-        <attr name="text_color"/>
-        <attr name="necessary"/>
-        <attr name="editable"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
+        <attr name="text" />
+        <attr name="key" />
+        <attr name="content_value" />
+        <attr name="text_size" />
+        <attr name="key_size" />
+        <attr name="content_size" />
+        <attr name="text_height" />
+        <attr name="gravity" />
+        <attr name="padding" />
+        <attr name="text_color" />
+        <attr name="necessary" />
+        <attr name="editable" />
+        <attr name="bold" />
+        <attr name="enable" />
     </declare-styleable>
 
     <declare-styleable name="CustomSpinner">
-        <attr name="text_width"/>
-        <attr name="text"/>
-        <attr name="key"/>
-        <attr name="content"/>
-        <attr name="text_size"/>
-        <attr name="key_size"/>
-        <attr name="content_size"/>
-        <attr name="gravity"/>
-        <attr name="padding"/>
-        <attr name="necessary"/>
-        <attr name="text_color"/>
-        <attr name="editable"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
+        <attr name="text_width" />
+        <attr name="text" />
+        <attr name="key" />
+        <attr name="content_hint" />
+        <attr name="content_value" />
+        <attr name="text_size" />
+        <attr name="key_size" />
+        <attr name="content_size" />
+        <attr name="gravity" />
+        <attr name="padding" />
+        <attr name="necessary" />
+        <attr name="text_color" />
+        <attr name="editable" />
+        <attr name="bold" />
+        <attr name="enable" />
     </declare-styleable>
 
     <declare-styleable name="CustomVerticalSpinner">
-        <attr name="text_width"/>
-        <attr name="text_height"/>
-        <attr name="text"/>
-        <attr name="key_size"/>
-        <attr name="content_size"/>
-        <attr name="key"/>
-        <attr name="content"/>
-        <attr name="text_size"/>
-        <attr name="gravity"/>
-        <attr name="padding"/>
-        <attr name="necessary"/>
-        <attr name="text_color"/>
-        <attr name="editable"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
+        <attr name="text_width" />
+        <attr name="text_height" />
+        <attr name="text" />
+        <attr name="key_size" />
+        <attr name="content_size" />
+        <attr name="key" />
+        <attr name="content_hint" />
+        <attr name="content_value" />
+        <attr name="text_size" />
+        <attr name="gravity" />
+        <attr name="padding" />
+        <attr name="necessary" />
+        <attr name="text_color" />
+        <attr name="editable" />
+        <attr name="bold" />
+        <attr name="enable" />
     </declare-styleable>
 
     <declare-styleable name="CustomEditText">
-        <attr name="edit_hint"/>
-        <attr name="edit_hint_color"/>
-        <attr name="edit_delete"/>
-        <attr name="edit_maxLength"/>
-        <attr name="edit_maxLine"/>
-        <attr name="text_size"/>
-        <attr name="key_size"/>
-        <attr name="content_size"/>
-        <attr name="gravity"/>
-        <attr name="text"/>
-        <attr name="key"/>
-        <attr name="content"/>
-        <attr name="text_width"/>
-        <attr name="text_height"/>
-        <attr name="text_color"/>
-        <attr name="padding"/>
-        <attr name="necessary"/>
-        <attr name="editable"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
-        <attr name="icon_visible"/>
+        <attr name="edit_hint" />
+        <attr name="edit_hint_color" />
+        <attr name="edit_delete" />
+        <attr name="edit_maxLength" />
+        <attr name="edit_maxLine" />
+        <attr name="text_size" />
+        <attr name="key_size" />
+        <attr name="content_size" />
+        <attr name="gravity" />
+        <attr name="text" />
+        <attr name="key" />
+        <attr name="content_value" />
+        <attr name="text_width" />
+        <attr name="text_height" />
+        <attr name="text_color" />
+        <attr name="padding" />
+        <attr name="necessary" />
+        <attr name="editable" />
+        <attr name="bold" />
+        <attr name="enable" />
+        <attr name="icon_visible" />
     </declare-styleable>
 
     <declare-styleable name="CustomVerticalEditText">
-        <attr name="edit_hint"/>
-        <attr name="edit_hint_color"/>
-        <attr name="edit_delete"/>
-        <attr name="edit_maxLength"/>
-        <attr name="edit_maxLine"/>
-        <attr name="text_size"/>
-        <attr name="key_size"/>
-        <attr name="content_size"/>
-        <attr name="gravity"/>
-        <attr name="text"/>
-        <attr name="key"/>
-        <attr name="content"/>
-        <attr name="text_width"/>
-        <attr name="text_height"/>
-        <attr name="text_color"/>
-        <attr name="padding"/>
-        <attr name="necessary"/>
-        <attr name="editable"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
-        <attr name="icon_visible"/>
+        <attr name="edit_hint" />
+        <attr name="edit_hint_color" />
+        <attr name="edit_delete" />
+        <attr name="edit_maxLength" />
+        <attr name="edit_maxLine" />
+        <attr name="text_size" />
+        <attr name="key_size" />
+        <attr name="content_size" />
+        <attr name="gravity" />
+        <attr name="text" />
+        <attr name="key" />
+        <attr name="content_value" />
+        <attr name="text_width" />
+        <attr name="text_height" />
+        <attr name="text_color" />
+        <attr name="padding" />
+        <attr name="necessary" />
+        <attr name="editable" />
+        <attr name="bold" />
+        <attr name="enable" />
+        <attr name="icon_visible" />
     </declare-styleable>
 
 
     <declare-styleable name="XEditText">
-        <attr name="edit_hint"/>
-        <attr name="edit_hint_color"/>
-        <attr name="edit_delete"/>
-        <attr name="edit_maxLength"/>
-        <attr name="edit_maxLine"/>
-        <attr name="text_size"/>
-        <attr name="gravity"/>
-        <attr name="text"/>
-        <attr name="text_width"/>
-        <attr name="text_height"/>
-        <attr name="text_color"/>
-        <attr name="padding"/>
-        <attr name="necessary"/>
-        <attr name="editable"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
-        <attr name="line_visible" format="boolean"/>
-        <attr name="error_msg" format="string"/>
+        <attr name="edit_hint" />
+        <attr name="edit_hint_color" />
+        <attr name="edit_delete" />
+        <attr name="edit_maxLength" />
+        <attr name="edit_maxLine" />
+        <attr name="text_size" />
+        <attr name="gravity" />
+        <attr name="text" />
+        <attr name="text_width" />
+        <attr name="text_height" />
+        <attr name="text_color" />
+        <attr name="padding" />
+        <attr name="necessary" />
+        <attr name="editable" />
+        <attr name="bold" />
+        <attr name="enable" />
+        <attr name="line_visible" format="boolean" />
+        <attr name="error_msg" format="string" />
     </declare-styleable>
 
     <declare-styleable name="CustomTextView">
-        <attr name="key"/>
-        <attr name="text"/>
-        <attr name="content"/>
-        <attr name="key_color"/>
-        <attr name="content_color"/>
-        <attr name="text_width"/>
-        <attr name="text_height"/>
-        <attr name="key_width"/>
-        <attr name="key_height"/>
-        <attr name="text_size"/>
-        <attr name="key_size"/>
-        <attr name="content_size"/>
-        <attr name="gravity"/>
-        <attr name="editable"/>
-        <attr name="necessary"/>
-        <attr name="icon_res"/>
-        <attr name="max_lines"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
+        <attr name="key" />
+        <attr name="text" />
+        <attr name="content_hint" />
+        <attr name="content_value" />
+        <attr name="key_color" />
+        <attr name="content_color" />
+        <attr name="text_width" />
+        <attr name="text_height" />
+        <attr name="key_width" />
+        <attr name="key_height" />
+        <attr name="text_size" />
+        <attr name="key_size" />
+        <attr name="content_size" />
+        <attr name="gravity" />
+        <attr name="editable" />
+        <attr name="necessary" />
+        <attr name="icon_res" />
+        <attr name="max_lines" />
+        <attr name="bold" />
+        <attr name="enable" />
+        <attr name="isIntercept" />
     </declare-styleable>
 
     <declare-styleable name="CustomVerticalTextView">
-        <attr name="key"/>
-        <attr name="text"/>
-        <attr name="content"/>
-        <attr name="key_color"/>
-        <attr name="content_color"/>
-        <attr name="text_width"/>
-        <attr name="text_height"/>
-        <attr name="key_width"/>
-        <attr name="key_height"/>
-        <attr name="text_size"/>
-        <attr name="key_size"/>
-        <attr name="content_size"/>
-        <attr name="gravity"/>
-        <attr name="editable"/>
-        <attr name="necessary"/>
-        <attr name="icon_res"/>
-        <attr name="max_lines"/>
-        <attr name="bold"/>
-        <attr name="enable"/>
+        <attr name="key" />
+        <attr name="text" />
+        <attr name="content_hint" />
+        <attr name="content_value" />
+        <attr name="key_color" />
+        <attr name="content_color" />
+        <attr name="text_width" />
+        <attr name="text_height" />
+        <attr name="key_width" />
+        <attr name="key_height" />
+        <attr name="text_size" />
+        <attr name="key_size" />
+        <attr name="content_size" />
+        <attr name="gravity" />
+        <attr name="editable" />
+        <attr name="necessary" />
+        <attr name="icon_res" />
+        <attr name="max_lines" />
+        <attr name="bold" />
+        <attr name="enable" />
     </declare-styleable>
 
     <declare-styleable name="CustomTab">
-        <attr name="bg_color"               />
-        <attr name="gap"                    />
-        <attr name="select_text_color"      format="color"/>
-        <attr name="unselect_text_color"    format="color"/>
-        <attr name="select_bg_color"        format="color"/>
-        <attr name="unselect_bg_color"      format="color"/>
-        <attr name="indicator_visible"      format="boolean"/>
-        <attr name="indicator_color"        format="color"/>
-        <attr name="tab_num_visible"        format="boolean"/>
+        <attr name="bg_color" />
+        <attr name="gap" />
+        <attr name="select_text_color" format="color" />
+        <attr name="unselect_text_color" format="color" />
+        <attr name="select_bg_color" format="color" />
+        <attr name="unselect_bg_color" format="color" />
+        <attr name="indicator_visible" format="boolean" />
+        <attr name="indicator_color" format="color" />
+        <attr name="tab_num_visible" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="CustomNumView">
-        <attr name="text"/>
-        <attr name="num"/>
-        <attr name="max"/>
-        <attr name="text_size"/>
-        <attr name="text_color"/>
-        <attr name="text_width"/>
-        <attr name="necessary"/>
-        <attr name="editable"/>
-        <attr name="add_icon_res" format="reference"/>
-        <attr name="minus_icon_res" format="reference"/>
-        <attr name="is_float"/>
+        <attr name="text" />
+        <attr name="num" />
+        <attr name="max" />
+        <attr name="text_size" />
+        <attr name="text_color" />
+        <attr name="text_width" />
+        <attr name="necessary" />
+        <attr name="editable" />
+        <attr name="add_icon_res" format="reference" />
+        <attr name="minus_icon_res" format="reference" />
+        <attr name="is_float" />
+        <attr name="precision" />
     </declare-styleable>
 
     <declare-styleable name="CustomWaveView">
-        <attr name="wave_text"      format="string"/>
-        <attr name="wave_text_size" format="dimension"/>
-        <attr name="text_color"/>
-        <attr name="wave_color"     format="color"/>
-        <attr name="wave_height"    format="integer"/>
-        <attr name="wave_duration"  format="integer"/>
+        <attr name="wave_text" format="string" />
+        <attr name="wave_text_size" format="dimension" />
+        <attr name="text_color" />
+        <attr name="wave_color" format="color" />
+        <attr name="wave_height" format="integer" />
+        <attr name="wave_duration" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="CustomHorizontalSearchTitleBar">
-        <attr name="title_background_color" format="color"/>
-        <attr name="title_text" format="string|reference"/>
-        <attr name="title_length" format="dimension"/>
-        <attr name="title_right_btn_need" format="boolean"/>
-        <attr name="start_color" format="color|reference"/>
-        <attr name="end_color" format="color|reference"/>
+        <attr name="title_background_color" format="color" />
+        <attr name="title_text" format="string|reference" />
+        <attr name="title_length" format="dimension" />
+        <attr name="title_right_btn_need" format="boolean" />
+        <attr name="start_color" format="color|reference" />
+        <attr name="end_color" format="color|reference" />
+        <attr name="right_btn_res" format="integer|reference"/>
+
+        <attr name="enable_multi_func" format="boolean"/>
+        <attr name="right_btn_padding" format="dimension"/>
     </declare-styleable>
     <declare-styleable name="CustomSearchView">
-        <attr name="search_hint" format="string"/>
-        <attr name="search_text_size" format="integer"/>
-        <attr name="search_text_color" format="color"/>
-        <attr name="search_text_bg_color" format="color"/>
-        <attr name="search_bg_color" format="color"/>
+        <attr name="search_hint" format="string" />
+        <attr name="search_text_size" format="integer" />
+        <attr name="search_text_color" format="color" />
+        <attr name="search_text_bg_color" format="color" />
+        <attr name="search_bg_color" format="color" />
     </declare-styleable>
     <declare-styleable name="CustomImageButton">
         <attr name="text" />
-        <attr name="text_size_float"/>
-        <attr name="text_color"/>
+        <attr name="text_size_float" />
+        <attr name="text_color" />
     </declare-styleable>
     <declare-styleable name="CustomPotraitView">
-        <attr name="potrait_icon" format="reference"/>
-        <attr name="potrait_username" format="string"/>
-        <attr name="potrait_text" format="string"/>
+        <attr name="potrait_icon" format="reference" />
+        <attr name="potrait_username" format="string" />
+        <attr name="potrait_text" format="string" />
     </declare-styleable>
 
     <declare-styleable name="CustomArrowView">
-        <attr name="arrow_icon" format="reference"/>
-        <attr name="arrow_text" format="string"/>
+        <attr name="arrow_icon" format="reference" />
+        <attr name="arrow_text" format="string" />
     </declare-styleable>
 
     <declare-styleable name="CustomTitleBar">
-        <attr name="titlebar_right_visible" format="boolean"/>
-        <attr name="titlebar_right_icon" format="reference"/>
-        <attr name="titlebar_bg_color" format="color"/>
-        <attr name="titlebar_title_text" format="string"/>
+        <attr name="titlebar_right_visible" format="boolean" />
+        <attr name="titlebar_right_icon" format="reference" />
+        <attr name="titlebar_bg_color" format="color" />
+        <attr name="titlebar_title_text" format="string" />
     </declare-styleable>
 
     <declare-styleable name="CustomSwitchButton">
-        <attr name="switch_status" format="string"/>
-        <attr name="switch_enable" format="boolean"/>
-        <attr name="switch_value" format="string"/>
+        <attr name="switch_status" format="string" />
+        <attr name="switch_enable" format="boolean" />
+        <attr name="switch_value" format="string" />
     </declare-styleable>
 
     <declare-styleable name="CustomCheckBox">
-        <attr name="text"/>
-        <attr name="text_width"/>
-        <attr name="necessary"/>
-        <attr name="checkbox_checked" format="boolean"/>
-        <attr name="checkbox_icon" format="reference"/>
-        <attr name="checkbox_enable" format="boolean"/>
-        <attr name="enable"/>
+        <attr name="text" />
+        <attr name="text_width" />
+        <attr name="necessary" />
+        <attr name="checkbox_checked" format="boolean" />
+        <attr name="checkbox_icon" format="reference" />
+        <attr name="checkbox_enable" format="boolean" />
+        <attr name="enable" />
     </declare-styleable>
 
     <declare-styleable name="CustomGalleryView">
-        <attr name="text_color"/>
+        <attr name="text_color" />
         <attr name="text" />
-        <attr name="text_width"/>
-        <attr name="text_height"/>
-        <attr name="text_size"/>
-        <attr name="necessary"/>
-        <attr name="bg_color"/>
-        <attr name="columns"  format="integer"/>
-        <attr name="lines"  format="integer"/>
-        <attr name="editable"/>
-        <attr name="icon_visible"/>
-        <attr name="icon_res"/>
-        <attr name="enable"/>
+        <attr name="text_width" />
+        <attr name="text_height" />
+        <attr name="text_size" />
+        <attr name="necessary" />
+        <attr name="bg_color" />
+        <attr name="columns" format="integer" />
+        <attr name="lines" format="integer" />
+        <attr name="editable" />
+        <attr name="icon_visible" />
+        <attr name="gallery_icon_visible" format="boolean" />
+        <attr name="gallery_icon_res" format="reference" />
+        <attr name="camera_icon_res" format="reference" />
+        <attr name="enable" />
     </declare-styleable>
 
     <declare-styleable name="CustomFilterView">
         <attr name="text" />
-        <attr name="text_color"/>
-        <attr name="text_size"/>
-        <attr name="position"/>
-        <attr name="icon_res"/>
+        <attr name="text_color" />
+        <attr name="text_size" />
+        <attr name="position" />
+        <attr name="icon_res" />
         <attr name="item_text_color" />
         <attr name="item_bg_color" />
         <attr name="item_text_size" />
@@ -353,16 +368,24 @@
 
     <declare-styleable name="CustomExpandableTextView">
         <attr name="text" />
-        <attr name="text_color"/>
-        <attr name="text_size"/>
-        <attr name="text_style"/>
-        <attr name="max_lines"/>
-        <attr name="expand_times" format="integer"/>
+        <attr name="text_color" />
+        <attr name="text_size" />
+        <attr name="text_style" />
+        <attr name="max_lines" />
+        <attr name="expand_times" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="CustomPopTransation">
-        <attr name="text_size"/>
-        <attr name="position"/>
+        <attr name="text_size" />
+        <attr name="position" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomWorkFlowView">
+        <attr name="commentable" format="boolean" />
+        <attr name="comment" format="string" />
+        <attr name="enable" />
+        <attr name="online" />
+        <attr name="editable" />
     </declare-styleable>
 
     <declare-styleable name="CustomCircleTextImageView">
@@ -370,28 +393,28 @@
         <attr name="citv_border_color" format="color" />
         <attr name="citv_border_overlay" format="boolean" />
         <attr name="citv_fill_color" format="color" />
-        <attr name="citv_text_text" format="string"/>
-        <attr name="citv_text_color" format="color"/>
-        <attr name="citv_text_size" format="dimension"/>
-        <attr name="citv_text_padding" format="dimension"/>
-        <attr name="citv_border_radius" format="dimension"/>
+        <attr name="citv_text_text" format="string" />
+        <attr name="citv_text_color" format="color" />
+        <attr name="citv_text_size" format="dimension" />
+        <attr name="citv_text_padding" format="dimension" />
+        <attr name="citv_border_radius" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="CustomTodoView">
-        <attr name="text_size"/>
-        <attr name="icon_res"/>
-        <attr name="todo_text" format="string|reference"/>
-        <attr name="todo_time" format="string|reference"/>
-        <attr name="todo_status" format="string|reference"/>
+        <attr name="text_size" />
+        <attr name="icon_res" />
+        <attr name="todo_text" format="string|reference" />
+        <attr name="todo_time" format="string|reference" />
+        <attr name="todo_status" format="string|reference" />
     </declare-styleable>
 
     <declare-styleable name="CustomListWidget">
-        <attr name="text_size"/>
-        <attr name="icon_res"/>
-        <attr name="title_bg_color" format="color|reference"/>
-        <attr name="total" format="integer"/>
-        <attr name="widget_name" format="string|reference"/>
-        <attr name="widget_num" format="integer"/>
+        <attr name="text_size" />
+        <attr name="icon_res" />
+        <attr name="title_bg_color" format="color|reference" />
+        <attr name="total" format="integer" />
+        <attr name="widget_name" format="string|reference" />
+        <attr name="widget_num" format="integer" />
         <attr name="is_editable" format="boolean" />
         <attr name="is_addable" format="boolean" />
     </declare-styleable>
@@ -399,21 +422,21 @@
     <declare-styleable name="CustomRoundTextImageView">
         <attr name="round_width" format="dimension" />
         <attr name="round_height" format="dimension" />
-        <attr name="text"/>
-        <attr name="text_color"/>
-        <attr name="round_text_size" format="dimension"/>
-        <attr name="padding"/>
+        <attr name="text" />
+        <attr name="text_color" />
+        <attr name="round_text_size" format="dimension" />
+        <attr name="padding" />
     </declare-styleable>
 
     <declare-styleable name="CustomDownloadView">
         <attr name="text" />
-        <attr name="text_color"/>
-        <attr name="text_size"/>
-        <attr name="info_text_size" format="integer"/>
-        <attr name="info_success_color" format="color"/>
-        <attr name="info_failed_color" format="color"/>
+        <attr name="text_color" />
+        <attr name="text_size" />
+        <attr name="info_text_size" format="integer" />
+        <attr name="info_success_color" format="color" />
+        <attr name="info_failed_color" format="color" />
 
-        <attr name="loader_height" format="dimension"/>
+        <attr name="loader_height" format="dimension" />
     </declare-styleable>
 
 </resources>

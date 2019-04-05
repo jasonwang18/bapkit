@@ -59,7 +59,6 @@ public class CustomPopTransation extends BaseLinearLayout implements View.OnClic
 
     private boolean isDismissOutside = false;
 
-
     public CustomPopTransation(Context context) {
         super(context);
     }

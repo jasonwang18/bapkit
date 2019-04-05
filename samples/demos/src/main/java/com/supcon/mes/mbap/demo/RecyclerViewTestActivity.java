@@ -67,7 +67,7 @@ public class RecyclerViewTestActivity extends BaseRefreshRecyclerActivity<TestEn
         emptyViewEntity.contentText = "暂无数据";
 
         mRecyclerEmptyAdapter.addData(emptyViewEntity);
-        ((RefreshRecyclerController<TestEntity>)refreshListController).setEmpterAdapter(mRecyclerEmptyAdapter);
+        refreshListController.setEmpterAdapter(mRecyclerEmptyAdapter);
     }
 
 

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 
+import com.supcon.common.view.listener.OnChildViewClickListener;
+
 import java.util.List;
 
 /**
@@ -90,4 +92,8 @@ public class AdPagerAdapter extends PagerAdapter {
 
         return view;
     }
+
+
+
+
 }

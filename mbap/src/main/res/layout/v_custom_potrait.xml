@@ -6,24 +6,25 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
     <com.supcon.common.view.view.RoundImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:id="@+id/potraitIcon"
         android:gravity="right|center_vertical"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_user"
+        android:src="@drawable/ic_user_default"
         android:scaleType="fitCenter"
         android:background="@color/white"
-        custom:roundWidth="50dp"
-        custom:roundHeight="50dp"
+        custom:roundWidth="60dp"
+        custom:roundHeight="60dp"
         />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_10"
         android:layout_toRightOf="@+id/potraitIcon"
+        android:background="#99ffffff"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -33,7 +34,7 @@
             android:textColor="@color/textColorblack"
             android:gravity="left|center_vertical"
             android:text="王世展"
-            android:textSize="@dimen/fontSize_18sp"
+            android:textSize="@dimen/fontSize_16sp"
             android:textStyle="bold"
             />
         <TextView
@@ -42,7 +43,7 @@
             android:id="@+id/potraitText"
             style="@style/HintTextColor"
             android:textSize="14sp"
-            android:textColor="@color/textColorlightblack"
+            android:textColor="@color/hintColor"
             android:gravity="left|center_vertical"
             android:layout_marginTop="10dp"
             android:text="工号:20170528" />

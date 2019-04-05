@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class PatternUtil {
 
-    public static final String IP_CHECK = "^(\\d|[1-9]\\d|1\\d{2}|2[0-5][0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-5][0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-5][0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-5][0-5])$";
+    public static final String IP_CHECK = "^(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])$";
 //    private static final String PORT_CHECK = "([0-9]|[1-9]\\d{1,3}|[1-5]\\d{4}|6[0-5]{2}[0-3][0-5])";
     public static final String PORT_CHECK = "^((\\d{0,4})|([1-5]\\d{1,4})|(6[0-4]\\d{1,3})|(65[0-4]\\d{1,2})|(655[0-2]\\d)|(6553[0-5]))$";
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9_\\u4e00-\\u9fa5\\-]{1,}$";

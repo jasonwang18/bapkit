@@ -53,6 +53,8 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
     private boolean isEditIconVisible = true;
     private int mTextHeight, mTextWidth;
 
+    private boolean isIntercept;
+
     public CustomEditText(Context context) {
         super(context);
     }
@@ -168,8 +170,8 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
 
         setEditable(isEditable);
 
-        if(isBold)
-            setContentTextStyle(Typeface.BOLD);
+        if(!isBold)
+            setContentTextStyle(Typeface.NORMAL);
 
         setEnabled(isEnable);
     }
@@ -182,7 +184,7 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomEditText);
             mText = array.getString(R.styleable.CustomEditText_text);
             mKey = array.getString(R.styleable.CustomEditText_key);
-            mContent = array.getString(R.styleable.CustomEditText_content);
+            mContent = array.getString(R.styleable.CustomEditText_content_value);
             mHint = array.getString(R.styleable.CustomEditText_edit_hint);
             mGravity = array.getString(R.styleable.CustomEditText_gravity);
             mTextSize = array.getInt(R.styleable.CustomEditText_text_size, 0);
@@ -198,7 +200,7 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
             isEditable = array.getBoolean(R.styleable.CustomEditText_editable, true);
             mTextHeight =(int) array.getDimension(R.styleable.CustomEditText_text_height, -1);
             mTextWidth =(int) array.getDimension(R.styleable.CustomEditText_text_width, -1);
-            isBold = array.getBoolean(R.styleable.CustomEditText_bold, false);
+            isBold = array.getBoolean(R.styleable.CustomEditText_bold, true);
             isEnable = array.getBoolean(R.styleable.CustomEditText_enable, true);
             isEditIconVisible = array.getBoolean(R.styleable.CustomEditText_icon_visible, true);
             array.recycle();
@@ -258,11 +260,12 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
 
 
         if (mTextColor != 0)
-            customEditText.setTextColor(mTextColor);
+            customEditInput.setTextColor(mTextColor);
 
         if (mTextSize != 0) {
             customEditInput.setTextSize(mTextSize);
         }
+
 
         if(mKeyTextSize!=0){
             customEditText.setTextSize(mKeyTextSize);
@@ -335,13 +338,13 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
         isEditable = editable;
         customEditInput.setEnabled(editable);
         if(editable){
-            customEditText.setTextColor(getResources().getColor(R.color.textColorblack));
-            customEditInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
+//            customEditText.setTextColor(getResources().getColor(R.color.textColorblack));
+//            customEditInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
             customEditText.setOnClickListener(this);
         }
         else{
-            customEditText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
-            customEditInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+//            customEditText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+//            customEditInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
             customEditText.setOnClickListener(null);
         }
 
@@ -388,6 +391,11 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
     }
 
     @Override
+    public void setIntercept(boolean isIntercept) {
+        this.isIntercept = isIntercept;
+    }
+
+    @Override
     public boolean isNecessary() {
         return isNecessary;
     }
@@ -400,6 +408,11 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
     @Override
     public boolean isEmpty() {
         return TextUtils.isEmpty(getInput());
+    }
+
+    @Override
+    public boolean isIntercept() {
+        return isIntercept;
     }
 
     public void setTextStyle(int textStyle){
@@ -496,11 +509,7 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
 
     @Override
     public void setContent(String content) {
-        if(content == null){
-            return;
-        }
         customEditInput.setText(content);
-        customEditInput.setSelection(content.length());
     }
 
     @Override
@@ -561,5 +570,13 @@ public class CustomEditText extends BaseRelativeLayout implements View.OnTouchLi
 
     public void setInputType(int type){
         customEditInput.setInputType(type);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(!isEditable()) {
+            return false;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

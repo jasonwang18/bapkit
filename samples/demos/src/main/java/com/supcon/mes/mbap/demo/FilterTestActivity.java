@@ -40,6 +40,40 @@ public class FilterTestActivity extends BaseActivity {
             FilterBean filterBean = new FilterBean();
             filterBean.name = "物品zhg34534534534534eadasd" + list.size();
             list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品123";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品544";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品123";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品544";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品4565466666";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品123";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品544";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品123";
+            list.add(filterBean);
+            filterBean = new FilterBean();
+            filterBean.name = "物品544";
+            list.add(filterBean);
+
         }
 
         mCustomFilterView.setData(list);

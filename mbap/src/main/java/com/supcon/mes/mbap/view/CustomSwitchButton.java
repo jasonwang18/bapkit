@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseLinearLayout;
 import com.supcon.common.view.util.DisplayUtil;
-import com.supcon.common.view.util.LogUtil;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.R;
 
@@ -43,9 +42,12 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
     private boolean isSwitchOn = true;
 
     private boolean isEnable = true;
+
+    private boolean isSwitching = false;
     private String[] values;
 
     private OnSwitchListener mOnSwitchListener;
+    private OnSwitchDataListener mOnSwitchDataListener;
 
     private final int ANIMATION_DURATION = 300;
 
@@ -101,6 +103,16 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
         updateView();
     }
 
+    public void setValues(String[] values){
+        this.values = values;
+        if(values!=null && values.length == 2) {
+            customSwitchOn.setText(values[0]);
+            customSwitchOff.setText(values[1]);
+        }
+//        updateView();
+    }
+
+
     private void updateView() {
 
 
@@ -131,6 +143,10 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
 
     public void setOnSwitchListener(OnSwitchListener onSwitchListener) {
         mOnSwitchListener = onSwitchListener;
+    }
+
+    public void setOnSwitchDataListener(OnSwitchDataListener onSwitchDataListener) {
+        mOnSwitchDataListener = onSwitchDataListener;
     }
 
     private void startOffAnimation() {
@@ -167,11 +183,16 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
 
 //        LogUtil.i("customSwitchOn:"+ customSwitchOn.getX()+" customSwitchOff:"+customSwitchOff.getX());
 
-        transAnim.addUpdateListener(animation -> {
-            float c = (float) animation.getAnimatedValue();
 
-            if(c == customSwitchOff.getX()+customSwitchLayout.getX()){
-                updateView();
+        transAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float c = (float) animation.getAnimatedValue();
+
+                if (c == customSwitchOff.getX() + customSwitchLayout.getX()) {
+                    CustomSwitchButton.this.updateView();isSwitching = false;
+                }
+
             }
         });
         transAnim.start();
@@ -214,6 +235,7 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
 
             if(c == customSwitchOn.getX()+customSwitchLayout.getX()){
                 updateView();
+                isSwitching = false;
             }
         });
 
@@ -260,6 +282,7 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
         isSwitchOn = true;
         switchStatus = SWITCH_ON;
         if(switchStatus != oldSwitchStatus){
+            isSwitching = true;
             startOnAnimation();
         }
     }
@@ -268,6 +291,7 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
         isSwitchOn = false;
         switchStatus = SWITCH_OFF;
         if(switchStatus != oldSwitchStatus){
+            isSwitching = true;
             startOffAnimation();
         }
     }
@@ -303,8 +327,11 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
             return;
         }
 
-        isSwitchOn = !isSwitchOn;
+        if(isSwitching){
+            return;
+        }
 
+        isSwitchOn = !isSwitchOn;
 
         if(isSwitchOn) {
 
@@ -317,6 +344,10 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
         }
         if(mOnSwitchListener!=null)
             mOnSwitchListener.onSwitchChanged(isSwitchOn);
+
+        if(mOnSwitchDataListener!=null){
+            mOnSwitchDataListener.onSwitchDataChanged(isSwitchOn, isSwitchOn?values[0]:values[1]);
+        }
 
 
     }
@@ -332,6 +363,12 @@ public class CustomSwitchButton extends BaseLinearLayout implements View.OnClick
     public interface OnSwitchListener{
 
         void onSwitchChanged(boolean isSwichOn);
+
+    }
+
+    public interface OnSwitchDataListener{
+
+        void onSwitchDataChanged(boolean isSwichOn, String data);
 
     }
 

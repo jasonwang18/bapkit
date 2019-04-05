@@ -42,6 +42,7 @@ public class CustomNumView extends BaseLinearLayout {
     float max;
     Drawable addIcon, minusIcon;
     OnTextListener mTextListener;
+    int precision;
 
     public CustomNumView(Context context) {
         super(context);
@@ -82,6 +83,7 @@ public class CustomNumView extends BaseLinearLayout {
             addIcon    = array.getDrawable(R.styleable.CustomNumView_add_icon_res);
             minusIcon  = array.getDrawable(R.styleable.CustomNumView_minus_icon_res);
             isFloat = array.getBoolean(R.styleable.CustomNumView_is_float, false);
+            precision = array.getInt(R.styleable.CustomNumView_precision,0);
 
             array.recycle();
         }
@@ -139,14 +141,14 @@ public class CustomNumView extends BaseLinearLayout {
 
         numViewAdd.setOnClickListener(v -> {
             if(mNum<max || max == -1)
-                mNum = new BigDecimal(mNum).add(new BigDecimal(1)).doubleValue();
+                mNum = new BigDecimal(mNum).add(new BigDecimal(1)).setScale(precision,BigDecimal.ROUND_HALF_UP).doubleValue();
 //                mNum++;
 //            numViewInput.setText(String.valueOf(mNum));
             setNum(mNum);
         });
 
         numViewMinus.setOnClickListener(v -> {
-            mNum = new BigDecimal(String.valueOf(mNum)).subtract(new BigDecimal(1)).doubleValue();
+            mNum = new BigDecimal(String.valueOf(mNum)).subtract(new BigDecimal(1)).setScale(precision,BigDecimal.ROUND_HALF_UP).doubleValue();
 //            mNum -- ;
             if(mNum < 0){
                 mNum = 0;
@@ -184,8 +186,10 @@ public class CustomNumView extends BaseLinearLayout {
     }
 
     public void setNum(double mNum) {
-        this.mNum = mNum;
-        numViewInput.setText(String.valueOf(mNum));
+//        this.mNum = mNum;
+//        numViewInput.setText(String.valueOf(mNum));
+        this.mNum = new BigDecimal(mNum).setScale(precision,BigDecimal.ROUND_HALF_UP).doubleValue();
+        numViewInput.setText(String.format("%s",new BigDecimal(mNum).setScale(precision,BigDecimal.ROUND_HALF_UP)));
         numViewInput.setSelection(numViewInput.getText().length());
     }
 
@@ -219,12 +223,12 @@ public class CustomNumView extends BaseLinearLayout {
         if(!isEditable){
             numViewAdd.setVisibility(INVISIBLE);
             numViewMinus.setVisibility(INVISIBLE);
-            numViewInput.setFocusable(false);
+//            numViewInput.setFocusable(false);
         }
         else{
             numViewAdd.setVisibility(VISIBLE);
             numViewMinus.setVisibility(VISIBLE);
-            numViewInput.setFocusable(true);
+//            numViewInput.setFocusable(true);
         }
     }
 
@@ -275,6 +279,10 @@ public class CustomNumView extends BaseLinearLayout {
 
     public TextView getNumViewInput() {
         return numViewInput;
+    }
+
+    public void setPrecision(int precision){
+        this.precision = precision;
     }
 
 }

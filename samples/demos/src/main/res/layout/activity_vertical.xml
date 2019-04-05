@@ -14,6 +14,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
+            <com.supcon.mes.mbap.view.CustomSwitchButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <com.supcon.mes.mbap.view.CustomInputView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,36 +34,47 @@
                 />
             <com.supcon.mes.mbap.view.CustomVerticalTextView
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/verticalView"
                 app:text_key="测试"
-                app:text_size="14"
                 app:editable="false"
-                app:text_value="水电费快速打开打开可是对方开始打开方法规和法国恢复规划法规回复回复法规和法国恢复规划法规回复式贷款福克斯的福克斯的开发快刚刚恢复规划法规和速的开发"
+                app:key_size="16"
+                app:content_size="18"
+                app:content_value="水电费快速打开打开可是对方开始打开方法规和法国恢复规划法规回复回复法规和法国恢复规划法规回复式贷款福克斯的福克斯的开发快刚刚恢复规划法规和速的开发"
+                app:max_lines="2"
                 />
-            <com.supcon.mes.mbap.view.CustomVerticalTextView
+            <com.supcon.mes.mbap.view.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:key="横向键值对文本框"
-                app:content="33453453576876897987090-0-=65465464565789780989-08464"
+                app:content_value="始打开方法规和法国恢复规划法规回复回复法规和法国恢复规划法规回复式贷款福克斯的福"
                 app:key_width="100dp"
-                app:editable="true"
+                app:editable="false"
+                app:key_size="16"
+                app:content_size="18"
+                android:layout_marginRight="20dp"
                 />
             <com.supcon.mes.mbap.view.CustomVerticalTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:key="纵向键值对文本框"
                 app:key_height="50dp"
-                app:content="3345345353464"
-                app:editable="true"
+                app:content_value="3345345353464"
+                app:editable="false"
+                app:key_size="16"
+                app:content_size="18"
+                android:layout_marginRight="20dp"
                 />
             <com.supcon.mes.mbap.view.CustomVerticalEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:text="输入框"
                 app:necessary="true"
-                app:text_size="14"
-                app:editable="true"
+                app:editable="false"
+                app:key_size="16"
+                app:content_size="18"
+                app:content_value="内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容"
+                app:edit_maxLine="20"
                 android:id="@+id/verticalEdit"
                 android:layout_marginRight="20dp"
                 />
@@ -69,18 +83,33 @@
                 android:layout_height="wrap_content"
                 app:text="横向输入框"
                 app:necessary="true"
-                app:text_size="14"
                 app:editable="true"
+                app:text_size="14"
+                app:key_size="16"
+                app:content_size="18"
+                app:content_value="内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊"
                 android:id="@+id/hEdit"
+                android:layout_marginRight="20dp"
+                />
+            <com.supcon.mes.mbap.view.CustomSpinner
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                app:text="横向下拉框"
+                app:content_value="内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊"
+                app:editable="true"
+                app:key_size="16"
+                app:content_size="18"
+                android:id="@+id/spinner"
                 android:layout_marginRight="20dp"
                 />
             <com.supcon.mes.mbap.view.CustomVerticalSpinner
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 app:text="下拉框"
-                app:content="内容啊"
+                app:content_value="内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊"
                 app:editable="true"
-                app:text_size="14"
+                app:key_size="16"
+                app:content_size="18"
                 android:id="@+id/verticalSpinner"
                 android:layout_marginRight="20dp"
                 />
@@ -89,10 +118,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 app:text="日历框"
-                app:content="内容啊"
+                app:content_value="内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊内容啊"
                 app:editable="true"
-                app:text_size="14"
+                app:key_size="16"
+                app:content_size="18"
                 android:id="@+id/verticalDate"
+                android:layout_marginRight="20dp"
+                />
+            <com.supcon.mes.mbap.view.CustomDateView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:text="横向日历框"
+                app:content_value="内容啊"
+                app:editable="true"
+                app:key_size="16"
+                app:content_size="18"
+                android:id="@+id/hDate"
                 android:layout_marginRight="20dp"
                 />
             <com.supcon.mes.mbap.view.XEditText

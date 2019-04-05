@@ -28,12 +28,12 @@
             android:name=".ExpandTextViewTestActivity"
             android:theme="@style/AppNoTitleBarTheme">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <!--<intent-filter> -->
+             <!--<action android:name="android.intent.action.MAIN" />-->
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <!--<category android:name="android.intent.category.LAUNCHER" />-->
+             <!--</intent-filter>-->
 
         </activity>
         <activity
@@ -70,6 +70,8 @@
 
         <activity android:name=".RecyclerViewTestActivity"/>
         <activity android:name=".ListWidgetTestActivity"/>
+        <activity android:name=".CustomTagViewActivity"/>
+        <activity android:name=".RecyclerViewTranslucentTestActivity" android:theme="@style/TranslucentTheme" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

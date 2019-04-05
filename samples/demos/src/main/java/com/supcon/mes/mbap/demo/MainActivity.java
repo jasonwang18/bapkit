@@ -2,9 +2,9 @@ package com.supcon.mes.mbap.demo;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.supcon.common.view.base.activity.BaseActivity;
-import com.supcon.mes.mbap.view.CustomArrowView;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
@@ -34,6 +34,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 //
 //        contentDialog = findViewById(R.id.contentDialog);
 
+//        DateTimePicker datePicker = new DatePicker(this);
+//        DateOnlyPickController dateOnlyPickController = new DateOnlyPickController(this);
+//        dateOnlyPickController.show(System.currentTimeMillis());
     }
 
     @Override
@@ -71,9 +74,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()){
+            case R.id.recyclerViewTranslucentTest:
+                startActivity(new Intent(this, RecyclerViewTranslucentTestActivity.class));
+                break;
+
             case R.id.listWidgetTest:
-                startActivity(new Intent(this, ListWidgetTestActivity.class));
+//                startActivity(new Intent(this, ListWidgetTestActivity.class));
+
                 break;
 
             case R.id.recyclerViewTest:
@@ -102,6 +111,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.refreshTest:
 
                 startActivity(new Intent(this, RefreshTestTestActivity.class));
+
                 break;
             case R.id.galleryTest:
 
@@ -140,7 +150,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
             case R.id.horizontalSearchTest:
                 startActivity(new Intent(this, CustomHorizontalSearchActivity.class));
-                break;
+                 break;
 
             case R.id.dialogTest:
                 startActivity(new Intent(this, DislogTextActivity.class));
@@ -149,6 +159,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.contentDialog:
                 startActivity(new Intent(this, CustomContentDialogActivity.class));
                 break;
+                default:
         }
     }
 }

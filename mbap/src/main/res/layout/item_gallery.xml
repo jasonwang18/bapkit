@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="110dp"
-    android:layout_height="110dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     >
     <ImageView
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/itemGalleryIv"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:background="@drawable/sh_transparent"
+        android:src="@drawable/ic_pic_default"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemGalleryPlayIv"
+        android:src="@drawable/ic_video_play3"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="38dp"
+        android:visibility="gone"
+        android:scaleType="centerInside"
         />
 </RelativeLayout>
 

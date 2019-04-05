@@ -18,14 +18,13 @@
         app:text="缺陷照片"
         app:text_size="14"
         app:columns="3"
-        app:editable="true"
-        app:icon_visible="true"
+        app:editable="false"
+        app:icon_visible="false"
         />
-    <com.supcon.mes.mbap.view.CustomGalleryView_NEW_VERSION
+    <com.supcon.mes.mbap.view.CustomGalleryView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/galleryView_new_version"
-        app:text_color="@color/textColorlightblack"
+        android:id="@+id/galleryView2"
         app:bg_color="@color/white"
         app:text="缺陷照片"
         app:text_size="14"
@@ -34,13 +33,5 @@
         app:icon_visible="true"
         />
 
-    <com.supcon.mes.mbap.view.CustomVerticalTextView_NEW_VERSION
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:text_key="横向键值对文本框"
-        app:text_value="33453453576876897987090-0-=65465464565789780989-08464"
-        app:text_key_width="100dp"
-        app:editable="true"
-        />
 </LinearLayout>
 </ScrollView>

@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
 
     private boolean isNecessary, isEditable, isEnable;
     private boolean isBold;
+    private boolean isIntercept;
 
     public CustomDateView(Context context) {
         super(context);
@@ -137,8 +139,8 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
             setNecessary(isNecessary);
         setEditable(isEditable);
 
-        if(isBold)
-            setContentTextStyle(Typeface.BOLD);
+        if(!isBold)
+            setContentTextStyle(Typeface.NORMAL);
 
         setEnabled(isEnable);
     }
@@ -163,7 +165,7 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomDateView);
             mText = array.getString(R.styleable.CustomDateView_text);
             mKey = array.getString(R.styleable.CustomDateView_key);
-            mContent = array.getString(R.styleable.CustomDateView_content);
+            mContent = array.getString(R.styleable.CustomDateView_content_value);
             mTextSize = array.getInt(R.styleable.CustomDateView_text_size, 0);
             mKeyTextSize = array.getInt(R.styleable.CustomDateView_key_size, 0);
             mContentTextSize = array.getInt(R.styleable.CustomDateView_content_size, 0);
@@ -173,7 +175,7 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
             isEditable = array.getBoolean(R.styleable.CustomDateView_editable, true);
             mTextWidth =  array.getDimensionPixelSize(R.styleable.CustomDateView_text_width, -1);
             mTextColor = array.getColor(R.styleable.CustomDateView_text_color, 0);
-            isBold = array.getBoolean(R.styleable.CustomDateView_bold, false);
+            isBold = array.getBoolean(R.styleable.CustomDateView_bold, true);
             isEnable =  array.getBoolean(R.styleable.CustomDateView_enable, true);
             array.recycle();
         }
@@ -212,21 +214,26 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
         isEditable = editable;
         if(editable){
             customDateInput.setOnClickListener(this);
-            customDateText.setTextColor(getResources().getColor(R.color.textColorblack));
+//            customDateText.setTextColor(getResources().getColor(R.color.textColorblack));
             customDateIcon.setVisibility(VISIBLE);
-            customDateInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
+//            customDateInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
         }
         else {
             customDateIcon.setVisibility(GONE);
-            customDateText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+//            customDateText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
             customDateInput.setOnClickListener(null);
-            customDateInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+//            customDateInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
         }
     }
 
     @Override
     public void setNecessary(boolean isNecessary){
         TextHelper.setRequired(isNecessary, customDateText);
+    }
+
+    @Override
+    public void setIntercept(boolean isIntercept) {
+        this.isIntercept = isIntercept;
     }
 
     @Override
@@ -242,6 +249,11 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
     @Override
     public boolean isEmpty() {
         return TextUtils.isEmpty(getDate());
+    }
+
+    @Override
+    public boolean isIntercept() {
+        return isIntercept;
     }
 
     @Override
@@ -271,9 +283,6 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
 
     @Override
     public void setContent(String content) {
-        if(content == null){
-            return;
-        }
         customDateInput.setText(content);
         if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);
@@ -422,5 +431,13 @@ public class CustomDateView extends BaseLinearLayout implements View.OnClickList
 
     public TextView getCustomDateInput() {
         return customDateInput;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(!isEditable()) {
+            return false;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

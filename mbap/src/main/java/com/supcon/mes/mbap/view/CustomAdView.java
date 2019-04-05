@@ -22,6 +22,7 @@ import com.supcon.common.view.base.view.BaseRelativeLayout;
 import com.supcon.common.view.listener.OnItemChildViewClickListener;
 import com.supcon.common.view.util.DisplayUtil;
 import com.supcon.common.view.util.LogUtil;
+import com.supcon.common.view.util.ToastUtils;
 import com.supcon.mes.mbap.R;
 import com.supcon.mes.mbap.adapter.AdPagerAdapter;
 import com.supcon.mes.mbap.adapter.GalleryAdapter;
@@ -122,6 +123,8 @@ public class CustomAdView extends BaseRelativeLayout implements OnItemChildViewC
                 }
             }
         });
+
+
     }
 
 
@@ -131,7 +134,9 @@ public class CustomAdView extends BaseRelativeLayout implements OnItemChildViewC
         for (int i = 0; i < length; i++) {
             pointimgs.get(i).setImageResource(R.drawable.sh_ad_point);
         }
-        pointimgs.get(position % length).setImageResource(R.drawable.sh_ad_point_s);
+        if(length != 0){
+            pointimgs.get(position % length).setImageResource(R.drawable.sh_ad_point_s);
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -155,6 +160,12 @@ public class CustomAdView extends BaseRelativeLayout implements OnItemChildViewC
                     else if(!TextUtils.isEmpty(galleryBean.url)){
                         Glide.with(getContext()).load(galleryBean.url).into(imageView);
                     }
+                    imageView.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onChildViewClick(v,0,galleryBean);
+                        }
+                    });
 
 //                        imageView.setImageResource(galleryBean.resId);
                     mImageViews.add(imageView);

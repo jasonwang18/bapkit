@@ -17,6 +17,7 @@
         app:widget_num="2"
         app:is_addable="true"
         app:text_size="15"
+        app:icon_res="@drawable/ic_camera66"
         />
 
 </LinearLayout>

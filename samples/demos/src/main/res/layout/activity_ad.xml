@@ -15,7 +15,7 @@
     <com.supcon.mes.mbap.view.CustomPotraitView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:potrait_icon="@drawable/ic_default_pic"
+        app:potrait_icon="@drawable/pic_eam"
         app:potrait_username="王世展"
         app:potrait_text="2018677878"
         />

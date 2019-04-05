@@ -3,7 +3,6 @@ package com.supcon.mes.mbap.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -16,13 +15,10 @@ import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseRelativeLayout;
 import com.supcon.common.view.view.custom.ICustomView;
-import com.supcon.mes.mbap.MBapApp;
-import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.constant.ViewAction;
+import com.supcon.mes.mbap.utils.EllipsisUtil;
 import com.supcon.mes.mbap.utils.TextHelper;
-
-import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
-import static com.supcon.mes.mbap.MBapConstant.ViewAction.CONTENT_CLEAN;
 
 
 /**
@@ -36,7 +32,7 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
     TextView customValue;
     ImageView customEdit;
     ImageView customDeleteIcon;
-    private String mKey, mText, mValue, mGravity;
+    private String mKey, mText, mHint, mValue, mGravity;
     private int mKeyTextSize, mContentTextSize, mTextSize;
     private int mKeyWidth, mKeyHeight, mTextWidth, mTextHeight;
     private int mTextKeyColor, mTextValueColor;
@@ -44,6 +40,7 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
     private int iconRes ;
     private int maxLines ;
     private boolean isBold;
+    private boolean isIntercept;
 
     public CustomTextView(Context context) {
         super(context);
@@ -83,6 +80,10 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
         if(!TextUtils.isEmpty(mText)){
             customKey.setText(mText);
             customKey.setVisibility(View.VISIBLE);
+        }
+
+        if(!TextUtils.isEmpty(mHint)){
+            customValue.setHint(mHint);
         }
 
         if(!TextUtils.isEmpty(mValue)){
@@ -153,8 +154,8 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
             customValue.setMaxLines(maxLines);
         }
 
-        if(isBold)
-            setContentTextStyle(Typeface.BOLD);
+        if(!isBold)
+            setContentTextStyle(Typeface.NORMAL);
 
         setEnabled(isEnable);
     }
@@ -168,9 +169,10 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomTextView);
             mKey= array.getString(R.styleable.CustomTextView_key);
             mText = array.getString(R.styleable.CustomTextView_text);
-            mValue= array.getString(R.styleable.CustomTextView_content);
+            mHint= array.getString(R.styleable.CustomTextView_content_hint);
+            mValue= array.getString(R.styleable.CustomTextView_content_value);
             mGravity = array.getString(R.styleable.CustomTextView_gravity);
-            mTextSize = array.getInt(R.styleable.CustomTextView_key_size, 0);
+            mTextSize = array.getInt(R.styleable.CustomTextView_text_size, 0);
             mKeyTextSize = array.getInt(R.styleable.CustomTextView_key_size, 0);
             mContentTextSize = array.getInt(R.styleable.CustomTextView_content_size, 0);
             mTextKeyColor = array.getColor(R.styleable.CustomTextView_key_color, 0);
@@ -183,8 +185,9 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
             isEditable = array.getBoolean(R.styleable.CustomTextView_editable, false);
             iconRes = array.getResourceId(R.styleable.CustomTextView_icon_res, 0);
             maxLines = array.getInt(R.styleable.CustomTextView_max_lines, 0);
-            isBold = array.getBoolean(R.styleable.CustomTextView_bold, false);
+            isBold = array.getBoolean(R.styleable.CustomTextView_bold, true);
             isEnable = array.getBoolean(R.styleable.CustomTextView_enable, true);
+            isIntercept = array.getBoolean(R.styleable.CustomTextView_isIntercept, false);
             array.recycle();
         }
     }
@@ -204,7 +207,7 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
         customDeleteIcon.setOnClickListener(v -> {
 
             setContent("");
-            onChildViewClick(CustomTextView.this, CONTENT_CLEAN, "");
+            onChildViewClick(CustomTextView.this, ViewAction.CONTENT_CLEAN.value(), "");
 
         });
     }
@@ -260,9 +263,6 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
 
     @Override
     public void setContent(String content) {
-        if(content == null){
-            return;
-        }
         customValue.setText(content);
         if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);
@@ -341,14 +341,14 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
         if(isEditable){
             customEdit.setVisibility(VISIBLE);
             customValue.setOnClickListener(this);
-            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.textColorblack));
-            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.editableTextColor));
+//            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.textColorblack));
+//            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.editableTextColor));
         }
         else{
             customEdit.setVisibility(GONE);
             customValue.setOnClickListener(null);
-            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.notEditableTextColor));
-            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.notEditableTextColor));
+//            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.notEditableTextColor));
+//            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.notEditableTextColor));
         }
 
     }
@@ -356,6 +356,11 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
     @Override
     public void setNecessary(boolean isNecessary){
         TextHelper.setRequired(isNecessary, customKey);
+    }
+
+    @Override
+    public void setIntercept(boolean isIntercept) {
+        this.isIntercept = isIntercept;
     }
 
     @Override
@@ -432,6 +437,11 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
         return TextUtils.isEmpty(getContent());
     }
 
+    @Override
+    public boolean isIntercept() {
+        return isIntercept;
+    }
+
     public void setIconRes(int iconRes){
         if(iconRes!=0){
             customEdit.setImageResource(iconRes);
@@ -472,5 +482,14 @@ public class CustomTextView extends BaseRelativeLayout implements View.OnClickLi
 
     public void setInputGravity(int gravity){
         customValue.setGravity(gravity);
+    }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(!isEditable() && !EllipsisUtil.isEllipsisEnable(customValue)) {
+            return false;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

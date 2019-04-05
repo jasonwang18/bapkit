@@ -1,16 +1,13 @@
 package com.supcon.mes.mbap.network;
 
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.supcon.common.view.util.CookieUtil;
 import com.supcon.common.view.util.LogUtil;
 import com.supcon.common.view.util.SharedPreferencesUtils;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.MBapConstant;
 import com.supcon.mes.mbap.utils.XmlUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -91,6 +88,7 @@ public abstract class BaseInterceptor implements Interceptor {
 
         SharedPreferencesUtils.setParam(MBapApp.getAppContext(), MBapConstant.SPKey.JSESSIONID, jsessionidStr);
         SharedPreferencesUtils.setParam(MBapApp.getAppContext(), MBapConstant.SPKey.CASTGC, CASTGCStr);
+        CookieUtil.saveCookie(MBapApp.getAppContext(), jsessionidStr, CASTGCStr);
     }
 
 

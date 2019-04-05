@@ -13,5 +13,6 @@ public class GalleryBean extends BaseEntity{
     public String url;
     public int resId;
     public String type;
-
+    public int fileType;
+    public String thumbnailPath;
 }

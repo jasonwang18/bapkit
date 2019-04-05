@@ -164,6 +164,14 @@ public class CustomListWidget<T extends BaseEntity> extends BaseRelativeLayout {
         customListWidgetAdd.setVisibility(isAddable?VISIBLE:GONE);
     }
 
+    public boolean isEditable() {
+        return isEditable;
+    }
+
+    public boolean isAddable() {
+        return isAddable;
+    }
+
     public void setTotal(int total){
         this.mTotal = total;
         if(mTotal!=0){
@@ -191,13 +199,19 @@ public class CustomListWidget<T extends BaseEntity> extends BaseRelativeLayout {
     public void setIconRes(int iconRes){
         this.iconRes  = iconRes;
         if(iconRes!=0){
-            customListWidgetIc.setVisibility(VISIBLE);
             customListWidgetIc.setImageResource(iconRes);
+        }
+    }
+
+    public void setIconVisible(boolean visible){
+        if(visible){
+            customListWidgetIc.setVisibility(VISIBLE);
         }
         else{
             customListWidgetIc.setVisibility(GONE);
         }
     }
+
 
     public  void setAdapter(BaseListDataRecyclerViewAdapter<T> adapter){
         mBaseListDataRecyclerViewAdapter = adapter;
@@ -233,7 +247,7 @@ public class CustomListWidget<T extends BaseEntity> extends BaseRelativeLayout {
     }
 
     public void clear(){
-        if(mBaseListDataRecyclerViewAdapter != null){
+        if(mBaseListDataRecyclerViewAdapter != null && mBaseListDataRecyclerViewAdapter.getList() != null){
             mBaseListDataRecyclerViewAdapter.getList().clear();
             mBaseListDataRecyclerViewAdapter.notifyDataSetChanged();
         }

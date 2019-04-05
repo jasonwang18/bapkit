@@ -22,7 +22,6 @@ import android.widget.ListAdapter;
 import com.supcon.common.view.base.view.BaseRelativeLayout;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.R;
-import com.supcon.mes.mbap.utils.ScanInputHelper;
 
 import java.util.List;
 
@@ -45,6 +44,7 @@ public class CustomSearchView extends BaseRelativeLayout {
     private Drawable mInputBgColor;
     private OnItemSelectedListener mOnItemSelectedListener;
     private boolean isLightMode = false;
+    boolean editable = true;
 
     public CustomSearchView(Context context) {
         super(context);
@@ -57,7 +57,7 @@ public class CustomSearchView extends BaseRelativeLayout {
     @Override
     protected void init(Context context, AttributeSet attrs) {
         super.init(context, attrs);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Typeface newFont = MBapApp.fontType();
             customSearchInput.setTypeface(newFont);
         }
@@ -76,32 +76,32 @@ public class CustomSearchView extends BaseRelativeLayout {
         customSearchInput = findViewById(R.id.customSearchInput);
         customSearchScan = findViewById(R.id.customSearchScan);
 
-        if(!TextUtils.isEmpty(mHint)){
+        if (!TextUtils.isEmpty(mHint)) {
             customSearchInput.setHint(mHint);
         }
 
-        if(mTextSize != 0){
+        if (mTextSize != 0) {
             customSearchInput.setTextSize(mTextSize);
         }
 
-        if(mBgColor !=0 ){
+        if (mBgColor != 0) {
             rootView.setBackgroundColor(mBgColor);
         }
 
-        if(mTextColor !=0 ){
+        if (mTextColor != 0) {
             customSearchInput.setTextColor(mTextColor);
         }
 
-        if(mInputBgColor!= null){
-            ((ViewGroup)customSearchInput.getParent()).setBackground(mInputBgColor);
+        if (mInputBgColor != null) {
+            ((ViewGroup) customSearchInput.getParent()).setBackground(mInputBgColor);
         }
 
     }
 
 
-    public void initWords(List<String> words){
+    public void initWords(List<String> words) {
 
-        if(words != null && words.size()!=0){
+        if (words != null && words.size() != 0) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_search, words);
             customSearchInput.setAdapter(adapter);
         }
@@ -109,7 +109,7 @@ public class CustomSearchView extends BaseRelativeLayout {
     }
 
 
-    public ImageView searchView(){
+    public ImageView searchView() {
 
         return customSearchIcon;
 
@@ -122,22 +122,22 @@ public class CustomSearchView extends BaseRelativeLayout {
 
     public void setInputBgColor(Drawable bg) {
         this.mInputBgColor = bg;
-        ((ViewGroup)customSearchInput.getParent()).setBackground(mInputBgColor);
+        ((ViewGroup) customSearchInput.getParent()).setBackground(mInputBgColor);
     }
 
-    public void setLightMode(){
+    public void setLightMode() {
         customSearchIcon.setImageResource(R.drawable.ic_search_99);
         customSearchScan.setImageResource(R.drawable.ic_scanning_99);
         customSearchDelete.setImageResource(R.drawable.ic_close_99);
-        ((ViewGroup)customSearchInput.getParent()).setBackground(getResources().getDrawable(R.drawable.sh_search));
+        ((ViewGroup) customSearchInput.getParent()).setBackground(getResources().getDrawable(R.drawable.sh_search));
         isLightMode = true;
     }
 
-    public void setDarkMode(){
+    public void setDarkMode() {
         customSearchIcon.setImageResource(R.drawable.ic_search_cc);
         customSearchScan.setImageResource(R.drawable.ic_scanning_cc);
         customSearchDelete.setImageResource(R.drawable.ic_close_cc);
-        ((ViewGroup)customSearchInput.getParent()).setBackground(getResources().getDrawable(R.drawable.sh_search_black));
+        ((ViewGroup) customSearchInput.getParent()).setBackground(getResources().getDrawable(R.drawable.sh_search_black));
         isLightMode = false;
     }
 
@@ -145,7 +145,7 @@ public class CustomSearchView extends BaseRelativeLayout {
     protected void initAttributeSet(AttributeSet attrs) {
         super.initAttributeSet(attrs);
 
-        if(attrs!=null) {
+        if (attrs != null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomSearchView);
             mHint = array.getString(R.styleable.CustomSearchView_search_hint);
             mTextSize = array.getInt(R.styleable.CustomSearchView_search_text_size, 0);
@@ -178,10 +178,11 @@ public class CustomSearchView extends BaseRelativeLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!TextUtils.isEmpty(s.toString())){
-                    customSearchDelete.setVisibility(View.VISIBLE);
-                }
-                else{
+                if (!TextUtils.isEmpty(s.toString())) {
+                    if (editable) {
+                        customSearchDelete.setVisibility(View.VISIBLE);
+                    }
+                } else {
                     customSearchDelete.setVisibility(View.INVISIBLE);
                 }
             }
@@ -192,7 +193,7 @@ public class CustomSearchView extends BaseRelativeLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String s = (String) customSearchInput.getAdapter().getItem(position);
 
-                if(mOnItemSelectedListener!=null){
+                if (mOnItemSelectedListener != null) {
                     mOnItemSelectedListener.onItemSelect(s);
                 }
             }
@@ -201,13 +202,12 @@ public class CustomSearchView extends BaseRelativeLayout {
         customSearchInput.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    if(!isLightMode){
+                if (hasFocus) {
+                    if (!isLightMode) {
                         setLightMode();
                     }
-                }
-                else{
-                    if(isLightMode){
+                } else {
+                    if (isLightMode) {
                         setDarkMode();
                     }
                 }
@@ -217,22 +217,26 @@ public class CustomSearchView extends BaseRelativeLayout {
     }
 
 
-    public void setInput(String input){
+    public void setInput(String input) {
         customSearchInput.setText(input);
     }
 
-    public void setInputTextColor(int color){
+    public void setInputTextColor(int color) {
         customSearchInput.setTextColor(color);
     }
 
-    public void setHint(String hint){
+    public void setHint(String hint) {
         customSearchInput.setHint(hint);
     }
 
-    public String getInput(){
+    public String getInput() {
         return customSearchInput.getText().toString();
     }
 
+    public void setEditable(boolean edit) {
+        editable = edit;
+        customSearchInput.setEnabled(edit);
+    }
 
     @Override
     protected void initData() {
@@ -241,19 +245,19 @@ public class CustomSearchView extends BaseRelativeLayout {
     }
 
 
-    public <T extends ListAdapter & Filterable> void setAdapter(T adapter){
+    public <T extends ListAdapter & Filterable> void setAdapter(T adapter) {
 
         customSearchInput.setAdapter(adapter);
 
     }
 
-    public void setOnListItemSelectedListener(OnItemSelectedListener listener){
+    public void setOnListItemSelectedListener(OnItemSelectedListener listener) {
 
         mOnItemSelectedListener = listener;
 
     }
 
-    public interface  OnItemSelectedListener {
+    public interface OnItemSelectedListener {
 
 
         void onItemSelect(String s);

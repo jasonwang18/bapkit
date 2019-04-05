@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import static android.view.inputmethod.InputMethod.SHOW_FORCED;
+
 /**
  * Created by wangshizhan on 2017/10/20.
  * Email:wangshizhan@supcon.com
@@ -18,12 +20,17 @@ public class KeyboardUtil {
 
     public static void openKeyboard(Context context, View editText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInputFromInputMethod(editText.getWindowToken(), 0);//显示
+        imm.showSoftInputFromInputMethod(editText.getWindowToken(), InputMethodManager.SHOW_IMPLICIT);//显示
     }
 
     public static void hideKeyboard(Context context, View editText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);//显示
+    }
+
+    public static void restartInput(Context context, View editText) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.restartInput(editText);//显示
     }
 
     public static boolean showSearchInputMethod(View view) {

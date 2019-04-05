@@ -76,7 +76,7 @@ public class CustomPotraitView extends BaseLinearLayout {
 
         if(attrs!=null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomPotraitView);
-            iconId = array.getResourceId(R.styleable.CustomPotraitView_potrait_icon, R.drawable.ic_user);
+            iconId = array.getResourceId(R.styleable.CustomPotraitView_potrait_icon, 0);
             mText = array.getString(R.styleable.CustomPotraitView_potrait_text);
             username= array.getString(R.styleable.CustomPotraitView_potrait_username);
             array.recycle();

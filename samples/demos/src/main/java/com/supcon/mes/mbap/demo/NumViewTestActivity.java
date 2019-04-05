@@ -1,6 +1,7 @@
 package com.supcon.mes.mbap.demo;
 
 import android.annotation.SuppressLint;
+import android.text.InputType;
 
 import com.supcon.common.com_http.util.RxSchedulers;
 import com.supcon.common.view.base.activity.BaseActivity;
@@ -28,6 +29,7 @@ public class NumViewTestActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         CustomNumView customNumView = findViewById(R.id.numView);
+        customNumView.getNumViewInput().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         customNumView.setTextListener(new OnTextListener() {
             @Override
             public void onText(String text) {

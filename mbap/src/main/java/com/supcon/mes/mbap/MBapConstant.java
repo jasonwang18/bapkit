@@ -12,11 +12,19 @@ public interface MBapConstant {
 
     float KEY_RADIO = 1.1f;
 
-    interface ViewAction{
-        int CONTENT_CLEAN = -1;
-        int NORMAL = 0;
-        int CONTENT_COPY = 1;
-    }
+//    interface ViewAction{
+//        int CONTENT_CLEAN = -1;
+//        int NORMAL = 0;
+//        int CONTENT_COPY = 1;
+//    }
+//
+//    interface WorkFlow{
+//
+//        int SAVE_BTN = 0;
+//        int MIDDLE_BTN = SAVE_BTN+1;
+//        int SUBMIT_BTN = MIDDLE_BTN+1;
+//        int SAVE_LOCAL_BTN = SUBMIT_BTN+1;
+//    }
 
     interface SPKey{
 

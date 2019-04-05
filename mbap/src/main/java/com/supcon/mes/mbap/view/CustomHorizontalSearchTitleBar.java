@@ -3,6 +3,7 @@ package com.supcon.mes.mbap.view;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -27,20 +28,36 @@ import com.supcon.mes.mbap.utils.ViewUtil;
 /**
  * Environment: hongruijun
  * Created by Xushiyun on 2018/5/7.
+ * Desc:横向展开标题栏
  */
-
 public class CustomHorizontalSearchTitleBar extends BaseRelativeLayout {
-    private TextView title;
-    private CustomSearchView searchView;
+    private TextView title;//标题
+    private CustomSearchView searchView;//搜索栏
     //取消按钮
     private TextView cancel;
+    //搜索栏中的编辑框
     private EditText editText;
+    //标题+返回按钮
     private RelativeLayout rlLeft;
+    //根布局
     private RelativeLayout rlRootView;
     //右侧功能键按钮
     private ImageButton leftBtn;
+    //功能按钮
     private ImageButton rightBtn;
+    //是否启用功能按钮
     private boolean rightBtnEnable = false;
+
+    private int rightBtnRes;
+
+
+    public enum ViewType {
+        BACK,
+//        SEARCH_VIEW,
+        RIGHT_BTN
+    }
+
+    private boolean enableMultFuncMode;
 
     private int left_width = -1;
     private int right_width = -1;
@@ -72,11 +89,15 @@ public class CustomHorizontalSearchTitleBar extends BaseRelativeLayout {
     private CallBack mCallBack;
     private DisplayCallback mDisplayCallback;
 
+    private CustomPopupWindow customPopupWindow;
+
     private OnTitleSearchExpandListener mExpandListener;
 
     private int startColor;
 
     private int endColor;
+    private int popWindowOffX;
+    private int popWindowOffy;
 
     public void enableRemainMode() {
         enableRemainMode = true;
@@ -98,12 +119,26 @@ public class CustomHorizontalSearchTitleBar extends BaseRelativeLayout {
         this.mExpandListener = mExpandListener;
     }
 
+    public CustomHorizontalSearchTitleBar popWindowOffset(int x, int y) {
+        popWindowOffX = x;
+        popWindowOffy = y;
+        return this;
+    }
+    public CustomHorizontalSearchTitleBar popOffsetX(int x) {
+        popWindowOffX = x;
+        return this;
+    }
+    public CustomHorizontalSearchTitleBar popOffsetY(int y) {
+        popWindowOffy = y;
+        return this;
+    }
     public CustomHorizontalSearchTitleBar(Context context) {
         this(context, null);
     }
 
     public CustomHorizontalSearchTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
+        enableRightBtn();
     }
 
     public boolean getStatus() {
@@ -162,10 +197,25 @@ public class CustomHorizontalSearchTitleBar extends BaseRelativeLayout {
             titleBarBackgroundColor = array.getResourceId(R.styleable.CustomHorizontalSearchTitleBar_title_background_color, -1);
             titleText = array.getString(R.styleable.CustomHorizontalSearchTitleBar_title_text);
             rightBtnEnable = array.getBoolean(R.styleable.CustomHorizontalSearchTitleBar_title_right_btn_need, false);
-            titleLength  = array.getDimensionPixelSize(R.styleable.CustomHorizontalSearchTitleBar_title_length, 0);
+            titleLength = array.getDimensionPixelSize(R.styleable.CustomHorizontalSearchTitleBar_title_length, 0);
             startColor = array.getColor(R.styleable.CustomHorizontalSearchTitleBar_start_color, -1);
             endColor = array.getColor(R.styleable.CustomHorizontalSearchTitleBar_end_color, -1);
+            rightBtnRes = array.getResourceId(R.styleable.CustomHorizontalSearchTitleBar_right_btn_res, -1);
+            enableMultFuncMode = array.getBoolean(R.styleable.CustomHorizontalSearchTitleBar_enable_multi_func, false);
             array.recycle();
+        }
+    }
+
+
+    private void bindListener(ViewType viewType, OnClickListener onClickListener) {
+        switch (viewType) {
+            case BACK:
+                leftBtn.setOnClickListener(onClickListener);
+                break;
+            case RIGHT_BTN:
+                rightBtn.setOnClickListener(onClickListener);
+                break;
+            default:
         }
     }
 
@@ -177,50 +227,91 @@ public class CustomHorizontalSearchTitleBar extends BaseRelativeLayout {
     @Override
     protected void initView() {
         super.initView();
-        searchView = findViewById(R.id.customSearchView);
-        ViewUtil.setBrightness(searchView, ALPHA_ON_CANCEL);
-        cancel = findViewById(R.id.cancelBtn);
-        title = findViewById(R.id.titleText);
-        rlRootView = findViewById(R.id.rlRootView);
+        searchView = findViewById(R.id.customSearchView);//搜索框
+        ViewUtil.setBrightness(searchView, ALPHA_ON_CANCEL);//设置搜索框透明度
+        cancel = findViewById(R.id.cancelBtn);//取消按钮
+        title = findViewById(R.id.titleText);//标题框
+        rlRootView = findViewById(R.id.rlRootView);//根布局
 
+        //设置背景颜色
         if (titleBarBackgroundColor != -1) {
             rlRootView.setBackgroundResource(titleBarBackgroundColor);
         }
-        if(startColor!=-1 && endColor!=-1)
-        rlRootView.setBackground(ViewUtil.genGradientDrawable(startColor, endColor));
+        //设置渐变背景颜色
+        if (startColor != -1 && endColor != -1)
+            rlRootView.setBackground(ViewUtil.genGradientDrawable(startColor, endColor));
 
+        //获取搜索框中的编辑框
         editText = searchView.editText();
+        //设置编辑模式
         editText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        //标题+返回按钮
         rlLeft = findViewById(R.id.rlLeft);
+        //返回按钮
         leftBtn = findViewById(R.id.leftBtn);
+        //功能按钮
         rightBtn = findViewById(R.id.rightBtn);
+        //标题
         title.setText(titleText);
-
+        //设置右侧按钮的可用性
         if (rightBtnEnable) {
             enableRightBtn();
         } else {
             disableRightBtn();
         }
+        if(enableMultFuncMode&&rightBtnEnable) {
+            customPopupWindow = new CustomPopupWindow(context);
+            rightBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    customPopupWindow.showAsDropDown(rightBtn,popWindowOffX,popWindowOffy);
+                }
+            });
+            rightBtn.setImageResource(R.drawable.more_fun);
+        }
+        if(rightBtnRes !=-1) {
+            rightBtn.setImageResource(rightBtnRes);
+        }
 
-        if(titleLength!=0){
+        //设置标题宽度
+        if (titleLength != 0) {
             ViewGroup.LayoutParams lp = title.getLayoutParams();
             lp.width = titleLength;
             title.setLayoutParams(lp);
 
-            searchView.setPadding(DisplayUtil.dip2px(60, getContext())+titleLength, 0, 0, 0);
+            searchView.setPadding(DisplayUtil.dip2px(60, getContext()) + titleLength, 0, 0, 0);
         }
+    }
+    public void hidePopupWindow() {
+        customPopupWindow.dismiss();
+    }
+
+    public CustomPopupWindow popupWindow() {
+        return customPopupWindow;
+    }
+
+    public CustomHorizontalSearchTitleBar bindNewRightBtnFunc(String content, OnClickListener onClickListener) {
+        if(enableMultFuncMode&&rightBtnEnable) {
+            customPopupWindow.bindClickListener(content,onClickListener);
+        }else {
+            throw new RuntimeException("this method can only be called with MODE MULTI_FUNC");
+        }
+        return this;
     }
 
     public void setTitleText(String title) {
         this.title.setText(title);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     protected void initListener() {
         super.initListener();
+        //点击搜索框时展开输入框
         RxView.clicks(searchView).subscribe(o -> {
             if (!searchView.hasFocus()) editText.requestFocus();
         });
+        //点击取消按钮时,取消展开框
         RxView.clicks(cancel).subscribe(o -> toggle());
         RxView.focusChanges(editText).subscribe(aBoolean -> {
             if (aBoolean) toggle();
@@ -238,14 +329,15 @@ public class CustomHorizontalSearchTitleBar extends BaseRelativeLayout {
         });
     }
 
-
+    //展开收缩框
     public void toggle() {
+        //切换展开状态
         isExpand = !isExpand;
         if (isExpand) {
             ViewUtil.setBrightness(searchView, ALPHA_ON_SHOW);
             if (mDisplayCallback != null)
                 mDisplayCallback.onShow();
-            if(mExpandListener!=null){
+            if (mExpandListener != null) {
                 mExpandListener.onTitleSearchExpand(true);
             }
             if (left_width == -1)
@@ -259,13 +351,11 @@ public class CustomHorizontalSearchTitleBar extends BaseRelativeLayout {
             ViewUtil.setBrightness(searchView, ALPHA_ON_CANCEL);
             if (mDisplayCallback != null)
                 mDisplayCallback.onCancel();
-            if(mExpandListener!=null){
+            if (mExpandListener != null) {
                 mExpandListener.onTitleSearchExpand(false);
             }
             searchView.clearFocus();
             KeyboardUtil.hideSearchInputMethod(editText);
-
-
         }
         final ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 1);
         final int ORIGIN_PADDING_LEFT = ViewUtil.dpToPx(getContext(), ORIGIN_PADDING_LEFT_IN_DIP);
@@ -313,11 +403,17 @@ public class CustomHorizontalSearchTitleBar extends BaseRelativeLayout {
         final AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(valueAnimator).with(leftObjectsAnimator);
         animatorSet.setDuration(ANIMATION_DURATION);
-        if (mCallBack != null)
+        //动画前回调
+        if (mCallBack != null) {
             mCallBack.beforeAnimation(isExpand);
+        }
         animatorSet.start();
-        if (mCallBack != null)
+        //动画后回调
+        if (mCallBack != null) {
             mCallBack.duringAnimation(isExpand);
+            mCallBack.afterAnimation(isExpand);
+        }
+
     }
 
     public interface CallBack {

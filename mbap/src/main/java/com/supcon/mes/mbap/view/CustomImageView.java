@@ -397,5 +397,9 @@ public class CustomImageView extends AppCompatImageView {
         void onTransformComplete(int mode);// mode 1
     }
 
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
 }
 

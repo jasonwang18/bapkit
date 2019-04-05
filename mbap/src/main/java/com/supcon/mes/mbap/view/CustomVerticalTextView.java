@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -15,9 +16,9 @@ import android.widget.TextView;
 import com.supcon.common.view.base.view.BaseLinearLayout;
 import com.supcon.common.view.view.custom.ICustomView;
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.constant.ViewAction;
+import com.supcon.mes.mbap.utils.EllipsisUtil;
 import com.supcon.mes.mbap.utils.TextHelper;
-
-import static com.supcon.mes.mbap.MBapConstant.ViewAction.CONTENT_CLEAN;
 
 
 /**
@@ -32,7 +33,7 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
     TextView customValue;
     ImageView customEdit;
     ImageView customDeleteIcon;
-    private String mKey, mText, mValue, mGravity;
+    private String mKey, mText, mHint,mValue, mGravity;
     private int mTextSize, mKeyTextSize, mContentTextSize;
     private int mKeyHeight, mKeyWidth, mTextWidth, mTextHeight;
     private int mTextKeyColor, mTextValueColor;
@@ -40,6 +41,7 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
     private int iconRes ;
     private int maxLines = 0;
     private boolean isBold;
+    private boolean isIntercept;
 
 
     public CustomVerticalTextView(Context context) {
@@ -80,6 +82,10 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
         if(!TextUtils.isEmpty(mText)){
             customKey.setText(mText);
             customKey.setVisibility(View.VISIBLE);
+        }
+
+        if(!TextUtils.isEmpty(mHint)){
+            customValue.setHint(mHint);
         }
 
 
@@ -144,8 +150,8 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
             customValue.setMaxLines(maxLines);
         }
 
-        if(isBold)
-            setContentTextStyle(Typeface.BOLD);
+        if(!isBold)
+            setContentTextStyle(Typeface.NORMAL);
 
         setEnabled(isEnable);
     }
@@ -157,25 +163,26 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
 
         if(attrs!=null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomVerticalTextView);
-            mKey= array.getString(R.styleable.CustomVerticalTextView_key);
-            mText = array.getString(R.styleable.CustomTextView_text);
-            mValue= array.getString(R.styleable.CustomVerticalTextView_content);
-            mGravity = array.getString(R.styleable.CustomVerticalTextView_gravity);
-            mTextSize = array.getInt(R.styleable.CustomVerticalTextView_text_size, 0);
-            mKeyTextSize = array.getInt(R.styleable.CustomVerticalTextView_key_size, 0);
-            mContentTextSize = array.getInt(R.styleable.CustomVerticalTextView_content_size, 0);
-            mTextKeyColor = array.getColor(R.styleable.CustomVerticalTextView_key_color, 0);
-            mTextValueColor = array.getColor(R.styleable.CustomVerticalTextView_content_color, 0);
-            mKeyWidth = array.getDimensionPixelSize(R.styleable.CustomVerticalTextView_key_width, -1);
-            mKeyHeight =  array.getDimensionPixelSize(R.styleable.CustomVerticalTextView_key_height, -1);
-            mTextWidth = array.getDimensionPixelSize(R.styleable.CustomVerticalTextView_text_width, -1);
-            mTextHeight= array.getDimensionPixelSize(R.styleable.CustomVerticalTextView_text_height, -1);
-            isNecessary = array.getBoolean(R.styleable.CustomVerticalTextView_necessary, false);
-            isEditable = array.getBoolean(R.styleable.CustomVerticalTextView_editable, false);
-            iconRes = array.getResourceId(R.styleable.CustomVerticalTextView_icon_res, 0);
-            maxLines = array.getInt(R.styleable.CustomVerticalTextView_max_lines, 0);
-            isBold = array.getBoolean(R.styleable.CustomVerticalTextView_bold, false);
-            isEnable = array.getBoolean(R.styleable.CustomVerticalTextView_enable, true);
+            mKey=               array.getString(R.styleable.CustomVerticalTextView_key);
+            mText =             array.getString(R.styleable.CustomVerticalTextView_text);
+            mHint=             array.getString(R.styleable.CustomVerticalTextView_content_hint);
+            mValue=             array.getString(R.styleable.CustomVerticalTextView_content_value);
+            mGravity =          array.getString(R.styleable.CustomVerticalTextView_gravity);
+            mTextSize =         array.getInt(R.styleable.CustomVerticalTextView_text_size, 0);
+            mKeyTextSize =      array.getInt(R.styleable.CustomVerticalTextView_key_size, 0);
+            mContentTextSize =  array.getInt(R.styleable.CustomVerticalTextView_content_size, 0);
+            mTextKeyColor =     array.getColor(R.styleable.CustomVerticalTextView_key_color, 0);
+            mTextValueColor =   array.getColor(R.styleable.CustomVerticalTextView_content_color, 0);
+            mKeyWidth =         array.getDimensionPixelSize(R.styleable.CustomVerticalTextView_key_width, -1);
+            mKeyHeight =        array.getDimensionPixelSize(R.styleable.CustomVerticalTextView_key_height, -1);
+            mTextWidth =        array.getDimensionPixelSize(R.styleable.CustomVerticalTextView_text_width, -1);
+            mTextHeight=        array.getDimensionPixelSize(R.styleable.CustomVerticalTextView_text_height, -1);
+            isNecessary =       array.getBoolean(R.styleable.CustomVerticalTextView_necessary, false);
+            isEditable =        array.getBoolean(R.styleable.CustomVerticalTextView_editable, false);
+            iconRes =           array.getResourceId(R.styleable.CustomVerticalTextView_icon_res, 0);
+            maxLines =          array.getInt(R.styleable.CustomVerticalTextView_max_lines, 0);
+            isBold =            array.getBoolean(R.styleable.CustomVerticalTextView_bold, true);
+            isEnable =          array.getBoolean(R.styleable.CustomVerticalTextView_enable, true);
             array.recycle();
         }
     }
@@ -185,6 +192,7 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
     protected void initListener() {
         super.initListener();
         customEdit.setOnClickListener(this);
+        customValue.setOnClickListener(this);
         customValue.setOnLongClickListener(v -> {
             CustomContentTextDialog.showContent(getContext(), customValue.getText().toString());
             return true;
@@ -192,7 +200,7 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
 
         customDeleteIcon.setOnClickListener(v -> {
             setContent("");
-            onChildViewClick(CustomVerticalTextView.this, CONTENT_CLEAN, "");
+            onChildViewClick(CustomVerticalTextView.this, ViewAction.CONTENT_CLEAN.value(), "");
 
         });
 
@@ -250,9 +258,6 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
 
     @Override
     public void setContent(String content) {
-        if(content == null){
-            return;
-        }
         customValue.setText(content);
         if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);
@@ -332,15 +337,25 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
         if(isEditable){
             customEdit.setVisibility(VISIBLE);
             customValue.setOnClickListener(this);
-            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.textColorblack));
-            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.editableTextColor));
+//            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.textColorblack));
+//            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.editableTextColor));
         }
         else{
             customEdit.setVisibility(GONE);
             customValue.setOnClickListener(null);
-            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.notEditableTextColor));
-            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.notEditableTextColor));
+//            customKey.setTextColor(mTextKeyColor!=0?mTextKeyColor:getResources().getColor(R.color.notEditableTextColor));
+//            customValue.setTextColor(mTextValueColor!=0?mTextValueColor:getResources().getColor(R.color.notEditableTextColor));
         }
+    }
+
+    @Override
+    public void setIntercept(boolean isIntercept) {
+        this.isIntercept = isIntercept;
+    }
+
+    @Override
+    public boolean isIntercept() {
+        return isIntercept;
     }
 
     @Override
@@ -464,5 +479,11 @@ public class CustomVerticalTextView extends BaseLinearLayout implements View.OnC
         customValue.setGravity(gravity);
     }
 
-
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(!isEditable()&& !EllipsisUtil.isEllipsisEnable(customValue)) {
+            return false;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }

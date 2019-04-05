@@ -36,6 +36,16 @@
         <item name="android:windowAnimationStyle">@style/fadeStyle</item>
     </style>
 
+    <style name="TranslucentTheme" parent="AppTheme">
+        <!--在Android 4.4之前的版本上运行，直接跟随系统主题-->
+        <item name="android:windowBackground">@null</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">true</item>
+        <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+    </style>
+
+    ***************************************************************************************
+
     <style name="CustomProgressBar" parent="@android:style/Widget.ProgressBar">
         <item name="android:progressDrawable">@drawable/layer_progressbar</item>
     </style>
@@ -130,10 +140,11 @@
 
     <style name="KeyText" parent="BaseFont">
         <item name="android:textColor">@color/textColorblack</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ContentText" parent="BaseFont">
@@ -288,6 +299,24 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="contentDialog" parent="@android:style/Theme.Dialog">
+        <!-- 有无边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@color/white</item>
+        <!-- 模糊 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--无标题 -->
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="android:windowEnterAnimation">@anim/content_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/content_dialog_out</item>
+    </style>
+
     <style name="dialogStyle" parent="android:Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
         <item name="android:windowExitAnimation">@anim/dialog_exit</item>
@@ -332,23 +361,7 @@
         <item name="android:activityCloseExitAnimation">@anim/dock_bottom_exit</item>
     </style>
 
-    <style name="contentDialog" parent="@android:style/Theme.Dialog">
-        <!-- 有无边框 -->
-        <item name="android:windowFrame">@null</item>
-        <!-- 是否浮现在activity之上 -->
-        <item name="android:windowIsFloating">true</item>
-        <!-- 是否透明 -->
-        <item name="android:windowIsTranslucent">true</item>
-        <!-- 背景透明 -->
-        <item name="android:windowBackground">@color/white</item>
-        <!-- 模糊 -->
-        <item name="android:backgroundDimEnabled">true</item>
-        <!--无标题 -->
-        <item name="android:windowNoTitle">true</item>
 
-        <item name="android:windowEnterAnimation">@anim/content_dialog_in</item>
-        <item name="android:windowExitAnimation">@anim/content_dialog_out</item>
-    </style>
     <style name="dialogWindowAnim" parent="android:Animation" mce_bogus="1">
         <item name="android:windowEnterAnimation">@anim/content_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/content_dialog_out</item>

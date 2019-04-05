@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/searchViewPopBtn"
+        android:text="默认"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:maxLength="4"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_30" />
+
+    <ImageView
+        android:id="@+id/searchViewDisplayBtn"
+        android:src="@drawable/display_down"
+        android:scaleType="centerCrop"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30" />
+
+    <EditText
+        android:id="@+id/searchViewTv"
+        android:layout_width="0dp"
+        android:background="@null"
+        style="@style/ContentText"
+        android:singleLine="true"
+        android:textSize="@dimen/fontSize_13sp"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/searchViewDel"
+        android:layout_width="@dimen/dp_30"
+        android:visibility="invisible"
+        android:src="@drawable/ic_clear_small"
+        android:padding="@dimen/dp_7"
+        android:layout_height="@dimen/dp_30" />
+
+    <TextView
+        android:id="@+id/searchBtn"
+        android:layout_width="wrap_content"
+        android:text="搜 索"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_marginRight="@dimen/dp_15"
+        android:textSize="@dimen/fontSize_14sp"
+        android:layout_height="wrap_content" />
+</LinearLayout>

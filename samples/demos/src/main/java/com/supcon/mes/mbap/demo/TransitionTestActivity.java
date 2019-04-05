@@ -2,10 +2,13 @@ package com.supcon.mes.mbap.demo;
 
 import com.supcon.common.view.base.activity.BaseActivity;
 import com.supcon.common.view.util.LogUtil;
+import com.supcon.mes.mbap.beans.LinkEntity;
 import com.supcon.mes.mbap.beans.Transition;
 import com.supcon.mes.mbap.utils.GsonUtil;
 import com.supcon.mes.mbap.view.CustomPopTransation;
+import com.supcon.mes.mbap.view.CustomWorkFlowView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +26,7 @@ public class TransitionTestActivity extends BaseActivity {
             ",{\"requiredStaff\":false,\"outCome\":\"Link713\",\"outComeType\":\"cancel\",\"transitionDesc\":\"作废555555555555\",\"selectType\":0}" +
             ",{\"requiredStaff\":true,\"outCome\":\"Link713\",\"outComeType\":\"cancel\",\"transitionDesc\":\"作废44444fgjdfkgdkfkdkdkdkfkdkfdk44444444444444444444\",\"selectType\":0}" +
             "]";
+    CustomWorkFlowView customWorkFlow;
 
     @Override
     protected void onInit() {
@@ -38,11 +42,18 @@ public class TransitionTestActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         customTransition = findViewById(R.id.customTransition);
-
+        customWorkFlow = findViewById(R.id.customWorkFlow);
         List<Transition> list = GsonUtil.jsonToList(testJson, Transition.class);
 
         customTransition.setTransitions(list);
-
+        List<LinkEntity> linkEntities = new ArrayList<>();
+        LinkEntity linkEntity = new LinkEntity();
+        linkEntity.description = "作废";
+        linkEntities.add(linkEntity);
+        linkEntity = new LinkEntity();
+        linkEntity.description = "提交";
+        linkEntities.add(linkEntity);
+        customWorkFlow.setLinks(linkEntities.toString());
     }
 
     @Override

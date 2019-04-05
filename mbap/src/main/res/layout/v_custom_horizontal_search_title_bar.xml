@@ -33,7 +33,7 @@
             android:paddingRight="20dp"
             android:id="@+id/leftBtn"
             android:tag="leftBtn"
-            android:src="@drawable/ic_back"
+            android:src="@drawable/sl_top_back"
             android:background="@null"
             android:scaleType="centerInside"
             />

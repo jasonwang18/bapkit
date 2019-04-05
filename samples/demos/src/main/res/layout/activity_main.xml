@@ -15,6 +15,32 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
+            <ImageView
+                android:layout_width="match_parent"
+                android:src="@drawable/im_popup"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                android:layout_height="@dimen/dp_15" />
+            <com.supcon.mes.mbap.view.CustomArrowView
+                android:id="@+id/verticalTest"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/dp_1"
+                android:background="@drawable/sl_white_press"
+                app:arrow_text="自定义操作控件测试"
+                app:arrow_icon="@mipmap/ic_launcher"
+                android:onClick="onClick"
+                />
+            <com.supcon.mes.mbap.view.CustomArrowView
+                android:id="@+id/recyclerViewTranslucentTest"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/dp_1"
+                android:background="@drawable/sl_white_press"
+                app:arrow_text="带照片透明列表视图"
+                app:arrow_icon="@mipmap/ic_launcher"
+                android:onClick="onClick"
+                />
             <com.supcon.mes.mbap.view.CustomArrowView
                 android:id="@+id/listWidgetTest"
                 android:layout_width="match_parent"
@@ -129,16 +155,7 @@
                 android:onClick="onClick"
                 />
 
-            <com.supcon.mes.mbap.view.CustomArrowView
-                android:id="@+id/verticalTest"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="@dimen/dp_1"
-                android:background="@drawable/sl_white_press"
-                app:arrow_text="纵向文本控件测试"
-                app:arrow_icon="@mipmap/ic_launcher"
-                android:onClick="onClick"
-                />
+
 
             <com.supcon.mes.mbap.view.CustomArrowView
                 android:id="@+id/adTest"

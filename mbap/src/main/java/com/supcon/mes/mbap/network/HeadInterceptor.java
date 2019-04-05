@@ -22,6 +22,14 @@ public class HeadInterceptor implements Interceptor {
             return chain.proceed(chain.request());
         }
 
+        if(url.encodedPath().contains("/services/public/") ){
+            return chain.proceed(chain.request().newBuilder()
+                    .addHeader("USER_AGENT", "Linux; U; Android")
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Content-Type", "application/json")
+                    .build());
+        }
+
         return chain.proceed(chain.request().newBuilder()
                 .addHeader("Cookie", MBapApp.getCooki())
                 .addHeader("Authorization", MBapApp.getAuthorization())

@@ -150,7 +150,7 @@ public class XEditText extends BaseLinearLayout implements View.OnTouchListener{
         }
 
         if(mTextColor!=0)
-            customEditText.setTextColor(mTextColor);
+            customEditInput.setTextColor(mTextColor);
 
         if(mTextHeight != -1){
             setTextHeight(mTextHeight);

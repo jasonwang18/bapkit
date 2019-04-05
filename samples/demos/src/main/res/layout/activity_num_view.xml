@@ -15,10 +15,11 @@
         android:id="@+id/numView"
         android:background="@color/white"
         app:necessary="true"
-        app:num = "100"
         app:editable="true"
-        app:add_icon_res="@drawable/ic_btn_add"
-        app:minus_icon_res="@drawable/ic_btn_add"
+        app:add_icon_res="@drawable/ic_blue_add"
+        app:minus_icon_res="@drawable/ic_blue_minus"
+        app:precision="2"
+        app:max="99999999"
         />
     <com.supcon.mes.mbap.view.CustomWaveView
         android:layout_width="200dp"

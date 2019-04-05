@@ -3,10 +3,10 @@ package com.supcon.mes.mbap.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -15,12 +15,10 @@ import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseLinearLayout;
 import com.supcon.common.view.view.custom.ICustomView;
-import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.constant.ViewAction;
 import com.supcon.mes.mbap.utils.TextHelper;
 
-import static com.supcon.mes.mbap.MBapConstant.KEY_RADIO;
-import static com.supcon.mes.mbap.MBapConstant.ViewAction.CONTENT_CLEAN;
 
 /**
  * Created by wangshizhan on 2017/8/21.
@@ -42,6 +40,7 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
 
     private boolean isNecessary, isEditable, isEnable;
     private boolean isBold;
+    private boolean isIntercept;
 
     public CustomVerticalDateView(Context context) {
         super(context);
@@ -143,8 +142,8 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
             setNecessary(isNecessary);
         setEditable(isEditable);
 
-        if(isBold)
-            setContentTextStyle(Typeface.BOLD);
+        if(!isBold)
+            setContentTextStyle(Typeface.NORMAL);
 
         setEnabled(isEnable);
     }
@@ -157,7 +156,7 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
 
         customDeleteIcon.setOnClickListener(v -> {
             setContent("");
-            onChildViewClick(CustomVerticalDateView.this, CONTENT_CLEAN, customDateInput.getText().toString());
+            onChildViewClick(CustomVerticalDateView.this, ViewAction.CONTENT_CLEAN.value(), customDateInput.getText().toString());
         });
     }
 
@@ -168,7 +167,7 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomVerticalDateView);
             mText = array.getString(R.styleable.CustomVerticalDateView_text);
             mKey = array.getString(R.styleable.CustomVerticalDateView_key);
-            mContent = array.getString(R.styleable.CustomVerticalDateView_content);
+            mContent = array.getString(R.styleable.CustomVerticalDateView_content_value);
             mTextSize = array.getInt(R.styleable.CustomVerticalDateView_text_size, 0);
             mKeyTextSize = array.getInt(R.styleable.CustomVerticalDateView_key_size, 0);
             mContentTextSize = array.getInt(R.styleable.CustomVerticalDateView_content_size, 0);
@@ -178,7 +177,7 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
             isEditable = array.getBoolean(R.styleable.CustomVerticalDateView_editable, true);
             mTextHeight =array.getDimensionPixelSize(R.styleable.CustomVerticalDateView_text_height, -1);
             mTextColor = array.getColor(R.styleable.CustomVerticalDateView_text_color, 0);
-            isBold = array.getBoolean(R.styleable.CustomVerticalDateView_bold, false);
+            isBold = array.getBoolean(R.styleable.CustomVerticalDateView_bold, true);
             isEnable = array.getBoolean(R.styleable.CustomVerticalDateView_enable, true);
             array.recycle();
         }
@@ -217,21 +216,26 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
         isEditable = editable;
         if(editable){
             customDateInput.setOnClickListener(this);
-            customDateText.setTextColor(getResources().getColor(R.color.textColorblack));
+//            customDateText.setTextColor(getResources().getColor(R.color.textColorblack));
             customDateIcon.setVisibility(VISIBLE);
-            customDateInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
+//            customDateInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
         }
         else {
             customDateIcon.setVisibility(GONE);
-            customDateText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+//            customDateText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
             customDateInput.setOnClickListener(null);
-            customDateInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+//            customDateInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
         }
     }
 
     @Override
     public void setNecessary(boolean isNecessary){
         TextHelper.setRequired(isNecessary, customDateText);
+    }
+
+    @Override
+    public void setIntercept(boolean isIntercept) {
+        this.isIntercept = isIntercept;
     }
 
     @Override
@@ -271,11 +275,6 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
 
     @Override
     public void setContent(String content) {
-
-        if(content == null){
-            return;
-        }
-
         customDateInput.setText(content);
         if(TextUtils.isEmpty(content) || !isEditable){
             customDeleteIcon.setVisibility(GONE);
@@ -383,6 +382,11 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
     }
 
     @Override
+    public boolean isIntercept() {
+        return isIntercept;
+    }
+
+    @Override
     public void setContentGravity(int gravity) {
         customDateInput.setGravity(gravity);
     }
@@ -429,5 +433,13 @@ public class CustomVerticalDateView extends BaseLinearLayout implements View.OnC
 
     public TextView getCustomDateInput() {
         return customDateInput;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(!isEditable()) {
+            return false;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

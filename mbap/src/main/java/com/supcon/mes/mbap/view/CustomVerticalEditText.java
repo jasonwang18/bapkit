@@ -47,6 +47,9 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
     private boolean isNecessary, isEditable, isBold, isEnable;
     private int mTextHeight, mTextWidth;
     private boolean isEditIconVisible = true;
+
+    private boolean isIntercept;
+
     private OnContentCheckListener mOnContentCheckListener;
 
     public CustomVerticalEditText(Context context) {
@@ -166,8 +169,8 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
 
         setEditable(isEditable);
 
-        if (isBold)
-            setContentTextStyle(Typeface.BOLD);
+        if (!isBold)
+            setContentTextStyle(Typeface.NORMAL);
 
         setEnabled(isEnable);
     }
@@ -181,7 +184,7 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CustomVerticalEditText);
             mText = array.getString(R.styleable.CustomVerticalEditText_text);
             mKey = array.getString(R.styleable.CustomVerticalEditText_key);
-            mContent = array.getString(R.styleable.CustomVerticalEditText_content);
+            mContent = array.getString(R.styleable.CustomVerticalEditText_content_value);
             mHint = array.getString(R.styleable.CustomVerticalEditText_edit_hint);
             mGravity = array.getString(R.styleable.CustomVerticalEditText_gravity);
             mTextSize = array.getInt(R.styleable.CustomVerticalEditText_text_size, 0);
@@ -197,7 +200,7 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
             mTextHeight = array.getDimensionPixelSize(R.styleable.CustomVerticalEditText_text_height, -1);
             mTextWidth = array.getDimensionPixelSize(R.styleable.CustomVerticalEditText_text_width, -1);
             mHintColor = array.getColor(R.styleable.CustomVerticalEditText_edit_hint_color, 0);
-            isBold = array.getBoolean(R.styleable.CustomVerticalEditText_bold, false);
+            isBold = array.getBoolean(R.styleable.CustomVerticalEditText_bold, true);
             isEnable = array.getBoolean(R.styleable.CustomVerticalEditText_enable, true);
             isEditIconVisible = array.getBoolean(R.styleable.CustomVerticalEditText_icon_visible, true);
             array.recycle();
@@ -254,7 +257,7 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
         }
 
         if (mTextColor != 0)
-            customEditText.setTextColor(mTextColor);
+            customEditInput.setTextColor(mTextColor);
 
         if (mTextSize != 0) {
             customEditInput.setTextSize(mTextSize);
@@ -330,13 +333,13 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
         isEditable = editable;
         customEditInput.setEnabled(editable);
         if(editable){
-            customEditText.setTextColor(getResources().getColor(R.color.textColorblack));
-            customEditInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
+//            customEditText.setTextColor(getResources().getColor(R.color.textColorblack));
+//            customEditInput.setTextColor(mTextColor!=0?mTextColor:getResources().getColor(R.color.editableTextColor));
             customEditText.setOnClickListener(this);
         }
         else{
-            customEditText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
-            customEditInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+//            customEditText.setTextColor(getResources().getColor(R.color.notEditableTextColor));
+//            customEditInput.setTextColor(getResources().getColor(R.color.notEditableTextColor));
             customEditText.setOnClickListener(null);
         }
 
@@ -379,6 +382,11 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
     @Override
     public void setNecessary(boolean isNecessary){
         TextHelper.setRequired(isNecessary, customEditText);
+    }
+
+    @Override
+    public void setIntercept(boolean isIntercept) {
+        this.isIntercept = isIntercept;
     }
 
     @Override
@@ -469,6 +477,11 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
     }
 
     @Override
+    public boolean isIntercept() {
+        return isIntercept;
+    }
+
+    @Override
     public void setKey(String key) {
         customEditText.setText(key);
     }
@@ -490,11 +503,7 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
 
     @Override
     public void setContent(String content) {
-        if(content == null){
-            return;
-        }
         customEditInput.setText(content);
-        customEditInput.setSelection(content.length());
     }
 
     @Override
@@ -555,5 +564,13 @@ public class CustomVerticalEditText extends BaseLinearLayout implements View.OnT
 
     public void setInputType(int type){
         customEditInput.setInputType(type);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(!isEditable()) {
+            return false;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

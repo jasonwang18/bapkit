@@ -7,8 +7,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dp_5"
-        android:paddingBottom="@dimen/dp_5"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_10"
         android:id="@+id/customListWidgetTitle"
         >
         <ImageView
@@ -17,7 +19,9 @@
             android:id="@+id/customListWidgetIc"
             android:scaleType="center"
             android:layout_centerVertical="true"
-            android:visibility="gone"
+            android:visibility="visible"
+            android:padding="@dimen/dp_5"
+            android:src="@drawable/ic_widget_33"
             />
 
         <TextView
@@ -27,7 +31,9 @@
             style="@style/DetailText"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/customListWidgetIc"
-            android:textSize="@dimen/fontSize_15sp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textSize="@dimen/fontSize_16sp"
+            android:textColor="@color/textColorblack"
             />
         <ImageView
             android:layout_width="wrap_content"
@@ -37,7 +43,7 @@
             android:layout_toRightOf="@+id/customListWidgetName"
             android:scaleType="center"
             android:layout_centerVertical="true"
-            android:visibility="gone"
+            android:visibility="visible"
             android:src="@drawable/ic_edit"
             android:background="@drawable/sl_transparent_press_no_stroke"
             android:layout_marginLeft="@dimen/dp_10"
@@ -51,7 +57,7 @@
             android:scaleType="center"
             android:layout_centerVertical="true"
             android:visibility="visible"
-            android:src="@drawable/ic_add_blue"
+            android:src="@drawable/ic_new_99_32"
             android:background="@drawable/sl_transparent_press_no_stroke"
             android:layout_marginLeft="@dimen/dp_10"
             />
@@ -76,11 +82,12 @@
 
             />
     </RelativeLayout>
+    <include layout="@layout/ly_line"/>
+    <include layout="@layout/ly_line_light"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_1"
         android:overScrollMode="never"
         />
 

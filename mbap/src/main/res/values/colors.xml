@@ -16,7 +16,8 @@
     <color name="bgSwitchOrange">#EF8742</color>
     <color name="textColorlightblack">#626262</color>
     <color name="textColorblack">#222222</color>
-    <color name="editableTextColor">#a1a1a1</color>
+    <color name="textColorlight">#8f8f8f</color>
+    <color name="editableTextColor">#8f8f8f</color>
     <color name="notEditableTextColor">#a1a1a1</color>
     <color name="textColorGray">#8b8b8b</color>
     <color name="hintColor">#a1a1a1</color>
@@ -31,6 +32,7 @@
     <color name="filterBlue">#C3eddF</color>
     <color name="filterLightBlue">#F0F4FC</color>
     <color name="filterTextBlue">#2799c9</color>
+
     <color name="customRed">#c82529</color>
     <color name="customOrange">#EF8742</color>
     <color name="customOrange2">#E05543</color>

@@ -29,14 +29,14 @@ public class LoginInterceptor extends BaseInterceptor {
 
         Buffer buffer = getBuffer(response);
         long size = buffer.size();
-        Log.w("LoginInterceptor","buffer size:"+size);
-        if(size > 1048576L){
+        Log.w("LoginInterceptor", "buffer size:" + size);
+        if (size > 1048576L) {
             return response;
         }
 
         String content = readContent(response, buffer);
 
-        if (content.contains("true") && content.contains("cinfo")) {
+        if (content.contains("true") && content.contains("JSEESIONID") && content.contains("/cinfo")) {
             Log.w("LoginInterceptor", "登陆成功");
             getHeaders(response, content);
 
@@ -55,6 +55,21 @@ public class LoginInterceptor extends BaseInterceptor {
 
             buffer.write(jsonObject.toString().getBytes());
 
+            buffer.flush();
+            return response;
+        } else if (content.contains("true") && content.contains("cinfo/")) {
+            Log.w("LoginInterceptor", "登陆失败！");
+
+            buffer.clear();
+
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("success", false);
+                jsonObject.put("errMsg", "登录失败,请检查是否超过最大并发用户数");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            buffer.write(jsonObject.toString().getBytes());
             buffer.flush();
             return response;
         }
@@ -100,17 +115,16 @@ public class LoginInterceptor extends BaseInterceptor {
             buffer.flush();
 
             return response;
-        }
-        else if(content.contains("actionErrors")){//BAP接口错误
+        } else if (content.contains("actionErrors")) {//BAP接口错误
 
             BAPErrorEntity bapErrorEntity = GsonUtil.gsonToBean(content, BAPErrorEntity.class);
             buffer.clear();
             try {
-            JSONObject jsonObject = new JSONObject();
+                JSONObject jsonObject = new JSONObject();
 
 //                JSONObject resultObject = new JSONObject(bapErrorEntity.toString());
                 jsonObject.put("success", bapErrorEntity.success);
-                jsonObject.put("errMsg", TextUtils.isEmpty(bapErrorEntity.exceptionMsg)?"接口错误！":bapErrorEntity.exceptionMsg);
+                jsonObject.put("errMsg", TextUtils.isEmpty(bapErrorEntity.exceptionMsg) ? "接口错误！" : bapErrorEntity.exceptionMsg);
 //                jsonObject.put("result", null);
                 buffer.write(jsonObject.toString().getBytes());
             } catch (JSONException e) {
@@ -121,16 +135,15 @@ public class LoginInterceptor extends BaseInterceptor {
 
             return response;
 
-        }
-        else if(content.contains("系统发生异常，请联系管理员")){
+        } else if (content.contains("系统发生异常，请联系管理员") || content.contains("系统发生异常或正在启动，请稍后再试")) {
             Log.w("LoginInterceptor", "服务器错误");
 
             buffer.clear();
 
             String errorDetail = XmlUtil.getStringByTag(content, "details");
-            if(!TextUtils.isEmpty(errorDetail) && errorDetail.contains("\n")){
+            if (!TextUtils.isEmpty(errorDetail) && errorDetail.contains("\n")) {
                 String[] errors = errorDetail.split("\n\t");
-                errorDetail = errors.length >2 ? errors[2]:"系统发生异常，请联系管理员";
+                errorDetail = errors.length > 2 ? errors[2] : "系统发生异常，请联系管理员";
                 errorDetail = errorDetail.trim();
             }
 
@@ -148,7 +161,7 @@ public class LoginInterceptor extends BaseInterceptor {
 
             buffer.flush();
             return response.newBuilder()
-                    .code(200)
+                    .code(500)
                     .build();
         }
 
