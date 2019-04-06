@@ -1,1 +1,1 @@
-include ':app', ':mbap', 'samples:demos'
+include ':mbap'
