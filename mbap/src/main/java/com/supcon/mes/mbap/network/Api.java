@@ -1,11 +1,14 @@
 package com.supcon.mes.mbap.network;
 
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.supcon.common.view.App;
 import com.supcon.common.view.util.LogUtil;
 import com.supcon.common.view.util.SharedPreferencesUtils;
+import com.supcon.common.view.util.ToastUtils;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.MBapConstant;
 
@@ -72,6 +75,13 @@ public class Api {
         Gson gson = new GsonBuilder().setLenient().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").serializeNulls().create();
 
         boolean isUrlEnabled = SharedPreferencesUtils.getParam(MBapApp.getAppContext(), MBapConstant.SPKey.URL_ENABLE, false);
+
+        if(isUrlEnabled && TextUtils.isEmpty(MBapApp.getUrl()) || !isUrlEnabled && TextUtils.isEmpty(MBapApp.getIp())){
+            LogUtil.e("缓存的url或ip为空！");
+            MBapApp.setIp("192.168.90.9");
+            MBapApp.setPort("8080");
+            SharedPreferencesUtils.setParam(MBapApp.getAppContext(), MBapConstant.SPKey.URL_ENABLE, false);
+        }
 
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)

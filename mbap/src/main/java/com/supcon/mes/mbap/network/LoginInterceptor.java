@@ -164,6 +164,22 @@ public class LoginInterceptor extends BaseInterceptor {
                     .code(500)
                     .build();
         }
+        else if(content.contains("<errorMsg>")){
+            Log.w("LoginInterceptor", "zhizhi登陆失败！");
+
+            buffer.clear();
+
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("success", false);
+                jsonObject.put("errMsg", XmlUtil.getStringByTag(content, "errorMsg"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            buffer.write(jsonObject.toString().getBytes());
+            buffer.flush();
+            return response;
+        }
 
         return response;
     }
