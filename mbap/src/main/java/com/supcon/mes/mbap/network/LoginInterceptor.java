@@ -164,10 +164,10 @@ public class LoginInterceptor extends BaseInterceptor {
             buffer.write(jsonObject.toString().getBytes());
 
             buffer.flush();
-            return response;
-//            return response.newBuilder()
-//                    .code(200)
-//                    .build();
+//            return response;
+            return response.newBuilder()
+                    .code(200)
+                    .build();
         }
         else if(content.contains("<errorMsg>")){
             Log.w("LoginInterceptor", "zhizhi登陆失败！");
