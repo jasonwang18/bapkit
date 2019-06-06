@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.supcon.common.com_http.BaseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangshizhan on 2018/12/5
@@ -30,4 +31,5 @@ public class WorkFlowVar extends BaseEntity {
     @SerializedName("workFlowVar.outcomeMapJson")
     public List<WorkFlowEntity> outcomeMapJson;
 
+    public Map<String, Object> idsMap;
 }

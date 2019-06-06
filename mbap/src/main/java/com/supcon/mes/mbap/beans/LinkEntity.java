@@ -13,4 +13,6 @@ final public class LinkEntity extends BaseEntity {
     public String destination;
     public String condition;
     public String operateType;
+    public String requiredStaff;//必填
+    public String selectPeople;//可选择人
 }

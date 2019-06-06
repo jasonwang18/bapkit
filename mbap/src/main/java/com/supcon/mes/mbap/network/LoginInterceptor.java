@@ -57,7 +57,7 @@ public class LoginInterceptor extends BaseInterceptor {
 
             buffer.flush();
             return response;
-        } else if (content.contains("true") && content.contains("cinfo/")) {
+        } else if (content.contains("true") && content.contains("/cinfo")) {
             Log.w("LoginInterceptor", "登陆失败！");
 
             buffer.clear();
@@ -65,7 +65,7 @@ public class LoginInterceptor extends BaseInterceptor {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("success", false);
-                jsonObject.put("errMsg", "登录失败,请检查是否超过最大并发用户数");
+                jsonObject.put("errMsg", "登录失败,[用户名/密码错误]或[是否超过最大并发用户数]");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -124,6 +124,8 @@ public class LoginInterceptor extends BaseInterceptor {
 
 //                JSONObject resultObject = new JSONObject(bapErrorEntity.toString());
                 jsonObject.put("success", bapErrorEntity.success);
+                jsonObject.put("dealSuccessFlag", bapErrorEntity.success);
+                jsonObject.put("dealSuccess", bapErrorEntity.success);
                 jsonObject.put("errMsg", TextUtils.isEmpty(bapErrorEntity.exceptionMsg) ? "接口错误！" : bapErrorEntity.exceptionMsg);
 //                jsonObject.put("result", null);
                 buffer.write(jsonObject.toString().getBytes());
@@ -151,6 +153,8 @@ public class LoginInterceptor extends BaseInterceptor {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("success", false);
+                jsonObject.put("dealSuccessFlag", false);
+                jsonObject.put("dealSuccess", false);
                 jsonObject.put("errMsg", errorDetail);
                 jsonObject.put("result", null);
             } catch (JSONException e) {
@@ -160,9 +164,10 @@ public class LoginInterceptor extends BaseInterceptor {
             buffer.write(jsonObject.toString().getBytes());
 
             buffer.flush();
-            return response.newBuilder()
-                    .code(500)
-                    .build();
+            return response;
+//            return response.newBuilder()
+//                    .code(200)
+//                    .build();
         }
         else if(content.contains("<errorMsg>")){
             Log.w("LoginInterceptor", "zhizhi登陆失败！");
