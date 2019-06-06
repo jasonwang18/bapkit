@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,16 +14,24 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.supcon.common.view.base.view.BaseLinearLayout;
-import com.supcon.mes.mbap.MBapConstant;
+import com.supcon.common.view.listener.OnChildViewClickListener;
+import com.supcon.common.view.util.LogUtil;
+import com.supcon.common.view.util.ToastUtils;
+import com.supcon.common.view.util.UrlUtil;
 import com.supcon.mes.mbap.R;
 import com.supcon.mes.mbap.beans.LinkEntity;
 import com.supcon.mes.mbap.beans.WorkFlowEntity;
 import com.supcon.mes.mbap.beans.WorkFlowVar;
+import com.supcon.mes.mbap.constant.ViewAction;
 import com.supcon.mes.mbap.constant.WorkFlowBtn;
 import com.supcon.mes.mbap.utils.GsonUtil;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
@@ -33,10 +41,14 @@ import io.reactivex.functions.Consumer;
  * Email:wangshizhan@supcom.com
  */
 public class CustomWorkFlowView extends BaseLinearLayout {
-    private ImageView commentInputIv;
+    private ImageView commentInputIv, selectPeopleInputIv;
     private CustomEditText commentInput;
+    private CustomTextView selectPeopleInput;
     private LinearLayout saveBtn, middleBtn, submitBtn;
     private TextView saveBtnTv, middleBtnTv, submitBtnTv;
+
+    private View selectPeoplePoint;
+
     private String comment;
     private boolean isCommentable;//可评论的
     private boolean isEnable;
@@ -44,6 +56,8 @@ public class CustomWorkFlowView extends BaseLinearLayout {
     private List<LinkEntity> mLinkEntities;
 
     private boolean isOnline;
+
+    private String addUserIds = "";
 
     public CustomWorkFlowView(Context context) {
         super(context);
@@ -80,7 +94,9 @@ public class CustomWorkFlowView extends BaseLinearLayout {
         middleBtn = findViewById(R.id.middleBtn);
         submitBtn = findViewById(R.id.submitBtn);
         commentInputIv = findViewById(R.id.commentInputIv);
-
+        selectPeopleInputIv = findViewById(R.id.selectPeopleInputIv);
+        selectPeopleInput = findViewById(R.id.selectPeopleInput);
+        selectPeoplePoint = findViewById(R.id.selectPeoplePoint);
 
         saveBtnTv = findViewById(R.id.saveBtnTv);
         middleBtnTv = findViewById(R.id.middleBtnTv);
@@ -128,6 +144,21 @@ public class CustomWorkFlowView extends BaseLinearLayout {
                     }
                 });
 
+        RxView.clicks(selectPeopleInputIv)
+                .throttleFirst(200, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        int visible = selectPeopleInput.getVisibility();
+                        if(visible == VISIBLE){
+                            selectPeopleInput.setVisibility(GONE);
+                        }
+                        else {
+                            selectPeopleInput.setVisibility(VISIBLE);
+                        }
+                    }
+                });
+
         RxView.clicks(saveBtn)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
@@ -149,7 +180,15 @@ public class CustomWorkFlowView extends BaseLinearLayout {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {
-                        onChildViewClick(middleBtn, WorkFlowBtn.MIDDLE_BTN.value(), createWorkFlowVar((LinkEntity) middleBtn.getTag()));
+
+                        LinkEntity entity = (LinkEntity) middleBtn.getTag();
+
+                        if("1".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
+                            ToastUtils.show(context, "处理人不能为空");
+                            return;
+                        }
+
+                        onChildViewClick(middleBtn, WorkFlowBtn.MIDDLE_BTN.value(), createWorkFlowVar(entity));
                     }
                 });
 
@@ -158,14 +197,51 @@ public class CustomWorkFlowView extends BaseLinearLayout {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {
-                        onChildViewClick(submitBtn, WorkFlowBtn.SUBMIT_BTN.value(), createWorkFlowVar((LinkEntity) submitBtn.getTag()));
+                        LinkEntity entity = (LinkEntity) submitBtn.getTag();
+
+                        if("1".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
+                            ToastUtils.show(context, "处理人不能为空");
+                            return;
+                        }
+
+                        onChildViewClick(submitBtn, WorkFlowBtn.SUBMIT_BTN.value(), createWorkFlowVar(entity));
                     }
                 });
+
+        selectPeopleInput.setOnChildViewClickListener(new OnChildViewClickListener() {
+            @Override
+            public void onChildViewClick(View childView, int action, Object obj) {
+
+
+                if(action == ViewAction.CONTENT_CLEAN.value()){
+                    addUserIds = "";
+                    return;
+                }
+                CustomWorkFlowView.this.onChildViewClick(selectPeopleInput, action, obj);
+            }
+        });
     }
 
     @Override
     protected void initData() {
         super.initData();
+    }
+
+    public void addStaff(String name, long id){
+        String content = selectPeopleInput.getContent();
+
+        if(TextUtils.isEmpty(content)){
+            content = name;
+        }
+        else{
+            content += ", "+name;
+        }
+
+        selectPeopleInput.setContent(content);
+
+
+        addUserIds += String.valueOf(id)+ "," ;
+        LogUtil.d("workflow addUserIds:"+addUserIds);
     }
 
     public String getComment() {
@@ -180,8 +256,10 @@ public class CustomWorkFlowView extends BaseLinearLayout {
 
         mLinkEntities = GsonUtil.jsonToList(links, LinkEntity.class);
 
-        if(mLinkEntities!=null)
+        if(mLinkEntities!=null) {
             updateView();
+            setEnabled(true);
+        }
     }
 
     public void setCommentable(boolean isCommentable){
@@ -199,6 +277,10 @@ public class CustomWorkFlowView extends BaseLinearLayout {
         super.setEnabled(enabled);
         this.isEnable = enabled;
         commentInput.setEnabled(isEnable);
+
+        if(isEnable){
+            commentInput.setEditable(true);
+        }
         saveBtn.setEnabled(isEnable);
         middleBtn.setEnabled(isEnable);
         submitBtn.setEnabled(isEnable);
@@ -206,7 +288,8 @@ public class CustomWorkFlowView extends BaseLinearLayout {
     }
 
     private void updateView() {
-
+        boolean selectPeople = false;
+        boolean requiredStaff = false;
         for(int i = 0; i< mLinkEntities.size();  i++){
 
             LinkEntity linkEntity = mLinkEntities.get(i);
@@ -227,8 +310,25 @@ public class CustomWorkFlowView extends BaseLinearLayout {
                 middleBtn.setVisibility(VISIBLE);
                 middleBtn.setEnabled(true);
             }
+            if(!"0".equals(linkEntity.selectPeople)){
+                selectPeople = true;
+            }
 
+            if(!"0".equals(linkEntity.requiredStaff)){
+                requiredStaff = true;
+            }
         }
+
+        if(selectPeople){
+            ((ViewGroup)selectPeopleInputIv.getParent()).setVisibility(VISIBLE);
+        }
+
+        if(requiredStaff){
+            selectPeopleInput.setVisibility(VISIBLE);
+            selectPeoplePoint.setVisibility(VISIBLE);
+        }
+
+        selectPeopleInput.setNecessary(requiredStaff);
 
         commentInput.setEnabled(true);
 
@@ -259,6 +359,20 @@ public class CustomWorkFlowView extends BaseLinearLayout {
         workFlowVar.dec = linkEntity.description;
         workFlowVar.outCome = linkEntity.name;
         workFlowVar.outcomeMapJson = workFlowEntities;
+        LogUtil.d("workflow:"+workFlowVar.toString());
+
+        if(!"0".equals(linkEntity.selectPeople)){
+            workFlowEntity.assignUser = "\""+addUserIds+"\"";
+
+//            workFlowVar.idsMap = new HashMap<>();
+//            workFlowVar.idsMap.put("assignStaffSelect_"+linkEntity.name+"MultiIDs", addUserIds);
+//            workFlowVar.idsMap.put("assignStaffSelect_"+linkEntity.name+"AddIds", "");
+//            workFlowVar.idsMap.put("assignStaffSelect_"+linkEntity.name+"DeleteIds", "");
+//            workFlowVar.idsMap.put("assignStaffSelect_"+linkEntity.name, "");
+//            workFlowVar.idsMap.put("additionalUsersStr", "");
+        }
+
+        LogUtil.d("workflow:"+workFlowVar.toString());
 
         return workFlowVar;
     }
