@@ -310,11 +310,11 @@ public class CustomWorkFlowView extends BaseLinearLayout {
                 middleBtn.setVisibility(VISIBLE);
                 middleBtn.setEnabled(true);
             }
-            if(!"0".equals(linkEntity.selectPeople)){
+            if(linkEntity.selectPeople!=null &&!"0".equals(linkEntity.selectPeople)){
                 selectPeople = true;
             }
 
-            if(!"0".equals(linkEntity.requiredStaff)){
+            if(linkEntity.requiredStaff!=null && !"0".equals(linkEntity.requiredStaff)){
                 requiredStaff = true;
             }
         }
