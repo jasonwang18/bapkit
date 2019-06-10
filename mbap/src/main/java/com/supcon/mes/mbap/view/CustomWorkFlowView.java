@@ -183,7 +183,7 @@ public class CustomWorkFlowView extends BaseLinearLayout {
 
                         LinkEntity entity = (LinkEntity) middleBtn.getTag();
 
-                        if("1".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
+                        if(linkEntity.selectPeople!=null && ！"0".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
                             ToastUtils.show(context, "处理人不能为空");
                             return;
                         }
@@ -199,7 +199,7 @@ public class CustomWorkFlowView extends BaseLinearLayout {
                     public void accept(Object o) throws Exception {
                         LinkEntity entity = (LinkEntity) submitBtn.getTag();
 
-                        if("1".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
+                        if(linkEntity.requiredStaff!=null && ！"0".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
                             ToastUtils.show(context, "处理人不能为空");
                             return;
                         }
@@ -361,7 +361,7 @@ public class CustomWorkFlowView extends BaseLinearLayout {
         workFlowVar.outcomeMapJson = workFlowEntities;
         LogUtil.d("workflow:"+workFlowVar.toString());
 
-        if(!"0".equals(linkEntity.selectPeople)){
+        if(linkEntity.selectPeople!=null && !"0".equals(linkEntity.selectPeople)){
             workFlowEntity.assignUser = "\""+addUserIds+"\"";
 
 //            workFlowVar.idsMap = new HashMap<>();
