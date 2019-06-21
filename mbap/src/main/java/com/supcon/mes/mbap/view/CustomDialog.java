@@ -472,6 +472,10 @@ public class CustomDialog {
         }
     }
 
+    public Dialog getDialogInstance(){
+        return mDialog;
+    }
+
     public interface OnHideListener{
 
 

@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.utils.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,25 +65,30 @@ public class CustomPopupWindow extends PopupWindow {
 
     @Override
     public void showAsDropDown(View anchor) {
-        onToggleListener.onToggle();
+        toToggle();
         super.showAsDropDown(anchor,offsetX,offsetY);
+    }
+
+    private void toToggle() {
+        if(onToggleListener!= null)
+        onToggleListener.onToggle();
     }
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff) {
-        onToggleListener.onToggle();
+        toToggle();
         super.showAsDropDown(anchor, xoff, yoff);
     }
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff, int gravity) {
-        onToggleListener.onToggle();
+        toToggle();
         super.showAsDropDown(anchor, xoff, yoff, gravity);
     }
 
     @Override
     public void dismiss() {
-        onToggleListener.onToggle();
+        toToggle();
         super.dismiss();
     }
 
@@ -120,6 +126,16 @@ public class CustomPopupWindow extends PopupWindow {
     @SuppressLint("ResourceType")
     private <VIEW extends View>VIEW createView(@LayoutRes int lyRes) {
         LinearLayout view = new LinearLayout(context);
+        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        layoutInflater.inflate(lyRes, view);
+        return (VIEW) view;
+    }
+
+    @SuppressLint("ResourceType")
+    private <VIEW extends View>VIEW createLine(@LayoutRes int lyRes) {
+        LinearLayout view = new LinearLayout(context);
+        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.setPadding(ViewUtil.dpToPx(context,10),0,ViewUtil.dpToPx(context,10),0);
         layoutInflater.inflate(lyRes, view);
         return (VIEW) view;
     }
@@ -127,7 +143,7 @@ public class CustomPopupWindow extends PopupWindow {
     public CustomPopupWindow bindClickListener(String content, View.OnClickListener onClickListener) {
         contentList.add(content);
         if (contentList.size() > 1)
-            contentView.addView(createView(R.layout.ly_half_line));
+            contentView.addView(createLine(R.layout.ly_half_line));
         contentView.addView(createView(content, R.layout.ly_popup_item, onClickListener));
         return this;
     }
@@ -146,12 +162,6 @@ public class CustomPopupWindow extends PopupWindow {
         return view;
     }
 
-//    private LinearLayout createView(int resId) {
-//        LinearLayout view = new LinearLayout(context);
-//        layoutInflater.inflate(resId, view);
-//        return view;
-//    }
-
     public CustomPopupWindow show() {
         if(anchorView==null) {
             throw new RuntimeException("Please call method bindAnchorView first!");
@@ -159,8 +169,6 @@ public class CustomPopupWindow extends PopupWindow {
         showAsDropDown(anchorView);
         return this;
     }
-
-
 
     public interface OnToggleListener {
         void onToggle();

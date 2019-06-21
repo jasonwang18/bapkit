@@ -98,7 +98,7 @@ public class CustomSheetDialog {
             CustomCheckBox customCheckBox = new CustomCheckBox(context);
             customCheckBox.setText(item.name);
             customCheckBox.setChecked(null == checkedList?false:checkedList.get(i));
-//            customCheckBox.setBackground(StateListHelper.newSelector(context, R.drawable.sh_white, R.drawable.sh_white_p, -1, -1));
+            customCheckBox.setEnable(true);
             customCheckBoxes.add(customCheckBox);
             layout.addView(customCheckBox, lp);
             View line = LayoutInflater.from(context).inflate(R.layout.ly_line_light, null);
@@ -107,7 +107,6 @@ public class CustomSheetDialog {
 
         Button cancelBtn = root.findViewById(R.id.cancelBtn);
         cancelBtn.setText("确定");
-//        cancelBtn.setBackgroundResource(R.drawable.sl_blue_btn);
         cancelBtn.setOnClickListener(v -> {
             List<SheetEntity> checkItems = new ArrayList<>();
             for(int i = 0 ; i < customCheckBoxes.size(); i++){

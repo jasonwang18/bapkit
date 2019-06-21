@@ -183,7 +183,7 @@ public class CustomWorkFlowView extends BaseLinearLayout {
 
                         LinkEntity entity = (LinkEntity) middleBtn.getTag();
 
-                        if(linkEntity.selectPeople!=null && ！"0".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
+                        if(entity.requiredStaff !=null && !"0".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
                             ToastUtils.show(context, "处理人不能为空");
                             return;
                         }
@@ -199,7 +199,7 @@ public class CustomWorkFlowView extends BaseLinearLayout {
                     public void accept(Object o) throws Exception {
                         LinkEntity entity = (LinkEntity) submitBtn.getTag();
 
-                        if(linkEntity.requiredStaff!=null && ！"0".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
+                        if(entity.requiredStaff !=null && !"0".equals(entity.requiredStaff) && TextUtils.isEmpty(selectPeopleInput.getContent())){//必须选人
                             ToastUtils.show(context, "处理人不能为空");
                             return;
                         }
@@ -310,7 +310,7 @@ public class CustomWorkFlowView extends BaseLinearLayout {
                 middleBtn.setVisibility(VISIBLE);
                 middleBtn.setEnabled(true);
             }
-            if(linkEntity.selectPeople!=null &&!"0".equals(linkEntity.selectPeople)){
+            if(linkEntity.selectPeople!=null && !"0".equals(linkEntity.selectPeople)){
                 selectPeople = true;
             }
 

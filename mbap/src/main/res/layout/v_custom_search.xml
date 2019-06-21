@@ -12,17 +12,41 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:background="@drawable/sh_search_black"
-
         >
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/customSearchIcon"
             android:src="@drawable/ic_search_cc"
             android:layout_centerVertical="true"
+            android:visibility="gone"
             android:scaleType="center"
             android:layout_marginLeft="@dimen/dp_5"
             />
+        <LinearLayout
+            android:layout_toRightOf="@id/customSearchIcon"
+            android:id="@+id/selectType"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/dp_13"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvSelectType"
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:maxLength="4"
+                android:text="类别"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/ivSelectType"
+                android:layout_width="25dp"
+                android:src="@drawable/display_down"
+                android:layout_height="25dp" />
+        </LinearLayout>
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_35"
@@ -30,7 +54,7 @@
             style="@style/SearchEditText"
             android:paddingLeft="10dp"
             android:completionThreshold="3"
-            android:layout_toRightOf="@+id/customSearchIcon"
+            android:layout_toRightOf="@+id/selectType"
             android:layout_toLeftOf="@+id/customSearchDelete"
             android:layout_marginLeft="0dp"
             android:textSize="14sp"
@@ -51,13 +75,14 @@
 
             />
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="@dimen/dp_30"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
             android:id="@+id/customSearchScan"
-            android:src="@drawable/ic_scanning_cc"
+            android:src="@drawable/ic_search_cc"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
+            android:padding="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_15"
             android:scaleType="center"
             android:alpha="0.5"
             />

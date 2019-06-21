@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/customListWidgetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_8">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dp_5"
+            android:scaleType="center"
+            android:src="@drawable/ic_widget_33"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/DetailText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/customListWidgetIc"
+            android:layout_weight="1"
+            android:textColor="@color/textColorblack"
+            android:textSize="@dimen/fontSize_16sp" />
+
+
+        <ImageView
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/customListWidgetEdit"
+            android:background="@drawable/sl_transparent_press_no_stroke"
+            android:padding="@dimen/dp_5"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_new_99_32"
+            android:visibility="visible" />
+
+
+        <ImageView
+            android:id="@+id/refreshBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/sl_transparent_press_no_stroke"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_edit"
+
+            />
+    </LinearLayout>
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/line_color">
+
+    </View>
+
+    <LinearLayout
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:tag="contentView">
+
+    </LinearLayout>
+</LinearLayout>

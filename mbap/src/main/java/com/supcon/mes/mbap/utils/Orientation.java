@@ -12,6 +12,9 @@ import com.supcon.mes.mbap.R;
 
 public enum Orientation {
 
+    /**
+     *
+     */
     HORIZONTAL(0),
     VERTICAL(1);
 

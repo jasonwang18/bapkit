@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorRes;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,13 +18,20 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
 import com.supcon.common.view.base.view.BaseRelativeLayout;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.R;
+import com.supcon.mes.mbap.utils.ScreenUtil;
+import com.supcon.mes.mbap.utils.ViewUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.internal.Util;
 
 /**
  * Created by wangshizhan on 2017/9/20.
@@ -31,6 +39,11 @@ import java.util.List;
  */
 
 public class CustomSearchView extends BaseRelativeLayout {
+    public enum MODE {
+        //搜索模式
+        COMMON,
+        SELECT_TYPE,
+    }
 
     ImageView customSearchIcon, customSearchScan;
 
@@ -45,6 +58,35 @@ public class CustomSearchView extends BaseRelativeLayout {
     private OnItemSelectedListener mOnItemSelectedListener;
     private boolean isLightMode = false;
     boolean editable = true;
+
+    private LinearLayout selectType;
+    private TextView tvSelectType;
+    private ImageView ivSelectType;
+
+    private List<String> selectedTypes = new ArrayList<>();
+
+    private CustomPopupWindow customPopupWindow;
+
+    private Boolean selectTypeEnabled;
+
+    private OnTypeSelectListener onTypeSelectListener;
+
+    public void setOnTypeSelectListener(OnTypeSelectListener onTypeSelectListener) {
+        this.onTypeSelectListener = onTypeSelectListener;
+    }
+
+    public Boolean getSelectTypeEnabled() {
+        return selectTypeEnabled;
+    }
+
+    public void setSelectTypeTextColorRes(@ColorRes int colorRes) {
+        tvSelectType.setTextColor(getResources().getColor(colorRes));
+    }
+
+    public void setSelectTypeEnabled(Boolean selectTypeEnabled) {
+        this.selectTypeEnabled = selectTypeEnabled;
+        selectType.setVisibility(selectTypeEnabled?VISIBLE:GONE);
+    }
 
     public CustomSearchView(Context context) {
         super(context);
@@ -76,6 +118,11 @@ public class CustomSearchView extends BaseRelativeLayout {
         customSearchInput = findViewById(R.id.customSearchInput);
         customSearchScan = findViewById(R.id.customSearchScan);
 
+        selectType = findViewById(R.id.selectType);
+        tvSelectType = findViewById(R.id.tvSelectType);
+        ivSelectType = findViewById(R.id.ivSelectType);
+
+        selectType.requestDisallowInterceptTouchEvent(true);
         if (!TextUtils.isEmpty(mHint)) {
             customSearchInput.setHint(mHint);
         }
@@ -127,7 +174,8 @@ public class CustomSearchView extends BaseRelativeLayout {
 
     public void setLightMode() {
         customSearchIcon.setImageResource(R.drawable.ic_search_99);
-        customSearchScan.setImageResource(R.drawable.ic_scanning_99);
+//        customSearchScan.setImageResource(R.drawable.ic_scanning_99);
+        customSearchScan.setImageResource(R.drawable.ic_search_99);
         customSearchDelete.setImageResource(R.drawable.ic_close_99);
         ((ViewGroup) customSearchInput.getParent()).setBackground(getResources().getDrawable(R.drawable.sh_search));
         isLightMode = true;
@@ -135,7 +183,8 @@ public class CustomSearchView extends BaseRelativeLayout {
 
     public void setDarkMode() {
         customSearchIcon.setImageResource(R.drawable.ic_search_cc);
-        customSearchScan.setImageResource(R.drawable.ic_scanning_cc);
+//        customSearchScan.setImageResource(R.drawable.ic_scanning_cc);
+        customSearchScan.setImageResource(R.drawable.ic_search_cc);
         customSearchDelete.setImageResource(R.drawable.ic_close_cc);
         ((ViewGroup) customSearchInput.getParent()).setBackground(getResources().getDrawable(R.drawable.sh_search_black));
         isLightMode = false;
@@ -155,15 +204,48 @@ public class CustomSearchView extends BaseRelativeLayout {
             array.recycle();
         }
     }
+    public void setDefaultTypeSelect(String defaultContent) {
+        this.tvSelectType.setText(defaultContent);
+    }
+
+    public void setTypeSelectContent(List<String> contentList){
+        this.selectedTypes = contentList;
+    }
 
     public EditText editText() {
         return customSearchInput;
     }
-
+    public void setTypeSearchEnable(boolean enable) {
+        selectType.setClickable(enable);
+    }
     @Override
     protected void initListener() {
         super.initListener();
         customSearchDelete.setOnClickListener(v -> customSearchInput.getText().clear());
+
+        selectType.setOnClickListener(v -> {
+            if (selectedTypes == null || selectedTypes.size() <= 0) return;
+            customPopupWindow = new CustomPopupWindow(context);
+            customPopupWindow.setOnToggleListener(() -> {
+//                if(customPopupWindow.isShowing()) {
+//                    ivSelectType.setImageResource(R.drawable.display_up);
+//                }else {
+//                    ivSelectType.setImageResource(R.drawable.display_down);
+//                }
+            });
+            for (String content : selectedTypes) {
+                customPopupWindow.bindAnchorView(tvSelectType)
+                        .offsetX(ViewUtil.dpToPx(context,-2))
+                        .offsetY(ViewUtil.dpToPx(context,10))
+                        .bindClickListener(content, v1 -> {
+                            if(onTypeSelectListener!= null)
+                            onTypeSelectListener.onTypeSelect(content);
+                            tvSelectType.setText(content);
+                            customPopupWindow.dismiss();
+                        });
+            }
+            customPopupWindow.show();
+        });
 
         customSearchInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -262,5 +344,9 @@ public class CustomSearchView extends BaseRelativeLayout {
 
         void onItemSelect(String s);
 
+    }
+
+    public interface OnTypeSelectListener{
+        void onTypeSelect(String type);
     }
 }

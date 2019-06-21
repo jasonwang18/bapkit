@@ -36,40 +36,43 @@ public class LoginInterceptor extends BaseInterceptor {
 
         String content = readContent(response, buffer);
 
-        if (content.contains("true") && content.contains("JSEESIONID") && content.contains("/cinfo")) {
-            Log.w("LoginInterceptor", "登陆成功");
-            getHeaders(response, content);
+        if (content.contains("true") && content.contains("cinfo")) {
 
-            buffer.clear();
 
-            JSONObject jsonObject = new JSONObject();
-            JSONObject resultObject = new JSONObject();
-            try {
-                resultObject.put("cname", XmlUtil.getStringByTag(content, "NAME"));
-                resultObject.put("cid", XmlUtil.getStringByTag(content, "ID"));
-                jsonObject.put("success", true);
-                jsonObject.put("result", resultObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if(content.contains("JSEESIONID")){
+                Log.w("LoginInterceptor", "登陆成功");
+                getHeaders(response, content);
+
+                buffer.clear();
+
+                JSONObject jsonObject = new JSONObject();
+                JSONObject resultObject = new JSONObject();
+                try {
+                    resultObject.put("cname", XmlUtil.getStringByTag(content, "NAME"));
+                    resultObject.put("cid", XmlUtil.getStringByTag(content, "ID"));
+                    jsonObject.put("success", true);
+                    jsonObject.put("result", resultObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                buffer.write(jsonObject.toString().getBytes());
+            }
+            else{
+                Log.w("LoginInterceptor", "登陆失败！");
+
+                buffer.clear();
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("success", false);
+                    jsonObject.put("errMsg", "登录失败,[用户名/密码错误]或[是否超过最大并发用户数]");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                buffer.write(jsonObject.toString().getBytes());
             }
 
-            buffer.write(jsonObject.toString().getBytes());
-
-            buffer.flush();
-            return response;
-        } else if (content.contains("true") && content.contains("/cinfo")) {
-            Log.w("LoginInterceptor", "登陆失败！");
-
-            buffer.clear();
-
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("success", false);
-                jsonObject.put("errMsg", "登录失败,[用户名/密码错误]或[是否超过最大并发用户数]");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            buffer.write(jsonObject.toString().getBytes());
             buffer.flush();
             return response;
         }

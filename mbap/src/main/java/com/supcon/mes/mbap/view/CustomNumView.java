@@ -62,7 +62,7 @@ public class CustomNumView extends BaseLinearLayout {
         super.init(context, attrs);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Typeface newFont = MBapApp.fontType();
-            numViewText.setTypeface(newFont);
+//            numViewText.setTypeface(newFont);
             numViewInput.setTypeface(newFont);
         }
     }

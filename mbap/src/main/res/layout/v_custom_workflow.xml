@@ -11,6 +11,21 @@
         <!--android:layout_height="@dimen/dp_10"-->
         <!--android:background="@drawable/sh_shadow"-->
         <!--/>-->
+    <com.supcon.mes.mbap.view.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/sh_light_gray_stroke"
+        app:edit_hint="填写意见"
+        app:text_width="0dp"
+        app:icon_visible="true"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5"
+        android:id="@+id/commentInput"
+        android:tag="commentInput"
+        android:visibility="gone"
+        />
     <com.supcon.mes.mbap.view.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -26,21 +41,6 @@
         android:paddingBottom="@dimen/dp_5"
         android:id="@+id/selectPeopleInput"
         android:tag="selectPeopleInput"
-        android:visibility="gone"
-        />
-    <com.supcon.mes.mbap.view.CustomEditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/sh_light_gray_stroke"
-        app:edit_hint="填写意见"
-        app:text_width="0dp"
-        app:icon_visible="true"
-        android:paddingLeft="@dimen/dp_20"
-        android:paddingRight="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_5"
-        android:paddingBottom="@dimen/dp_5"
-        android:id="@+id/commentInput"
-        android:tag="commentInput"
         android:visibility="gone"
         />
     <LinearLayout

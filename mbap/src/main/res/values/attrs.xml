@@ -314,6 +314,11 @@
         <attr name="arrow_text" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="CustomInfiniteListView">
+        <attr name="enable_add" format="boolean" />
+        <attr name="enable_save" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="CustomTitleBar">
         <attr name="titlebar_right_visible" format="boolean" />
         <attr name="titlebar_right_icon" format="reference" />
@@ -353,6 +358,7 @@
         <attr name="gallery_icon_res" format="reference" />
         <attr name="camera_icon_res" format="reference" />
         <attr name="enable" />
+        <attr name="horizontal" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="CustomFilterView">
@@ -438,5 +444,14 @@
 
         <attr name="loader_height" format="dimension" />
     </declare-styleable>
-
+    <declare-styleable name="CustomRadioButton">
+        <attr name="span_num" format="integer"/>
+        <attr name="key"/>
+        <attr name="key_size" />
+        <attr name="key_color" />
+        <attr name="content_size"/>
+        <attr name="content_color"/>
+        <attr name="necessary" />
+        <attr name="vertical" format="boolean"/>
+    </declare-styleable>
 </resources>

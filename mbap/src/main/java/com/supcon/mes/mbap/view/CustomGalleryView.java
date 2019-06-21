@@ -25,6 +25,7 @@ import com.supcon.common.view.listener.OnItemChildViewClickListener;
 import com.supcon.common.view.util.DisplayUtil;
 import com.supcon.common.view.util.LogUtil;
 import com.supcon.common.view.util.ToastUtils;
+import com.supcon.common.view.view.custom.ICustomView;
 import com.supcon.mes.mbap.MBapApp;
 import com.supcon.mes.mbap.MBapConfig;
 import com.supcon.mes.mbap.R;
@@ -64,6 +65,7 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
     private GalleryAdapter mGalleryAdapter;
     private boolean isEditable, isEnable;
     private String imgUrl;
+    private boolean mHorizontal;
 
     public static final int ACTION_VIDEO_PLAY = 9;
     public static final int ACTION_VIEW = 10;
@@ -79,6 +81,8 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
     public CustomGalleryView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
+
 
     @Override
     protected void init(Context context, AttributeSet attrs) {
@@ -129,6 +133,9 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
             customGallery.setBackgroundColor(mBgColor);
 
         GridLayoutManager manager = new GridLayoutManager(getContext(), columns);
+        if (mHorizontal){
+            manager.setOrientation(GridLayoutManager.HORIZONTAL);
+        }
 
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 
@@ -190,6 +197,7 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
             mCameraIconResId = array.getResourceId(R.styleable.CustomGalleryView_camera_icon_res, -1);
 //            mGalleryIconResId = array.getResourceId(R.styleable.CustomGalleryView_gallery_icon_res, -1);
             mTextHeight = array.getDimensionPixelSize(R.styleable.CustomGalleryView_text_height, -1);
+            mHorizontal = array.getBoolean(R.styleable.CustomGalleryView_horizontal, false);
             array.recycle();
         }
     }
@@ -229,7 +237,6 @@ public class CustomGalleryView extends BaseRelativeLayout implements OnItemChild
         super.setEnabled(enabled);
         if(!enabled)
             setEditable(false);
-
         if (enabled) {
             customGalleryText.setAlpha(1);
         } else {
